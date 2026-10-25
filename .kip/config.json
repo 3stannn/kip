@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "models": {
+    "standard": "gpt-4.1-mini",
+    "complex": "gpt-4.1"
+  },
+  "maxContextBytes": 32000,
+  "maxOutputTokens": 2500,
+  "timeoutMs": 90000
+}

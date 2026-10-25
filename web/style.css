@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito", system-ui, sans-serif;
+  --color-page: #f9f9f9;
+  --color-surface: #ffffff;
+  --color-ink: #202020;
+  --color-charcoal: #303030;
+  --color-muted: #767676;
+  --color-subtle: #999999;
+  --color-soft: #eeeeee;
+  --color-line: #e2e2e2;
+  --color-accent: #93b4e8;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth scroll-pt-24;
+  }
+  body {
+    @apply m-0 bg-page font-sans text-ink antialiased;
+  }
+  button,
+  summary,
+  select {
+    @apply cursor-pointer;
+  }
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+  h2 {
+    @apply mt-4 mb-4 text-3xl leading-tight font-black tracking-tight md:text-4xl;
+  }
+  a,
+  button,
+  input,
+  select,
+  summary {
+    @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent;
+  }
+  label {
+    @apply mb-2 block text-xs font-extrabold;
+  }
+  label span {
+    @apply font-normal text-muted;
+  }
+  input,
+  select {
+    @apply w-full rounded-lg border border-line bg-page px-3 py-3 text-sm text-charcoal transition focus:border-subtle;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply px-6 py-14 md:px-14 md:py-20;
+  }
+  .eyebrow {
+    @apply flex items-center gap-2 text-[10px] font-black tracking-[1.7px] text-muted;
+  }
+  .eyebrow > span {
+    @apply size-1.5 rounded-full bg-subtle;
+  }
+  .button-primary {
+    @apply inline-flex items-center justify-center gap-6 rounded-full bg-ink px-6 py-4 text-sm font-extrabold whitespace-nowrap text-white transition hover:-translate-y-0.5 hover:bg-charcoal;
+  }
+  .code-block {
+    @apply overflow-hidden rounded-xl border border-[#2b2b2d] bg-black text-[#e5e5e5] shadow-sm;
+  }
+  .code-block pre {
+    @apply m-0 font-mono text-xs leading-7 whitespace-pre-wrap wrap-anywhere;
+  }
+}
+
+.mascot {
+  pointer-events: none;
+}
+
+.mascot-eyes {
+  transform: translate(var(--look-x, 0px), var(--look-y, 0px));
+  transition: none;
+}
+
+.mascot-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mascot-blink 5.4s steps(1, end) infinite;
+}
+
+@keyframes mascot-blink {
+  0%,
+  43%,
+  47%,
+  100% {
+    transform: scaleY(1);
+  }
+  45% {
+    transform: scaleY(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot-blink {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}

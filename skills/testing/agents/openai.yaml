@@ -1,0 +1,4 @@
+interface:
+  display_name: "Testing"
+  short_description: "Focused JavaScript workflow guidance for Kip"
+  default_prompt: "Use $testing to complete the relevant part of this JavaScript task."

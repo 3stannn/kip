@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kip Orchestrator"
+  short_description: "Focused JavaScript workflow guidance for Kip"
+  default_prompt: "Use $kip-orchestrator to complete the relevant part of this JavaScript task."

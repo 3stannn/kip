@@ -1,0 +1,4 @@
+interface:
+  display_name: "Responsive Design"
+  short_description: "Adapt layouts across viewports, zoom, and input modes"
+  default_prompt: "Use $responsive-design to make this interface adapt across viewport sizes and verify its layout boundaries."

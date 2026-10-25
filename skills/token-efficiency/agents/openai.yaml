@@ -1,0 +1,4 @@
+interface:
+  display_name: "Token Efficiency"
+  short_description: "Focused JavaScript workflow guidance for Kip"
+  default_prompt: "Use $token-efficiency to complete the relevant part of this JavaScript task."
