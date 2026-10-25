@@ -1,3 +1,4 @@
+import { ScrollLink } from "./ScrollLink.jsx";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -38,15 +39,15 @@ export function Hero() {
           next step with Codex.
         </p>
         <div className="mt-7 flex flex-wrap items-center gap-6">
-          <a className="button-primary" href="#get-started">
+          <ScrollLink className="button-primary" href="#get-started">
             Find your flow <span>↗</span>
-          </a>
-          <a
+          </ScrollLink>
+          <ScrollLink
             className="inline-flex items-center gap-3 text-sm font-extrabold text-charcoal transition hover:text-accent"
             href="#how-it-works"
           >
             Show me how <span>↓</span>
-          </a>
+          </ScrollLink>
         </div>
         <div className="mt-6 flex items-center gap-2 text-[11px] text-muted [&>span]:text-base [&>i]:mx-1 [&>i]:size-1 [&>i]:rounded-full [&>i]:bg-line">
           <span>⌘</span> ChatGPT sign-in <i /> No API key

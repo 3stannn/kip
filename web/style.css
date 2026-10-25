@@ -15,7 +15,7 @@
 
 @layer base {
   html {
-    @apply scroll-smooth scroll-pt-24;
+    @apply scroll-pt-24;
   }
   body {
     @apply m-0 bg-page font-sans text-ink antialiased;
