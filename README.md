@@ -2,6 +2,8 @@
 
 Folder-based JavaScript orchestration using your signed-in Codex account. No API key required. Requires Node.js 22+, npm, and a current Codex CLI supporting `--ignore-user-config`.
 
+The repository contains the Kip CLI and a React website with setup instructions, an interactive command builder, a skill overview, and FAQs.
+
 ## Setup
 
 ```sh
@@ -24,7 +26,7 @@ This package is local and has not been published to npm. For development, use `n
 
 `kip install` creates `.kip/config.json`, editable `.kip/skills/<name>/SKILL.md`, and a Git ignore rule for run artifacts. Reinstall preserves existing files. The eight skills are frontend-design, responsive-design, anti-ai-slop, token-efficiency, security, testing, frontend and backend. The additional kip-orchestrator skill documents operating the CLI.
 
-`kip plan "task"` selects relevant skills using deterministic keywords, always including token-efficiency and anti-ai-slop. It reports context bytes offline without account access. Repeat `--file relative/path` for explicit text files or `--skill security` to add a specialty. Review routing before a run.
+`kip plan "task"` selects relevant skills using deterministic keywords, always including token-efficiency and anti-ai-slop. It reports context bytes offline without account access. Repeat `--file relative/path` for explicit text files or `--skill security` to add a specialty. Review routing before a run. Frontend and visual-design tasks also load `responsive-design` automatically. Use `kip plan "Fix mobile overflow"` or add `--skill responsive-design` explicitly.
 
 `kip run "task"` checks ChatGPT authentication, starts one ephemeral Codex execution, and records output and reported usage in `.kip/runs/<id>.json`. It does not apply generated patches. Failed turns are saved and return a failing exit code; process/transport failures may occur before an artifact is available. Kip never retries or escalates automatically, although Codex itself may make multiple requests or perform its own retries.
 
@@ -32,11 +34,73 @@ Models default to Codex's own default. Set `models.standard` or `models.complex`
 
 The runner ignores user Codex configuration and rules, enforces ChatGPT authentication and the OpenAI provider, disables the shell tool, uses read-only sandboxing, and runs in an empty temporary directory. Prompts instruct it to use only supplied excerpts and avoid tools. These controls are not an operating-system isolation boundary for every possible read. Managed Codex policies still apply. Kip does not claim that Codex receives only the visible prompt: Codex also adds its own instructions and context.
 
+## Commands and configuration
+
+Run commands from the target project directory after `kip install`:
+
+| Command | Purpose |
+| --- | --- |
+| `kip login` | Sign in through Codex using your ChatGPT account. |
+| `kip status` | Check Codex authentication. |
+| `kip install` | Create local configuration and editable skills, preserving existing files. |
+| `kip plan "task"` | Preview selected skills, model, and context bytes offline. |
+| `kip run "task"` | Execute the task and save the response and reported usage. |
+
+Both `plan` and `run` accept repeatable `--file path` and `--skill name` options, plus `--tier standard|complex` and `--model id`. File paths must be relative to the target project. Use `kip --help` for the command syntax.
+
+New projects receive these defaults in `.kip/config.json`:
+
+```json
+{
+  "version": 2,
+  "models": {
+    "standard": null,
+    "complex": null
+  },
+  "maxContextBytes": 32000,
+  "timeoutMs": 90000
+}
+```
+
+Edit this file to change the context budget, execution timeout, or model for each tier. Edit `.kip/skills/<name>/SKILL.md` to customize the instructions used in that project. Re-running `kip install` does not overwrite existing configuration or skill files.
+
 ## Efficiency and privacy
 
 `maxContextBytes` limits the assembled task, skills and explicit files; oversized context fails rather than silently dropping content. `timeoutMs` limits each execution. There is no hard output-token or dollar limit in this account-backed runner. Old `maxOutputTokens` settings are unused. Usage comes from Codex events when available; compare a measured baseline before claiming savings.
 
 Path traversal, escaping symlinks, common secret filenames, binary files and oversized files are rejected. Filename checks are not a secret scanner: review file contents before sending them. Skill files are trusted instructions and are sent with the task. Run artifacts may contain sensitive output. Authentication, provider data handling, entitlement checks, and plan limits belong to Codex and the user's account. No direct Responses API requests are made by Kip.
+
+## Website development
+
+From this repository, install dependencies and start the Vite development server:
+
+```sh
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite. The server binds to `127.0.0.1`.
+
+```sh
+npm run build       # Build the website into dist/
+npm run preview     # Serve the production build locally
+npm run format:check
+npm run format      # Format website sources, Vite config, and package.json
+```
+
+The website provides guidance and builds command text; run the CLI commands in your terminal. Website sources and build output are excluded from the CLI npm package.
+
+## Repository layout
+
+| Path | Contents |
+| --- | --- |
+| `bin/kip.js` | CLI entry point and argument parsing. |
+| `src/core.js` | Installation, skill routing, context assembly, and run records. |
+| `src/codex.js` | Codex authentication and execution integration. |
+| `skills/` | Bundled skill instructions and agent metadata. |
+| `test/` | Automated CLI and runner tests. |
+| `web/` | React components, site content, and styles. |
+| `.kip/` | This project's local Kip configuration and editable skills. |
 
 ## Verification
 
@@ -48,5 +112,3 @@ npm pack --dry-run
 Tests use a mocked Codex process boundary and temporary projects. No account inference is needed. Live subscription access must be verified separately.
 
 References: [Codex authentication](https://learn.chatgpt.com/docs/auth), [non-interactive execution](https://learn.chatgpt.com/docs/non-interactive-mode).
-
-Frontend and visual-design tasks also load `responsive-design` automatically. Use `kip plan "Fix mobile overflow"` or add `--skill responsive-design` explicitly. The skill covers fluid layouts, narrow through ultrawide viewports, zoom, orientation, content stress, and practical browser verification.
