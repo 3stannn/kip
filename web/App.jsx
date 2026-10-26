@@ -8,6 +8,7 @@ import { FAQ } from "./components/FAQ.jsx";
 import { Closing } from "./components/Closing.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { Profiles } from "./components/Profiles.jsx";
+import { Updates } from "./components/Updates.jsx";
 
 export default function App() {
   const [profile, setProfile] = useState("");
@@ -40,6 +41,7 @@ export default function App() {
         <CommandBuilder profile={profile} onProfileChange={setProfile} />
         <div className="mx-auto max-w-[1320px]">
           <Skills />
+          <Updates />
           <FAQ />
           <Closing />
         </div>

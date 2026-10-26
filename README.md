@@ -2,6 +2,8 @@
 
 A portable coding skill for Codex, Claude Code, and Antigravity. Invoke Kip inside your existing chat, or let the host select it when relevant. Kip works with the model and tools already available in that session. No Kip sign-in, API key, server, or separate runner.
 
+[Install](#install-from-github) · [Update](#update-an-existing-installation) · [Profiles](#switch-profiles-in-chat) · [Command playground](#command-playground) · [Run the website](#run-the-website-locally)
+
 ## Install from GitHub
 
 Requires Git and Node.js 22+. No npm install or dependencies are needed to install the skill.
@@ -45,6 +47,14 @@ $kip update
 ```
 
 Use `/kip update` in Claude Code or Antigravity. The skill locates its source clone and runs the updater for your current host, subject to that host's tools and permissions. This is a one-time update when requested, not a background auto-update. In Codex, use `$kip update` if `/kip` is not offered.
+
+| Host        | Submit in chat |
+| ----------- | -------------- |
+| Codex       | `$kip update`  |
+| Claude Code | `/kip update`  |
+| Antigravity | `/kip update`  |
+
+To explicitly update existing copies across every host from chat, submit `$kip update --host all` in Codex or `/kip update --host all` in Claude Code or Antigravity.
 
 You can also run it directly from your Kip clone:
 
@@ -123,6 +133,35 @@ Select the root model and thinking effort in your host app. Kip applies reviewer
 
 For an older installation, follow [Update an existing installation](#update-an-existing-installation) to install the bundled profile catalog.
 
+## Command playground
+
+The website includes two ways to prepare a prompt:
+
+- **Guided builder:** choose your coding host, task purpose, and optional model profile. Copy an explicit invocation or natural language prompt into your coding chat.
+- **Type a command:** type `$kip ` or `/kip ` to see matching commands. Suggestions also cover profile names, `--profile`, and `update --host` options. Use the arrow keys to choose, Tab or Enter to complete, and Escape to dismiss. You can also click a suggestion.
+
+The profile explorer shows the requested role settings for all seven profiles. Choosing **Try** applies a profile to the guided builder. The update guide provides commands for each host, a terminal alternative, and bootstrap steps for older installations.
+
+The playground prepares text to copy; it does not execute commands or change host settings. Its autocomplete belongs to the website and does not add a suggestion dropdown to your host's chat input.
+
+## Run the website locally
+
+From the repository root, install the website dependencies and start Vite:
+
+```sh
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite. To build and preview the production website:
+
+```sh
+npm run build
+npm run preview
+```
+
+These dependencies are for the React website. Installing or updating the Kip skill uses the Node.js CLI above and does not require `npm install`.
+
 ## Command reference
 
 Run terminal commands from your cloned Kip folder. In chat, use `$kip` for Codex or replace it with `/kip` for Claude Code and Antigravity. Replace placeholders such as `<task>` and `<name>` with your instructions or choice.
@@ -134,8 +173,8 @@ Run terminal commands from your cloned Kip folder. In chat, use `$kip` for Codex
 | Terminal | `node bin/kip.js install --host <host>`            | Install for `codex`, `claude`, or `antigravity`; `all` installs for every host.         |
 | Terminal | `node bin/kip.js doctor`                           | Check installed skill files for every supported host.                                   |
 | Terminal | `node bin/kip.js doctor --host <host>`             | Check installed files for the selected host. Accepts the same host values as `install`. |
-| Terminal | `node bin/kip.js update [--host <host>]`            | Pull upstream changes, back up existing skills, and refresh selected installations. |
-| Chat     | `$kip update [--host <host>]`                      | Update Kip for the current host, or an explicitly selected host. |
+| Terminal | `node bin/kip.js update [--host <host>]`           | Pull upstream changes, back up existing skills, and refresh selected installations.     |
+| Chat     | `$kip update [--host <host>]`                      | Update Kip for the current host, or an explicitly selected host.                        |
 | Chat     | `$kip build <task>`                                | Implement the requested feature and run appropriate checks.                             |
 | Chat     | `$kip fix <issue>`                                 | Investigate and fix the described issue.                                                |
 | Chat     | `$kip plan <task>`                                 | Produce a plan for the task.                                                            |

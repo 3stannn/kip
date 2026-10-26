@@ -11,12 +11,13 @@ export function Header() {
         kip<span className="-ml-1 self-start pt-1.5 text-[10px]">®</span>
       </ScrollLink>
       <nav
-        className="hidden gap-8 text-sm font-bold text-muted md:flex [&>a:hover]:text-accent"
+        className="hidden gap-4 text-xs font-bold whitespace-nowrap text-muted md:flex lg:gap-8 lg:text-sm [&>a:hover]:text-accent"
         aria-label="Main navigation"
       >
         <ScrollLink href="#how-it-works">How it works</ScrollLink>
         <ScrollLink href="#profiles">Profiles</ScrollLink>
         <ScrollLink href="#playground">Try a prompt</ScrollLink>
+        <ScrollLink href="#updates">Updates</ScrollLink>
         <ScrollLink href="#questions">FAQs</ScrollLink>
       </nav>
       <ScrollLink

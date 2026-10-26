@@ -11,7 +11,7 @@ export const steps = [
     label: "Install",
     text: "Install the skill globally for Codex, Claude Code, and Antigravity, then restart your host.",
     command: "node bin/kip.js install",
-    note: "Use --host codex, --host claude, or --host antigravity to select one host. Existing skill folders are preserved.",
+    note: "Use --host codex, --host claude, or --host antigravity to select one host. Already installed? Use the update guide below to refresh existing copies.",
   },
   {
     title: "A little instruction goes a long way.",
