@@ -87,6 +87,7 @@ export async function inspectSkills(host = "all", options = {}) {
       const files = [
         "SKILL.md",
         "agents/openai.yaml",
+        "references/profiles.md",
         ...specialties.map((name) => `references/${name}.md`),
       ];
       const missing = [];

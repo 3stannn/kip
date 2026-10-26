@@ -15,7 +15,7 @@ export function FAQ() {
         {[
           [
             "Do I need to sign in or supply an API key?",
-            "Kip adds no sign-in, API key, server, or separate model call. It runs inside the coding chat you already use. Your host application retains its own access requirements and usage limits.",
+            "Kip adds no sign-in, API key, server, or separate runner. It runs inside the coding chat you already use. Optional profiles use your host’s delegation tools and usage allowance. Your host application retains its own access requirements and usage limits.",
           ],
           [
             "Can I type /kip in Codex?",
@@ -31,7 +31,7 @@ export function FAQ() {
           ],
           [
             "Which model does it use?",
-            "The model in your current chat. Kip does not launch another agent process or choose another model.",
+            "The root uses the model and thinking effort selected in your current chat. Use $kip profiles (or /kip profiles) to see seven optional profiles for a root, reviewer, and two workers. Select one with $kip profile value, or override one task with $kip build --profile premium followed by your task. Reviewer and worker settings require host-native delegation support; Kip discloses unsupported settings.",
           ],
           [
             "Where does it install?",

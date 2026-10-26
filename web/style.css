@@ -6,7 +6,7 @@
   --color-surface: #ffffff;
   --color-ink: #202020;
   --color-charcoal: #303030;
-  --color-muted: #767676;
+  --color-muted: #686868;
   --color-subtle: #999999;
   --color-soft: #eeeeee;
   --color-line: #e2e2e2;
@@ -50,12 +50,24 @@
   select {
     @apply w-full rounded-lg border border-line bg-page px-3 py-3 text-sm text-charcoal transition focus:border-subtle;
   }
+  select {
+    @apply appearance-none rounded-xl pr-10 font-semibold hover:border-subtle hover:bg-surface focus:border-accent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23686868' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+    background-position: right 0.875rem center;
+    background-repeat: no-repeat;
+  }
+  select option {
+    @apply bg-surface text-charcoal;
+  }
   summary::-webkit-details-marker {
     display: none;
   }
 }
 
 @layer components {
+  .skip-link {
+    @apply fixed top-3 left-3 z-50 -translate-y-24 rounded-lg bg-ink px-5 py-3 text-sm font-bold text-white focus:translate-y-0;
+  }
   .section-shell {
     @apply px-6 py-14 md:px-14 md:py-20;
   }
@@ -73,6 +85,65 @@
   }
   .code-block pre {
     @apply m-0 font-mono text-xs leading-7 whitespace-pre-wrap wrap-anywhere;
+  }
+  .suggestion-menu {
+    @apply mt-2 max-h-72 space-y-1 overflow-y-auto rounded-2xl border border-line bg-surface p-1.5 shadow-lg shadow-ink/5;
+    scrollbar-color: var(--color-line) transparent;
+    scrollbar-width: thin;
+  }
+  .suggestion-option {
+    @apply flex cursor-pointer items-center gap-3 rounded-xl border border-transparent px-3 py-3 transition hover:bg-page;
+  }
+  .suggestion-option[aria-selected="true"] {
+    @apply border-accent/40 bg-accent/15;
+  }
+  .suggestion-keyword {
+    @apply block font-mono text-xs font-bold text-charcoal;
+  }
+  .suggestion-description {
+    @apply mt-1 block text-[11px] leading-5 text-muted;
+  }
+}
+
+/* Use themed native pickers where supported; keep native select behavior elsewhere. */
+@supports (appearance: base-select) {
+  select,
+  select::picker(select) {
+    appearance: base-select;
+  }
+  select::picker-icon {
+    display: none;
+  }
+  select::picker(select) {
+    margin-block: 0.5rem;
+    padding: 0.375rem;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    background: var(--color-surface);
+    color: var(--color-charcoal);
+    box-shadow: 0 10px 24px rgb(32 32 32 / 6%);
+  }
+  select option {
+    min-height: 2.75rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+  }
+  select option:hover,
+  select option:focus-visible {
+    background: var(--color-page);
+  }
+  select option:checked {
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--color-accent) 15%,
+      var(--color-surface)
+    );
+  }
+  select option::checkmark {
+    color: var(--color-charcoal);
   }
 }
 

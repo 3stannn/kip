@@ -27,6 +27,13 @@ test("installs self-contained skills for every host without external dependencie
   const inspections = await inspectSkills("all", options);
   assert.ok(inspections.every((entry) => entry.ready));
   for (const target of targets) {
+    assert.equal(
+      await fs.readFile(path.join(target, "references/profiles.md"), "utf8"),
+      await fs.readFile(
+        new URL("../skills/kip/references/profiles.md", import.meta.url),
+        "utf8",
+      ),
+    );
     for (const name of specialties) {
       assert.equal(
         await fs.readFile(
@@ -41,6 +48,15 @@ test("installs self-contained skills for every host without external dependencie
     }
     assert.ok((await fs.lstat(target)).isDirectory());
   }
+});
+
+test("doctor detects a missing profile catalog in an installed skill", async (t) => {
+  const options = await fixture(t);
+  const [target] = await installSkills("claude", options);
+  await fs.rm(path.join(target, "references/profiles.md"));
+  const [inspection] = await inspectSkills("claude", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual(inspection.missing, ["references/profiles.md"]);
 });
 
 test("isolates each host and respects CODEX_HOME", async (t) => {
@@ -71,7 +87,12 @@ test("conflicts preserve existing content and prevent partial installation", asy
 
 test("CLI installs and diagnoses offline without Codex on PATH or credentials", async (t) => {
   const options = await fixture(t);
-  const env = { HOME: options.home, CODEX_HOME: options.codexHome, PATH: "" };
+  const env = {
+    HOME: options.home,
+    USERPROFILE: options.home,
+    CODEX_HOME: options.codexHome,
+    PATH: "",
+  };
   const args = ["--host", "codex"];
   await execute(process.execPath, [cli, "install", ...args], {
     env,

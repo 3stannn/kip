@@ -13,6 +13,14 @@ Restart your host after installation. In chat, use:
   Claude Code / Antigravity: /kip <purpose> <instructions>
   Any host: Use Kip to <task>, or let the host select it automatically.
 
+Switch profiles in chat (use /kip outside Codex):
+  $kip profiles
+  $kip profile value
+  $kip build --profile premium <instructions>
+  $kip profile reset
+Profiles request a root, reviewer, and two workers with thinking efforts.
+Select root settings in your host; delegation settings depend on host support.
+
 The installer is local and needs only Node.js 22+. It makes no network calls.`;
 try {
   const [command, ...args] = process.argv.slice(2);
