@@ -1,31 +1,31 @@
 export const steps = [
   {
-    title: "Make yourself at home.",
+    title: "Bring Kip home.",
+    label: "Clone",
+    text: "Clone Kip from GitHub. Git and Node.js 22+ are all the installer needs.",
+    command: "git clone https://github.com/3stannn/kip.git\ncd kip",
+    note: "No npm dependencies, Kip account, or API key needed.",
+  },
+  {
+    title: "One install. Every project.",
     label: "Install",
-    text: "Install Codex CLI, then install Kip from the downloaded package folder. Move into your project and initialize it.",
+    text: "Install the skill globally for Codex, Claude Code, and Antigravity, then restart your host.",
+    command: "node bin/kip.js install",
+    note: "Use --host codex, --host claude, or --host antigravity to select one host. Existing skill folders are preserved.",
+  },
+  {
+    title: "A little instruction goes a long way.",
+    label: "Invoke",
+    text: "Open your project in your coding chat. Use $kip in Codex or /kip in Claude Code and Antigravity, followed by your purpose and instructions.",
+    command: "$kip build Create an accessible React login and verify it.",
+    note: "You can also say ‘Use Kip to fix mobile overflow.’ The host can select Kip implicitly when its description matches your task.",
+  },
+  {
+    title: "Keep working where you are.",
+    label: "Create",
+    text: "Kip selects relevant guidance, makes the requested changes, and verifies them with your current chat’s tools.",
     command:
-      "npm install --global @openai/codex\nnpm install --global .\ncd /path/to/your-project\nkip install",
-    note: "Requires Node.js 22+. Your .kip folder holds config and editable skills. Existing settings are preserved.",
-  },
-  {
-    title: "Bring your account along.",
-    label: "Sign in",
-    text: "Sign in with your ChatGPT account in the browser, then check your connection. Kip reuses an existing Codex ChatGPT sign-in.",
-    command: "kip login\nkip status",
-    note: "No API key needed. Your account must have Codex access; workspace policies and usage limits apply.",
-  },
-  {
-    title: "A good plan comes first.",
-    label: "Plan",
-    text: "Describe a small, concrete task and include only the files it needs. Preview the model selection, relevant skills, and context size.",
-    command: 'kip plan "Build an accessible React login" --file src/App.jsx',
-    note: "Plan works offline. No sign-in or model usage required.",
-  },
-  {
-    title: "Ready when you are.",
-    label: "Run",
-    text: "Run your task through Codex using your signed-in ChatGPT account. The response and reported usage are saved locally for review.",
-    command: 'kip run "Build an accessible React login" --file src/App.jsx',
-    note: "Uses your account’s Codex allowance. Review returned code before applying it. Codex may make multiple model requests during a run.",
+      "/kip fix Resolve dashboard overflow on mobile and check the layout.",
+    note: "This example uses Claude Code or Antigravity. Kip adds no sign-in flow; your host keeps its own model, access requirements, and permissions.",
   },
 ];

@@ -15,7 +15,7 @@ export function Header() {
         aria-label="Main navigation"
       >
         <ScrollLink href="#how-it-works">How it works</ScrollLink>
-        <ScrollLink href="#playground">Try a command</ScrollLink>
+        <ScrollLink href="#playground">Try a prompt</ScrollLink>
         <ScrollLink href="#questions">FAQs</ScrollLink>
       </nav>
       <ScrollLink

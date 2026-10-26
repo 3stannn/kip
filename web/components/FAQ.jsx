@@ -9,37 +9,37 @@ export function FAQ() {
       <div>
         <span className="eyebrow">GOOD QUESTIONS</span>
         <h2>A little clarity.</h2>
-        <p>Before you open that terminal.</p>
+        <p>Before your next chat.</p>
       </div>
       <div className="[&_details]:border-b [&_details]:border-line [&_details]:py-5 [&_summary]:flex [&_summary]:cursor-pointer [&_summary]:list-none [&_summary]:items-center [&_summary]:justify-between [&_summary]:gap-5 [&_summary]:text-sm [&_summary]:font-extrabold [&_summary_span]:text-2xl [&_summary_span]:font-normal [&_summary_span]:text-subtle [&_details[open]_summary_span]:rotate-45 [&_p]:mr-6 [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-7 [&_p]:text-muted">
         {[
           [
-            "Does Kip change my files?",
-            "The current runner returns code, patches, and instructions for you to review. It does not apply patches to your application or deploy. Runs use Codex in a read-only sandbox with the shell tool disabled. You choose what to apply.",
+            "Do I need to sign in or supply an API key?",
+            "Kip adds no sign-in, API key, server, or separate model call. It runs inside the coding chat you already use. Your host application retains its own access requirements and usage limits.",
           ],
           [
-            "Do I need an API key?",
-            "No. Run kip login and sign in with your ChatGPT account, or reuse an existing Codex ChatGPT sign-in. API-key sign-in is rejected. Your account needs Codex access, and its usage limits and workspace policies apply.",
+            "Can I type /kip in Codex?",
+            "Use $kip followed by your purpose and instructions, or select Kip in Codex’s /skills picker. Codex controls slash command registration. Claude Code and Antigravity expose the skill as /kip.",
           ],
           [
-            "Which model will it use?",
-            "By default, Codex chooses its default model. Configure a model per tier in .kip/config.json or pass --model with a supported Codex model ID. Kip cannot inherit the model selected in an open chat or unlock models outside your account’s access.",
+            "Can it activate automatically?",
+            "Yes, the skill allows implicit invocation for staged coding work across specialties. Your host decides when the description matches. You can always invoke it explicitly or say ‘Use Kip to …’.",
           ],
           [
-            "How does a run use my allowance?",
-            "Kip starts one Codex execution without automatic retries or escalation of its own. Codex may make multiple model requests or retry internally. Reported usage is saved with the result. Context bytes and timeouts are configurable; the runner does not enforce a hard output-token cap.",
+            "Does Kip change my project?",
+            "When you ask for implementation, Kip uses the current host’s tools to edit and verify your project. A planning request produces a plan. Your host’s permissions and approval rules apply.",
           ],
           [
-            "Which files does it use?",
-            "Kip includes text files you explicitly select with --file and the relevant local skill instructions. Codex adds its own instructions and context. Paths must stay within your project. Review file contents before including them; filename guards are not a secret scanner.",
+            "Which model does it use?",
+            "The model in your current chat. Kip does not launch another agent process or choose another model.",
           ],
           [
-            "Where do my settings and results live?",
-            "Edit models, context limits, and timeouts in .kip/config.json. Skills live in .kip/skills/. Run responses and reported usage are saved in .kip/runs/. Codex manages your sign-in credentials.",
+            "Where does it install?",
+            "Globally: ~/.codex/skills/kip and ~/.agents/skills/kip for Codex, ~/.claude/skills/kip for Claude Code, and ~/.gemini/config/skills/kip plus ~/.gemini/antigravity-cli/skills/kip for Antigravity. CODEX_HOME is respected when set.",
           ],
           [
-            "Can I install it from npm?",
-            "This package is not published to npm. From the downloaded package folder, run npm install --global . to install the kip command. You need Node.js 22 or newer and a current Codex CLI. Install Codex with npm install --global @openai/codex.",
+            "How do I install or update?",
+            "Clone https://github.com/3stannn/kip.git and run node bin/kip.js install. Only Git and Node.js 22+ are needed. For updates, pull the clone, move existing Kip skill folders aside, and rerun installation. Restart your host to discover the skill.",
           ],
         ].map(([q, a]) => (
           <details key={q}>

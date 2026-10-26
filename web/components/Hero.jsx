@@ -34,9 +34,9 @@ export function Hero() {
           <span className="block text-accent"> Your buddy, Kip.</span>
         </h1>
         <p className="text-base leading-7 text-muted">
-          Bring your ChatGPT account into your project.
+          Bring a little structure to your coding chat.
           <br className="hidden sm:block" /> Pick a task, make a plan, and take
-          next step with Codex.
+          the next step with Codex, Claude Code, or Antigravity.
         </p>
         <div className="mt-7 flex flex-wrap items-center gap-6">
           <ScrollLink className="button-primary" href="#get-started">
@@ -50,7 +50,7 @@ export function Hero() {
           </ScrollLink>
         </div>
         <div className="mt-6 flex items-center gap-2 text-[11px] text-muted [&>span]:text-base [&>i]:mx-1 [&>i]:size-1 [&>i]:rounded-full [&>i]:bg-line">
-          <span>⌘</span> ChatGPT sign-in <i /> No API key
+          <span>⌘</span> No Kip sign-in <i /> No API key
         </div>
       </div>
       <div className="pointer-events-none z-30 mx-auto flex size-24 justify-center sm:size-28 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2">

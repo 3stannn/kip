@@ -68,10 +68,10 @@ export function GettingStarted() {
                 <small className="mt-1 hidden text-xs font-medium text-muted md:block">
                   {
                     [
-                      "Give your project a home base",
-                      "Connect your ChatGPT account",
-                      "Preview without model usage",
-                      "Make your first request",
+                      "Get the skill from GitHub",
+                      "Install globally for your hosts",
+                      "Describe the task in chat",
+                      "Work with your current tools",
                     ][i]
                   }
                 </small>
@@ -93,7 +93,10 @@ export function GettingStarted() {
           </span>
           <h3>{steps[active].title}</h3>
           <p>{steps[active].text}</p>
-          <CodeBlock text={steps[active].command} />
+          <CodeBlock
+            text={steps[active].command}
+            title={active < 2 ? "Terminal" : "Your coding chat"}
+          />
           <div className="mt-5 flex gap-3 text-xs leading-6 text-muted [&>span]:text-lg [&>span]:text-subtle">
             <span>✧</span>
             {steps[active].note}

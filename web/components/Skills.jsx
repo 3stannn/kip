@@ -11,9 +11,10 @@ export function Skills() {
           Along for the ride.
         </h2>
         <p>
-          Kip selects skills from the words in your task.
+          Kip loads relevant guidance for your task.
           <br />
-          Review your plan, or add one explicitly with <code>--skill</code>.
+          Ask for a specialty in your prompt, such as{" "}
+          <code>review security</code>.
         </p>
       </div>
       <div className="flex flex-wrap justify-center gap-3 py-4">

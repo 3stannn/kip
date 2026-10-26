@@ -1,114 +1,94 @@
 # Kip
 
-Folder-based JavaScript orchestration using your signed-in Codex account. No API key required. Requires Node.js 22+, npm, and a current Codex CLI supporting `--ignore-user-config`.
+A portable coding skill for Codex, Claude Code, and Antigravity. Invoke Kip inside your existing chat, or let the host select it when relevant. Kip works with the model and tools already available in that session. No Kip sign-in, API key, server, or additional model process.
 
-The repository contains the Kip CLI and a React website with setup instructions, an interactive command builder, a skill overview, and FAQs.
+## Install from GitHub
 
-## Setup
+Requires Git and Node.js 22+. No npm install or dependencies are needed to install the skill.
 
 ```sh
-npm install --global @openai/codex
-# From this Kip package directory:
-npm install --global .
-# From your target project:
-kip install
-kip login
-kip status
-kip plan "Build an accessible React login" --file src/App.jsx
-kip run "Build an accessible React login" --file src/App.jsx
+git clone https://github.com/3stannn/kip.git
+cd kip
+node bin/kip.js install
 ```
 
-Complete the browser sign-in with your ChatGPT account. Existing Codex ChatGPT sign-in is reused. Account eligibility, workspace policy, available Codex models and usage limits still apply. Kip cannot inherit the model selected in an open chat or unlock arbitrary ChatGPT models. It delegates authentication and credential refresh to Codex and never reads or copies its credential files. API-key sign-in is rejected, and API credential environment overrides are removed from child processes.
+This installs a self-contained copy for every supported host. To install just one:
 
-This package is local and has not been published to npm. For development, use `node /absolute/path/to/orchestrator/bin/kip.js` in place of `kip`.
+```sh
+node bin/kip.js install --host codex
+node bin/kip.js install --host claude
+node bin/kip.js install --host antigravity
+```
 
-## Workflow
-
-`kip install` creates `.kip/config.json`, editable `.kip/skills/<name>/SKILL.md`, and a Git ignore rule for run artifacts. Reinstall preserves existing files. The eight skills are frontend-design, responsive-design, anti-ai-slop, token-efficiency, security, testing, frontend and backend. The additional kip-orchestrator skill documents operating the CLI.
-
-`kip plan "task"` selects relevant skills using deterministic keywords, always including token-efficiency and anti-ai-slop. It reports context bytes offline without account access. Repeat `--file relative/path` for explicit text files or `--skill security` to add a specialty. Review routing before a run. Frontend and visual-design tasks also load `responsive-design` automatically. Use `kip plan "Fix mobile overflow"` or add `--skill responsive-design` explicitly.
-
-`kip run "task"` checks ChatGPT authentication, starts one ephemeral Codex execution, and records output and reported usage in `.kip/runs/<id>.json`. It does not apply generated patches. Failed turns are saved and return a failing exit code; process/transport failures may occur before an artifact is available. Kip never retries or escalates automatically, although Codex itself may make multiple requests or perform its own retries.
-
-Models default to Codex's own default. Set `models.standard` or `models.complex` to a supported Codex model ID, or use `--model id`. `--tier complex` uses the complex entry; a null entry leaves selection to Codex. Version 1 API model settings are ignored at runtime so old API defaults do not select unsupported subscription models. User files are preserved.
-
-The runner ignores user Codex configuration and rules, enforces ChatGPT authentication and the OpenAI provider, disables the shell tool, uses read-only sandboxing, and runs in an empty temporary directory. Prompts instruct it to use only supplied excerpts and avoid tools. These controls are not an operating-system isolation boundary for every possible read. Managed Codex policies still apply. Kip does not claim that Codex receives only the visible prompt: Codex also adds its own instructions and context.
-
-## Commands and configuration
-
-Run commands from the target project directory after `kip install`:
-
-| Command | Purpose |
+| Host | Global installation |
 | --- | --- |
-| `kip login` | Sign in through Codex using your ChatGPT account. |
-| `kip status` | Check Codex authentication. |
-| `kip install` | Create local configuration and editable skills, preserving existing files. |
-| `kip plan "task"` | Preview selected skills, model, and context bytes offline. |
-| `kip run "task"` | Execute the task and save the response and reported usage. |
+| Codex | `~/.codex/skills/kip/` (uses `$CODEX_HOME/skills/kip/` if set) and `~/.agents/skills/kip/` for current Codex discovery |
+| Claude Code | `~/.claude/skills/kip/` |
+| Antigravity App / IDE | `~/.gemini/config/skills/kip/` |
+| Antigravity CLI | `~/.gemini/antigravity-cli/skills/kip/` |
 
-Both `plan` and `run` accept repeatable `--file path` and `--skill name` options, plus `--tier standard|complex` and `--model id`. File paths must be relative to the target project. Use `kip --help` for the command syntax.
+Existing skill folders are never overwritten. If any selected destination already exists, installation stops before writing. To update, pull the repository, move your existing Kip folders aside, and rerun the installer. No host settings or project files are changed. Installed copies remain usable if the clone is moved or deleted. Restart the host or open a new session after installation.
 
-New projects receive these defaults in `.kip/config.json`:
+Check installed files locally without signing in or running a model:
 
-```json
-{
-  "version": 2,
-  "models": {
-    "standard": null,
-    "complex": null
-  },
-  "maxContextBytes": 32000,
-  "timeoutMs": 90000
-}
+```sh
+node bin/kip.js doctor
+node bin/kip.js doctor --host codex
 ```
 
-Edit this file to change the context budget, execution timeout, or model for each tier. Edit `.kip/skills/<name>/SKILL.md` to customize the instructions used in that project. Re-running `kip install` does not overwrite existing configuration or skill files.
+## Invoke in chat
 
-## Efficiency and privacy
+In Codex, explicitly select the skill with `$kip` or the `/skills` picker:
 
-`maxContextBytes` limits the assembled task, skills and explicit files; oversized context fails rather than silently dropping content. `timeoutMs` limits each execution. There is no hard output-token or dollar limit in this account-backed runner. Old `maxOutputTokens` settings are unused. Usage comes from Codex events when available; compare a measured baseline before claiming savings.
+```text
+$kip build Create an accessible React login in this project and verify it.
+```
 
-Path traversal, escaping symlinks, common secret filenames, binary files and oversized files are rejected. Filename checks are not a secret scanner: review file contents before sending them. Skill files are trusted instructions and are sent with the task. Run artifacts may contain sensitive output. Authentication, provider data handling, entitlement checks, and plan limits belong to Codex and the user's account. No direct Responses API requests are made by Kip.
+In Claude Code and Antigravity, use the skill slash command:
+
+```text
+/kip build Create an accessible React login in this project and verify it.
+```
+
+In every host, a natural language request also works:
+
+```text
+Use Kip to fix mobile overflow in the dashboard.
+```
+
+Kip's metadata permits implicit selection for staged coding work across specialties. The host decides when to select it; explicit invocation is the reliable choice. `/kip` is an invocation intent understood by the instructions when passed through to the model, but registering an arbitrary `/kip` command in Codex is controlled by Codex. Use `$kip` there if `/kip` is not offered.
+
+Kip interprets the purpose and instructions, inspects the relevant project context, loads only the supporting guidance needed, then performs the work with the current host's tools and permissions. It supports frontend design, responsive design, frontend, backend, security, testing, token efficiency, and refinement of code and copy. A request for a plan produces a plan; an implementation request continues through changes and appropriate verification.
+
+Kip adds no authentication step. The application you already use retains its own access requirements, model selection, usage limits, and approval rules. Kip does not select another model, bypass host restrictions, or require another subscription.
+
+## Migration from the standalone runner
+
+`kip login`, `kip status`, `kip plan`, and `kip run` are retired from the public CLI. They explain how to switch to chat invocation and never start authentication or inference. Existing `.kip` project files are left intact. The previous runner modules and their tests remain in `src/core.js` and `src/codex.js` for reference; the installer and current CLI do not import them.
+
+The GitHub install command uses the files in your clone. Local changes must be committed and pushed before other people can clone those changes.
 
 ## Website development
 
-From this repository, install dependencies and start the Vite development server:
+The React website explains installation and builds chat prompts locally:
 
 ```sh
 npm install
 npm run dev
-```
-
-Open the local URL printed by Vite. The server binds to `127.0.0.1`.
-
-```sh
-npm run build       # Build the website into dist/
-npm run preview     # Serve the production build locally
+npm run build
 npm run format:check
-npm run format      # Format website sources, Vite config, and package.json
 ```
 
-The website provides guidance and builds command text; run the CLI commands in your terminal. Website sources and build output are excluded from the CLI npm package.
-
-## Repository layout
-
-| Path | Contents |
-| --- | --- |
-| `bin/kip.js` | CLI entry point and argument parsing. |
-| `src/core.js` | Installation, skill routing, context assembly, and run records. |
-| `src/codex.js` | Codex authentication and execution integration. |
-| `skills/` | Bundled skill instructions and agent metadata. |
-| `test/` | Automated CLI and runner tests. |
-| `web/` | React components, site content, and styles. |
-| `.kip/` | This project's local Kip configuration and editable skills. |
+The development server binds to `127.0.0.1`. Website dependencies are unnecessary for skill installation. Optionally install the `kip` terminal helper with `npm install --global .` from this clone; `kip install` and `kip doctor` then mirror the Node commands above.
 
 ## Verification
 
 ```sh
 npm test
+npm run build
 npm pack --dry-run
 ```
 
-Tests use a mocked Codex process boundary and temporary projects. No account inference is needed. Live subscription access must be verified separately.
+Installer tests use temporary home directories and check complete bundles, all host locations, conflict preservation, offline CLI execution, and retired commands. They do not perform model calls. Actual skill selection and tool execution depend on the host and should be smoke-tested in a new chat.
 
-References: [Codex authentication](https://learn.chatgpt.com/docs/auth), [non-interactive execution](https://learn.chatgpt.com/docs/non-interactive-mode).
+Host documentation: [Codex skills](https://learn.chatgpt.com/docs/build-skills), [Claude Code skills](https://code.claude.com/docs/en/skills), [Antigravity skills](https://antigravity.google/docs/skills).

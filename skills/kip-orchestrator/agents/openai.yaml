@@ -1,4 +1,4 @@
 interface:
-  display_name: "Kip Orchestrator"
-  short_description: "Focused JavaScript workflow guidance for Kip"
-  default_prompt: "Use $kip-orchestrator to complete the relevant part of this JavaScript task."
+  display_name: "Kip Migration"
+  short_description: "Move legacy Kip commands into your current chat"
+  default_prompt: "Use $kip-orchestrator to migrate my old Kip CLI workflow to the Kip skill."

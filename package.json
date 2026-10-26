@@ -1,7 +1,7 @@
 {
   "name": "kip-openai-orchestrator",
   "version": "0.1.0",
-  "description": "Folder-based OpenAI workflow orchestration with selective skills and bounded context",
+  "description": "Portable coding skill for Codex, Claude Code, and Antigravity; no separate sign-in or API key",
   "type": "module",
   "bin": {
     "kip": "bin/kip.js"
@@ -11,8 +11,8 @@
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "format": "prettier --write web vite.config.js package.json",
-    "format:check": "prettier --check web vite.config.js package.json"
+    "format": "prettier --write web src bin test vite.config.js package.json",
+    "format:check": "prettier --check web src bin test vite.config.js package.json"
   },
   "dependencies": {
     "react": "^19.2.0",

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Kip"
+  short_description: "Focused coding workflows inside your current chat"
+  default_prompt: "Use $kip to implement this task with relevant guidance and verification."
+policy:
+  allow_implicit_invocation: true
