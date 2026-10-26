@@ -7,6 +7,7 @@ const commands = [
   ["review", "Review code and report findings"],
   ["profiles", "List all model profiles"],
   ["profile", "Select, show, or reset your chat profile"],
+  ["update", "Pull updates and refresh installed Kip skills"],
 ];
 const profileOptions = profiles.map(({ slug, name }) => [
   slug,
@@ -24,7 +25,17 @@ export function getCompletions(text, caret = text.length, prefix = "$kip") {
     options = [[prefix, "Start a Kip command"]];
   } else if (/^[$/]kip$/i.test(context[0])) {
     if (context.length === 1) options = commands;
-    else if (context[1] === "profile" && context.length === 2) {
+    else if (context[1] === "update") {
+      if (context.length === 2)
+        options = [["--host", "Choose which host installations to update"]];
+      else if (context.length === 3 && context[2] === "--host")
+        options = [
+          ["codex", "Update existing Codex copies"],
+          ["claude", "Update the existing Claude Code copy"],
+          ["antigravity", "Update existing Antigravity copies"],
+          ["all", "Update all existing host installations"],
+        ];
+    } else if (context[1] === "profile" && context.length === 2) {
       options = [...profileOptions, ["reset", "Return to host defaults"]];
     } else if (["build", "fix", "plan", "review"].includes(context[1])) {
       if (context.length === 2)

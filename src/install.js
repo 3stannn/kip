@@ -2,8 +2,10 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { fileURLToPath } from "node:url";
+import { randomUUID } from "node:crypto";
 
 const bundle = fileURLToPath(new URL("../skills/", import.meta.url));
+const sourceRoot = fileURLToPath(new URL("../", import.meta.url));
 export const specialties = [
   "frontend-design",
   "responsive-design",
@@ -59,16 +61,7 @@ export async function installSkills(host = "all", options = {}) {
       await fs.mkdir(path.dirname(target), { recursive: true });
       await fs.mkdir(target); // Exclusive: a concurrent install must not be overwritten.
       installed.push(target);
-      await fs.cp(path.join(bundle, "kip"), target, { recursive: true });
-      for (const name of specialties) {
-        await fs.mkdir(path.join(target, "references"), {
-          recursive: true,
-        });
-        await fs.copyFile(
-          path.join(bundle, name, "SKILL.md"),
-          path.join(target, "references", `${name}.md`),
-        );
-      }
+      await copyBundle(target);
     }
   } catch (error) {
     await Promise.all(
@@ -81,6 +74,113 @@ export async function installSkills(host = "all", options = {}) {
   return targets;
 }
 
+async function copyBundle(target) {
+  await fs.cp(path.join(bundle, "kip"), target, { recursive: true });
+  for (const name of specialties) {
+    await fs.mkdir(path.join(target, "references"), { recursive: true });
+    await fs.copyFile(
+      path.join(bundle, name, "SKILL.md"),
+      path.join(target, "references", `${name}.md`),
+    );
+  }
+  await fs.writeFile(
+    path.join(target, "installation.json"),
+    JSON.stringify({ sourceRoot: path.resolve(sourceRoot) }, null, 2) + "\n",
+  );
+}
+
+export async function refreshSkills(host = "all", options = {}) {
+  const targets = [];
+  for (const target of destinations(host, options)) {
+    let stat;
+    try {
+      stat = await fs.lstat(target);
+    } catch (error) {
+      if (error.code === "ENOENT") continue;
+      throw error;
+    }
+    if (!stat.isDirectory() || stat.isSymbolicLink())
+      throw Error(`Cannot update a linked or non-directory skill: ${target}`);
+    const skill = await fs.readFile(path.join(target, "SKILL.md"), "utf8");
+    if (!/^name:\s*kip\s*$/m.test(skill))
+      throw Error(`Not an installed Kip skill: ${target}`);
+    targets.push(target);
+  }
+  if (!targets.length)
+    throw Error(
+      "No installed Kip skills found for the selected host. Run install first.",
+    );
+
+  const locks = [];
+  const entries = [];
+  try {
+    // Keep backups outside skill discovery and on the destination's filesystem.
+    for (const root of [
+      ...new Set(targets.map((target) => path.dirname(path.dirname(target)))),
+    ].sort()) {
+      const lock = path.join(root, ".kip-update.lock");
+      try {
+        const handle = await fs.open(lock, "wx");
+        locks.push({ lock, handle });
+      } catch (error) {
+        if (error.code === "EEXIST")
+          throw Error(
+            `Another update may be running. If it was interrupted, remove the stale lock: ${lock}`,
+          );
+        throw error;
+      }
+    }
+    // Finish copying every replacement before touching installed files.
+    for (const target of targets) {
+      const backupRoot = path.join(
+        path.dirname(path.dirname(target)),
+        "kip-backups",
+        randomUUID(),
+      );
+      const entry = {
+        target,
+        backup: path.join(backupRoot, "previous"),
+        stage: path.join(backupRoot, "new"),
+        moved: false,
+        activated: false,
+      };
+      entries.push(entry);
+      await fs.mkdir(entry.stage, { recursive: true });
+      await copyBundle(entry.stage);
+    }
+    for (const entry of entries) {
+      await fs.rename(entry.target, entry.backup);
+      entry.moved = true;
+      await fs.rename(entry.stage, entry.target);
+      entry.activated = true;
+    }
+    return entries.map(({ target, backup }) => ({ target, backup }));
+  } catch (error) {
+    const failures = [];
+    for (const entry of entries.toReversed()) {
+      try {
+        if (entry.activated)
+          await fs.rm(entry.target, { recursive: true, force: true });
+        if (entry.moved) await fs.rename(entry.backup, entry.target);
+      } catch (rollbackError) {
+        failures.push(`${entry.backup}: ${rollbackError.message}`);
+      }
+    }
+    if (failures.length)
+      throw Error(
+        `${error.message}\nRestore these retained backups manually:\n${failures.join("\n")}`,
+      );
+    throw error;
+  } finally {
+    for (const entry of entries)
+      await fs.rm(entry.stage, { recursive: true, force: true });
+    for (const { lock, handle } of locks) {
+      await handle.close();
+      await fs.rm(lock, { force: true });
+    }
+  }
+}
+
 export async function inspectSkills(host = "all", options = {}) {
   return Promise.all(
     destinations(host, options).map(async (target) => {
@@ -88,6 +188,8 @@ export async function inspectSkills(host = "all", options = {}) {
         "SKILL.md",
         "agents/openai.yaml",
         "references/profiles.md",
+        "references/update.md",
+        "installation.json",
         ...specialties.map((name) => `references/${name}.md`),
       ];
       const missing = [];

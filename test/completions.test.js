@@ -11,7 +11,8 @@ test("suggests invocations and filters command prefixes for either host", () => 
       ["plan", "profiles", "profile"],
     );
     assert.equal(getCompletions(`${prefix} bu`)[0].text, `${prefix} build `);
-    assert.equal(getCompletions(`${prefix} `).length, 6);
+    assert.equal(getCompletions(`${prefix} `).length, 7);
+    assert.equal(getCompletions(`${prefix} up`)[0].text, `${prefix} update `);
   }
 });
 
@@ -63,4 +64,15 @@ test("completion replaces the word at the cursor without losing task text", () =
   const result = getCompletions(text, text.indexOf("balnced") + 3)[0];
   assert.equal(result.text, "$kip build --profile balanced Fix a bug");
   assert.equal(result.caret, result.text.indexOf("Fix"));
+});
+
+test("update suggests host options without completing arbitrary arguments", () => {
+  assert.equal(getCompletions("$kip update --")[0].text, "$kip update --host ");
+  assert.equal(
+    getCompletions("/kip update --host co")[0].text,
+    "/kip update --host codex ",
+  );
+  assert.equal(getCompletions("$kip update --host ").length, 4);
+  assert.equal(getCompletions("$kip update --host codex ").length, 0);
+  assert.equal(getCompletions("$kip update unexpected ").length, 0);
 });

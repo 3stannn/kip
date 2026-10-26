@@ -27,7 +27,7 @@ node bin/kip.js install --host antigravity
 | Antigravity App / IDE | `~/.gemini/config/skills/kip/`                                                                                         |
 | Antigravity CLI       | `~/.gemini/antigravity-cli/skills/kip/`                                                                                |
 
-Existing skill folders are never overwritten. If any selected destination already exists, installation stops before writing. See [Update an existing installation](#update-an-existing-installation) to refresh installed copies. No host settings or project files are changed. Installed copies remain usable if the clone is moved or deleted. Restart the host or open a new session after installation.
+The `install` command never overwrites existing skill folders. If any selected destination already exists, installation stops before writing. Use [update](#update-an-existing-installation) to back up and replace installed copies. No host settings or project files are changed. Installed copies remain usable if the clone is moved or deleted; updating requires a clone. Restart the host or open a new session after installation.
 
 Check installed files locally without signing in or running a model:
 
@@ -38,36 +38,43 @@ node bin/kip.js doctor --host codex
 
 ## Update an existing installation
 
-Installed skills are copies of the repository files, so pulling the repository alone does not update them.
+In your coding chat, submit:
 
-1. Open a terminal in your existing Kip clone and fetch the latest changes:
+```text
+$kip update
+```
 
-   ```sh
-   cd path/to/kip
-   git pull --ff-only
-   ```
+Use `/kip update` in Claude Code or Antigravity. The skill locates its source clone and runs the updater for your current host, subject to that host's tools and permissions. This is a one-time update when requested, not a background auto-update. In Codex, use `$kip update` if `/kip` is not offered.
 
-   Replace `path/to/kip` with your clone's location. If Git reports local changes or diverged branches, resolve those before continuing.
+You can also run it directly from your Kip clone:
 
-2. Move the existing `kip` folders for the hosts you want to update to a backup location **outside the hosts' skill directories**. Use the installation paths in the table above. For Codex, move both copies, including the one under `~/.agents/skills/`; if `CODEX_HOME` is set, use its `skills/kip/` path instead of `~/.codex/skills/kip/`. For Antigravity, move both the App / IDE and CLI copies. Keep any custom edits in the backup for reference.
+```sh
+node bin/kip.js update
+```
 
-3. Reinstall and check the updated files:
+This runs `git pull --ff-only` from the current branch's configured upstream, backs up installed Kip folders, and refreshes them from the pulled source. It updates existing installations only; it does not install missing hosts. Git, Node.js 22+, network access to the upstream, and a clean clone with a tracking branch are required. Dirty or divergent clones stop the update without discarding work. A pull failure leaves installed copies unchanged. A replacement failure attempts to restore the previous copies and reports any backups that need manual restoration. If the pull succeeded before a later failure, the clone remains at the pulled revision.
 
-   ```sh
-   node bin/kip.js install
-   node bin/kip.js doctor
-   ```
+To update and check just one host:
 
-   These commands target every supported host. To update only one host, add the same host option to both commands:
+```sh
+node bin/kip.js update --host codex
+node bin/kip.js doctor --host codex
+```
 
-   ```sh
-   node bin/kip.js install --host codex
-   node bin/kip.js doctor --host codex
-   ```
+Replace `codex` with `claude` or `antigravity` as needed. Backups are kept outside skill discovery in `kip-backups/<id>/previous` beside each host's `skills` directory. The updater prints every backup path. Custom skill edits are retained in those backups and are not merged into the new files. New installs record their clone location in `installation.json`; if you move the clone, supply its new location when asked.
 
-   Replace `codex` with `claude` or `antigravity` as needed. Every existing destination for the selected host must be moved aside before installation; the installer stops if any destination still exists. Custom edits are not merged automatically.
+Restart your coding host or open a new session after updating. Pulling the repository alone does not refresh installed skill copies.
 
-4. Restart your coding host or open a new session so it discovers the refreshed skill. In chat, run `$kip profiles` in Codex or `/kip profiles` in Claude Code or Antigravity to view the bundled profile catalog.
+### First update from an older installation
+
+Older installed skills do not yet know the update command. Bootstrap it once in a terminal from your existing clone:
+
+```sh
+git pull --ff-only
+node bin/kip.js update --host codex
+```
+
+Use your host name, or omit `--host codex` to refresh all existing host installations. Restart the host; subsequent updates can use the chat command. If Git reports local changes or diverged branches, resolve those before continuing. You no longer need to move installed skill folders aside manually.
 
 ## Invoke in chat
 
@@ -127,6 +134,8 @@ Run terminal commands from your cloned Kip folder. In chat, use `$kip` for Codex
 | Terminal | `node bin/kip.js install --host <host>`            | Install for `codex`, `claude`, or `antigravity`; `all` installs for every host.         |
 | Terminal | `node bin/kip.js doctor`                           | Check installed skill files for every supported host.                                   |
 | Terminal | `node bin/kip.js doctor --host <host>`             | Check installed files for the selected host. Accepts the same host values as `install`. |
+| Terminal | `node bin/kip.js update [--host <host>]`            | Pull upstream changes, back up existing skills, and refresh selected installations. |
+| Chat     | `$kip update [--host <host>]`                      | Update Kip for the current host, or an explicitly selected host. |
 | Chat     | `$kip build <task>`                                | Implement the requested feature and run appropriate checks.                             |
 | Chat     | `$kip fix <issue>`                                 | Investigate and fix the described issue.                                                |
 | Chat     | `$kip plan <task>`                                 | Produce a plan for the task.                                                            |

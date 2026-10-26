@@ -7,7 +7,11 @@ description: Coordinate focused coding tasks with selective frontend, backend, d
 
 Work inside the current chat using its model, tools, project context, and permissions. Kip needs no account, API key, MCP server, or separate runner. Do not launch the legacy Kip runner, request login, or change host model settings. Selected profiles may use the host's own delegation tools and usage allowance.
 
-Treat `/kip <purpose> <instructions>`, `$kip <purpose> <instructions>`, and “use Kip to …” as requests to apply this workflow when the host passes them to you. The host may also select this skill from its description. Use the text following the invocation as the task; ask for a task if none was supplied, except for profile commands below.
+Treat `/kip <purpose> <instructions>`, `$kip <purpose> <instructions>`, and “use Kip to …” as requests to apply this workflow when the host passes them to you. The host may also select this skill from its description. Use the text following the invocation as the task; ask for a task if none was supplied, except for update and profile commands below.
+
+## Update
+
+For `/kip update`, `$kip update`, or an explicit request to update the installed Kip skill, read [references/update.md](references/update.md). Run the updater through the host's terminal tools and permissions; this is skill maintenance, not a coding task or profile dispatch.
 
 ## Profiles
 

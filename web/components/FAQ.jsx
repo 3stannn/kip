@@ -39,7 +39,7 @@ export function FAQ() {
           ],
           [
             "How do I install or update?",
-            "Clone https://github.com/3stannn/kip.git and run node bin/kip.js install. Only Git and Node.js 22+ are needed. For updates, pull the clone, move existing Kip skill folders aside, and rerun installation. Restart your host to discover the skill.",
+            "Clone https://github.com/3stannn/kip.git and run node bin/kip.js install. Git and Node.js 22+ are needed. To update, submit $kip update in Codex or /kip update in Claude Code or Antigravity, or run node bin/kip.js update from your clone. The updater pulls upstream changes and backs up existing skills before refreshing them. Older installs need a one-time git pull --ff-only and terminal update. Restart your host afterward.",
           ],
         ].map(([q, a]) => (
           <details key={q}>
