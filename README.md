@@ -191,3 +191,7 @@ Run terminal commands from your cloned Kip folder. In chat, use `$kip` for Codex
 Chat commands are instructions interpreted by the skill. Model selection, thinking effort, and delegation remain subject to host support as described above.
 
 Host documentation: [Codex skills](https://learn.chatgpt.com/docs/build-skills), [Claude Code skills](https://code.claude.com/docs/en/skills), [Antigravity skills](https://antigravity.google/docs/skills).
+
+## License
+
+Kip is licensed under the [MIT License](LICENSE).
