@@ -71,6 +71,24 @@
   .section-shell {
     @apply px-6 py-14 md:px-14 md:py-20;
   }
+  .docs-section {
+    @apply scroll-mt-8 border-b border-line py-10 first:pt-0 md:py-14;
+  }
+  .docs-section-header {
+    @apply mb-6 max-w-2xl;
+  }
+  .docs-section-header h2 {
+    @apply mt-0 mb-3 text-2xl md:text-3xl;
+  }
+  .docs-section-header p {
+    @apply m-0 text-sm leading-7 text-muted;
+  }
+  .docs-panel {
+    @apply min-w-0 rounded-2xl border border-line bg-surface p-5 sm:p-6 md:p-8;
+  }
+  .docs-nav a {
+    @apply rounded-sm transition hover:text-charcoal focus-visible:text-charcoal;
+  }
   .eyebrow {
     @apply flex items-center gap-2 text-[10px] font-black tracking-[1.7px] text-muted;
   }

@@ -7,24 +7,25 @@ export function Profiles({ onSelect }) {
   const selected = profiles.find((profile) => profile.slug === preview);
 
   return (
-    <section className="section-shell border-t border-line" id="profiles">
-      <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-        <div>
-          <span className="eyebrow">A TEAM THAT FITS THE TASK</span>
-          <h2>Find your working rhythm.</h2>
-        </div>
-        <p className="max-w-sm text-sm leading-7 text-muted">
-          Seven optional profiles for your root, reviewer, and two workers.
-          Start with Value, or explore a different balance.
+    <section
+      className="docs-section"
+      id="profiles"
+      aria-labelledby="profiles-heading"
+    >
+      <div className="docs-section-header">
+        <h2 id="profiles-heading">Model profiles</h2>
+        <p>
+          Preview seven optional presets for the root, reviewer, and two
+          workers. Value is a suggested starting point; host defaults also work.
         </p>
       </div>
-      <div className="rounded-3xl border border-line bg-surface p-5 sm:p-8">
-        <div className="mb-4 flex justify-between text-[10px] font-extrabold tracking-wider text-muted">
-          <span>HIGHER INTENDED COST</span>
-          <span>LOWER INTENDED COST</span>
+      <div>
+        <div className="mb-3 flex justify-between text-xs text-muted">
+          <span>Higher intended cost</span>
+          <span>Lower intended cost</span>
         </div>
         <div
-          className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7"
+          className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7"
           role="group"
           aria-label="Preview a model profile"
         >
@@ -33,27 +34,26 @@ export function Profiles({ onSelect }) {
               key={profile.slug}
               aria-pressed={preview === profile.slug}
               onClick={() => setPreview(profile.slug)}
-              className={`rounded-xl border px-3 py-4 text-left transition ${preview === profile.slug ? "border-accent bg-accent/15 text-ink" : "border-line text-muted hover:bg-page"}`}
+              className={`rounded-lg border px-3 py-3 text-left transition ${preview === profile.slug ? "border-accent bg-accent/15 text-ink" : "border-line text-muted hover:bg-soft"}`}
             >
-              <span className="mb-3 block font-mono text-[10px]">
-                0{index + 1}
-              </span>
               <span className="block text-xs font-extrabold">
                 {profile.name}
               </span>
               <span className="mt-1 block text-[10px]">
-                {profile.slug === "value" ? "Suggested start" : "View roles ↗"}
+                {profile.slug === "value"
+                  ? "Suggested start"
+                  : `Profile ${index + 1}`}
               </span>
             </button>
           ))}
         </div>
         <div
-          className="my-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+          className="my-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
           aria-live="polite"
           aria-atomic="true"
         >
           {selected.roles.map((setting, index) => (
-            <div key={index} className="rounded-xl bg-page px-5 py-4">
+            <div key={index} className="border-l-2 border-line pl-4">
               <span className="mb-2 block text-[10px] font-extrabold uppercase tracking-wider text-muted">
                 {["Root", "Reviewer", "Worker 1", "Worker 2"][index]}
               </span>
@@ -68,11 +68,11 @@ export function Profiles({ onSelect }) {
             varies with usage and host billing.
           </p>
           <ScrollLink
-            className="button-primary px-5 py-3 text-xs"
+            className="shrink-0 text-sm font-extrabold underline decoration-line underline-offset-4 hover:decoration-accent"
             href="#playground"
-            onClick={() => onSelect(preview)}
+            onClick={() => onSelect?.(preview)}
           >
-            Try {selected.name} <span>↗</span>
+            Use {selected.name} in the builder →
           </ScrollLink>
         </div>
         <p className="mb-0 mt-5 text-[10px] leading-5 text-muted">

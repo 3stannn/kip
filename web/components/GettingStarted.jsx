@@ -22,24 +22,21 @@ export function GettingStarted() {
     tabRefs.current[next]?.focus();
   }
   return (
-    <section className="section-shell" id="get-started">
-      <div
-        className="mb-9 flex flex-col justify-between gap-4 md:flex-row md:items-end [&>p]:text-sm [&>p]:leading-7 [&>p]:text-muted"
-        id="how-it-works"
-      >
-        <div>
-          <span className="eyebrow">FROM HELLO TO LET’S GO</span>
-          <h2>Four steps. Then you’re in.</h2>
-        </div>
+    <section
+      className="docs-section"
+      id="get-started"
+      aria-labelledby="get-started-heading"
+    >
+      <div className="docs-section-header" id="how-it-works">
+        <h2 id="get-started-heading">Install and get started</h2>
         <p>
-          No new workspace to learn.
-          <br />
-          Just the folder you already call home.
+          Requires Git and Node.js 22+. Install Kip once, then use it from your
+          project’s coding chat.
         </p>
       </div>
-      <div className="grid items-start gap-7 md:grid-cols-[0.85fr_1.35fr] md:gap-10">
+      <div>
         <div
-          className="grid grid-cols-2 gap-2 sm:grid-cols-4 md:flex md:flex-col md:gap-3"
+          className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-4"
           role="tablist"
           aria-label="Getting started steps"
         >
@@ -55,52 +52,39 @@ export function GettingStarted() {
               aria-selected={active === i}
               aria-controls="step-panel"
               id={`step-${i}`}
-              className={`group flex flex-1 flex-col items-center gap-3 rounded-2xl border p-4 text-center transition md:flex-row md:p-6 md:text-left ${active === i ? "border-line bg-soft text-charcoal" : "border-transparent text-muted hover:bg-soft/60"}`}
+              className={`flex items-center gap-2 rounded-lg border px-3 py-3 text-left text-sm transition ${active === i ? "border-accent bg-accent/15 text-charcoal" : "border-line text-muted hover:bg-soft/60"}`}
               onClick={() => setActive(i)}
             >
-              <span className="grid size-9 shrink-0 place-items-center rounded-full border border-line bg-page text-xs font-semibold group-aria-selected:border-[#d8d8d8] group-aria-selected:bg-[#e5e5e5] group-aria-selected:text-charcoal">
+              <span className="font-mono text-xs" aria-hidden="true">
                 0{i + 1}
               </span>
-              <span>
-                <strong className="block text-sm font-black md:text-lg">
-                  {s.label}
-                </strong>
-                <small className="mt-1 hidden text-xs font-medium text-muted md:block">
-                  {
-                    [
-                      "Get the skill from GitHub",
-                      "Install globally for your hosts",
-                      "Describe the task in chat",
-                      "Work with your current tools",
-                    ][i]
-                  }
-                </small>
-              </span>
-              <span className="ml-auto hidden text-xl text-subtle md:block">
-                ↗
-              </span>
+              <strong>{s.label}</strong>
             </button>
           ))}
         </div>
         <div
-          className="min-w-0 rounded-2xl border border-line bg-surface p-6 md:p-8 [&>h3]:mb-3 [&>h3]:mt-4 [&>h3]:text-2xl [&>h3]:font-black [&>h3]:tracking-tight [&>p]:mb-6 [&>p]:text-sm [&>p]:leading-7 [&>p]:text-muted"
+          className="min-w-0 [&>h3]:mb-3 [&>h3]:text-lg [&>h3]:font-extrabold [&>p]:mb-5 [&>p]:text-sm [&>p]:leading-7 [&>p]:text-muted"
           id="step-panel"
           role="tabpanel"
+          tabIndex={0}
           aria-labelledby={`step-${active}`}
         >
-          <span className="text-[10px] font-black tracking-[1.6px] text-subtle">
-            STEP 0{active + 1} / 0{steps.length}
-          </span>
-          <h3>{steps[active].title}</h3>
+          <h3>
+            {
+              [
+                "Clone the repository",
+                "Install the skill",
+                "Start a task",
+                "Continue in your host",
+              ][active]
+            }
+          </h3>
           <p>{steps[active].text}</p>
           <CodeBlock
             text={steps[active].command}
             title={active < 2 ? "Terminal" : "Your coding chat"}
           />
-          <div className="mt-5 flex gap-3 text-xs leading-6 text-muted [&>span]:text-lg [&>span]:text-subtle">
-            <span>✧</span>
-            {steps[active].note}
-          </div>
+          <p className="mt-4">{steps[active].note}</p>
           <button
             className="mt-6 inline-flex items-center gap-4 text-xs font-extrabold text-charcoal hover:text-accent"
             onClick={() => setActive((active + 1) % steps.length)}

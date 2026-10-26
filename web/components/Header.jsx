@@ -1,31 +1,47 @@
 import { ScrollLink } from "./ScrollLink.jsx";
 import React from "react";
 
-export function Header() {
+export function Header({ isDocs = false }) {
   return (
-    <header className="mx-auto grid h-24 max-w-[1320px] grid-cols-2 items-center gap-5 px-6 md:grid-cols-[1fr_auto_1fr] md:px-14">
-      <ScrollLink
+    <header className="mx-auto grid min-h-24 max-w-[1320px] grid-cols-2 items-center gap-x-5 gap-y-4 px-6 py-5 md:grid-cols-[1fr_auto_1fr] md:px-14">
+      <a
         className="inline-flex items-center gap-2.5 justify-self-start text-[26px] font-black tracking-[-1px]"
-        href="#"
+        href="/"
+        aria-label="Kip home"
       >
         kip<span className="-ml-1 self-start pt-1.5 text-[10px]">®</span>
-      </ScrollLink>
+      </a>
       <nav
-        className="hidden gap-4 text-xs font-bold whitespace-nowrap text-muted md:flex lg:gap-8 lg:text-sm [&>a:hover]:text-accent"
+        className="col-span-2 row-start-2 flex justify-center gap-7 text-xs font-bold whitespace-nowrap text-muted md:col-span-1 md:col-start-2 md:row-start-1 lg:gap-8 lg:text-sm [&>a:hover]:text-accent [&>a[aria-current]]:text-charcoal"
         aria-label="Main navigation"
       >
-        <ScrollLink href="#how-it-works">How it works</ScrollLink>
-        <ScrollLink href="#profiles">Profiles</ScrollLink>
-        <ScrollLink href="#playground">Try a prompt</ScrollLink>
-        <ScrollLink href="#updates">Updates</ScrollLink>
-        <ScrollLink href="#questions">FAQs</ScrollLink>
+        <a href="/" aria-current={!isDocs ? "page" : undefined}>
+          Home
+        </a>
+        <a href="/docs" aria-current={isDocs ? "page" : undefined}>
+          Docs
+        </a>
+        {isDocs ? (
+          <a href="/#questions">FAQs</a>
+        ) : (
+          <ScrollLink href="#questions">FAQs</ScrollLink>
+        )}
       </nav>
-      <ScrollLink
-        className="button-primary justify-self-end px-5 py-3 text-xs"
-        href="#get-started"
-      >
-        Get started <span>↗</span>
-      </ScrollLink>
+      {isDocs ? (
+        <ScrollLink
+          className="button-primary col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:col-start-3"
+          href="#get-started"
+        >
+          Get started <span>↓</span>
+        </ScrollLink>
+      ) : (
+        <a
+          className="button-primary col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:col-start-3"
+          href="/docs"
+        >
+          Get started <span>↗</span>
+        </a>
+      )}
     </header>
   );
 }

@@ -10,47 +10,18 @@ export function Updates() {
 
   return (
     <section
-      className="section-shell grid gap-8 border-b border-line md:grid-cols-[0.85fr_1.35fr] md:gap-10"
+      className="docs-section"
       id="updates"
+      aria-labelledby="updates-heading"
     >
-      <div>
-        <span className="eyebrow">KEEP YOUR BUDDY CURRENT</span>
-        <h2>
-          A fresh start.
-          <br />
-          One little command.
-        </h2>
-        <p className="text-sm leading-7 text-muted">
-          Already have Kip? Pull the latest changes and refresh your installed
-          skills from the chat you already use.
+      <div className="docs-section-header">
+        <h2 id="updates-heading">Update Kip</h2>
+        <p>
+          Pull the latest changes and refresh your installed skills from the
+          coding chat you already use.
         </p>
-        <ol className="mt-6 space-y-4 text-xs leading-6 text-muted">
-          {[
-            ["Pull", "Get the latest changes from your clone’s upstream."],
-            [
-              "Refresh",
-              "Back up installed skills, then replace them with the new version.",
-            ],
-            [
-              "Restart",
-              "Restart your host or open a new session to load the update.",
-            ],
-          ].map(([title, description], index) => (
-            <li key={title} className="flex items-start gap-3">
-              <span className="grid size-7 shrink-0 place-items-center rounded-full border border-line bg-surface font-mono text-[10px]">
-                0{index + 1}
-              </span>
-              <span>
-                <strong className="mr-1 font-extrabold text-charcoal">
-                  {title}.
-                </strong>{" "}
-                {description}
-              </span>
-            </li>
-          ))}
-        </ol>
       </div>
-      <div className="min-w-0 rounded-2xl border border-line bg-surface p-6 md:p-8">
+      <div className="docs-panel">
         <label htmlFor="update-host">Your coding host</label>
         <select
           id="update-host"
@@ -89,6 +60,10 @@ export function Updates() {
             : "Paste this into your coding chat. "}
           Updates existing copies for the selected host. Nothing runs in this
           browser.
+        </p>
+        <p className="text-xs leading-6 text-muted">
+          The updater pulls from the clone’s upstream, backs up installed
+          skills, refreshes them, and asks you to restart your host.
         </p>
         <p className="text-xs leading-6 text-muted">
           Requires Git, Node.js 22+, network access, and a clean clone with a
