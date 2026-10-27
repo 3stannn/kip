@@ -22,7 +22,10 @@ Switch profiles in chat (use /kip outside Codex):
   $kip profile reset
   $kip update
 Profiles remember project settings across chats in .kip/profile.json.
-Subagents require explicit authorization and useful scopes; profiles do not start teams.
+Actionable Kip tasks use subagents automatically; no extra delegation phrase is needed.
+An active profile assigns two workers and an independent reviewer.
+Without a profile, use host-inherited settings for a worker and reviewer.
+Profile-only and update commands do not launch a coding team.
 Select root settings in your host; delegation settings depend on host support.
 
 Install and doctor are offline and need only Node.js 22+.

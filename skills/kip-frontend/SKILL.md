@@ -5,7 +5,7 @@ description: Kip-specific frontend guidance. Use within an active Kip task or wh
 
 # Frontend
 
-This guidance supports Kip and does not start a separate workflow or authorize subagents. Use the root's task scope, profile, and verification plan; apply only sections relevant to the change.
+This guidance supports Kip's assigned worker or reviewer scope. The root owns team dispatch, profile settings, and integration; do not spawn additional agents from a supporting role. Apply only sections relevant to the change.
 
 Reuse the project's framework, component system, and data conventions. Prefer native platform capabilities and existing dependencies over new abstraction layers. Separate rendering from transport when it clarifies the data contract or makes behavior easier to test. Define the contract before inventing mock responses.
 

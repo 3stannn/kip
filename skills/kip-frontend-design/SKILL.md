@@ -5,7 +5,7 @@ description: Shape Kip websites with distinctive typography, editorial compositi
 
 # Frontend Design
 
-This guidance supports Kip and does not start a separate workflow or authorize subagents. Use the root's task scope, profile, and verification plan; apply only sections relevant to the change.
+This guidance supports Kip's assigned worker or reviewer scope. The root owns team dispatch, profile settings, and integration; do not spawn additional agents from a supporting role. Apply only sections relevant to the change.
 
 Treat visual design as a sequence of decisions tied to the brief, not a coat of polish applied after a generic layout. Preserve explicit brand direction and existing product conventions. When the brief leaves room, use that freedom to make choices that belong to this subject rather than falling back to a fashionable house style.
 

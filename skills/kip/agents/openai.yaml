@@ -1,6 +1,6 @@
 interface:
   display_name: "Kip"
-  short_description: "Remembered profiles and focused Kip coding workflows"
-  default_prompt: "Use $kip to implement this task with relevant guidance and verification."
+  short_description: "Delegate coding tasks with remembered Kip profiles"
+  default_prompt: "Use $kip to coordinate workers and an independent reviewer for this task."
 policy:
   allow_implicit_invocation: true

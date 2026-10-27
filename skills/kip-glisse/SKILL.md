@@ -5,7 +5,7 @@ description: Kip-specific glisse guidance. Use within an active Kip task or when
 
 # Glisse
 
-This guidance supports Kip and does not start a separate workflow or authorize subagents. Use the root's task scope, profile, and verification plan; apply only sections relevant to the change.
+This guidance supports Kip's assigned worker or reviewer scope. The root owns team dispatch, profile settings, and integration; do not spawn additional agents from a supporting role. Apply only sections relevant to the change.
 
 
 

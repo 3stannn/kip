@@ -5,7 +5,7 @@ description: Kip-specific responsive-design guidance. Use within an active Kip t
 
 # Responsive Design
 
-This guidance supports Kip and does not start a separate workflow or authorize subagents. Use the root's task scope, profile, and verification plan; apply only sections relevant to the change.
+This guidance supports Kip's assigned worker or reviewer scope. The root owns team dispatch, profile settings, and integration; do not spawn additional agents from a supporting role. Apply only sections relevant to the change.
 
 Make the interface usable across a continuous range of viewport sizes, not just a few device presets. Preserve the project's visual language and CSS framework. Prefer CSS layout over JavaScript viewport detection; use JavaScript only when behavior requires it.
 

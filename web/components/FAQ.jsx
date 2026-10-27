@@ -16,7 +16,7 @@ export function FAQ() {
         {[
           [
             "Do I need to sign in or supply an API key?",
-            "Kip adds no sign-in, API key, server, or separate runner. It runs inside the coding chat you already use. Profiles save project preferences. Authorized subagents use your host’s delegation tools and usage allowance. Your host application retains its own access requirements and usage limits.",
+            "Kip adds no sign-in, API key, server, or separate runner. It runs inside the coding chat you already use. Profiles save project preferences. Actionable Kip tasks automatically use subagents through your host’s delegation tools and usage allowance. Your host application retains its own access requirements and usage limits.",
           ],
           [
             "Can I type /kip in Codex?",
@@ -32,7 +32,7 @@ export function FAQ() {
           ],
           [
             "Which model does it use?",
-            "The root uses the model and thinking effort selected in your current chat. Use $kip profiles (or /kip profiles) to see seven presets for a root and optional reviewer and workers. Select one with $kip profile value, or override one task with $kip build --profile premium followed by your task. Selections persist per project across chats. Profiles do not start agents: explicit authorization, useful scopes, and host support are required. Kip discloses unsupported settings.",
+            "The root uses the model and thinking effort selected in your current chat. Use $kip profiles (or /kip profiles) to see seven presets for a root, two workers, and one independent reviewer. Select one with $kip profile value, or override one task with $kip build --profile premium followed by your task. Selections persist per project across chats. Actionable Kip tasks automatically delegate, with no extra consent phrase. Without a profile, a worker and reviewer inherit host settings. Profile-only and update commands do not launch a coding team. Kip discloses unsupported settings and stops affected execution if delegation is unavailable. An explicit solo or smaller-team request takes precedence.",
           ],
           [
             "Where does it install?",
