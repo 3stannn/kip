@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kip Backend"
+  short_description: "Focused JavaScript workflow guidance for Kip"
+  default_prompt: "Use $kip-backend to apply Kip backend guidance to this task."

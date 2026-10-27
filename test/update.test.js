@@ -152,7 +152,7 @@ test("diverged branches and missing tracking branches leave installed skills alo
 test("a broken upstream bundle fails staging without replacing installed skills", async (t) => {
   const { options, targets, publisher, publish } = await fixture(t);
   const original = await fs.readFile(path.join(targets[0], "SKILL.md"), "utf8");
-  await fs.rm(path.join(publisher, "skills/frontend/SKILL.md"));
+  await fs.rm(path.join(publisher, "skills/kip-frontend/SKILL.md"));
   await publish();
   await assert.rejects(updateSkills("codex", options), /ENOENT/);
   for (const target of targets) {

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Security"
-  short_description: "Focused JavaScript workflow guidance for Kip"
-  default_prompt: "Use $security to complete the relevant part of this JavaScript task."

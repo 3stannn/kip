@@ -108,13 +108,17 @@ Use Kip to fix mobile overflow in the dashboard.
 
 Kip's metadata permits implicit selection for staged coding work across specialties. The host decides when to select it; explicit invocation is the reliable choice. `/kip` is an invocation intent understood by the instructions when passed through to the model, but registering an arbitrary `/kip` command in Codex is controlled by Codex. Use `$kip` there if `/kip` is not offered.
 
-Kip interprets the purpose and instructions, inspects the relevant project context, loads only the supporting guidance needed, then performs the work with the current host's tools and permissions. It supports frontend design, responsive design, frontend, backend, security, testing, token efficiency, and refinement of code and copy. A request for a plan produces a plan; an implementation request continues through changes and appropriate verification.
+Kip interprets the purpose and instructions, restores the project profile, inspects the relevant project context, loads only the supporting guidance needed, then performs the work with the current host's tools and permissions. It supports frontend design, responsive design, frontend, backend, security, testing, token efficiency, and refinement of code and copy. Supporting skills are namespaced `kip-*` and apply to Kip tasks. Conditional framework references load only when needed. A request for a plan produces a plan; an implementation request continues through changes and appropriate verification.
 
 Kip adds no authentication step. The application you already use retains its own access requirements, model selection, usage limits, and approval rules. Optional profiles request role models through host-native delegation; they do not change the current chat's model or require another subscription.
 
+## Website design direction
+
+Kip's website design guidance favors strong typography, substantial imagery, varied editorial layouts, and selective graphic accents when the brief leaves room. The [website art direction reference](skills/kip/references/website-art-direction.md) captures the supplied studio examples and explains how to translate them to each brand, with responsive and rendered-page checks. Existing identities and explicit briefs take precedence.
+
 ## Glisse Liquid Glass interfaces
 
-Use `/kip glisse <task>` (or `$kip glisse <task>` in Codex) to apply the bundled [Glisse skill](skills/glisse/SKILL.md):
+Use `/kip glisse <task>` (or `$kip glisse <task>` in Codex) to apply the bundled [Glisse skill](skills/kip-glisse/SKILL.md):
 
 ```text
 /kip glisse Build an accessible settings panel with glass buttons and switches.
@@ -122,9 +126,10 @@ Use `/kip glisse <task>` (or `$kip glisse <task>` in Codex) to apply the bundled
 
 Glisse is a React component library. This mode inspects the target project, installs `glisse` there when needed, and implements the requested interface with its components. Invoking `/kip glisse` alone explains the mode and asks what to build. Glisse also appears in the website's prompt builder and command suggestions.
 
-The source checkout keeps a pinned reference installation under `skills/glisse`; restore it with `npm install --prefix skills/glisse`. Installed Kip copies bundle the guidance as `references/glisse.md`, so skill installation remains offline. Applications using the components need their own `npm install glisse`. Refresh existing Kip installations to receive the new mode.
+The source checkout keeps a pinned reference installation under `skills/kip-glisse`; restore it with `npm install --prefix skills/kip-glisse`. Installed Kip copies bundle the guidance as `references/glisse.md`, so skill installation remains offline. Applications using the components need their own `npm install glisse`. Refresh existing Kip installations to receive the new mode.
 
 ## Switch profiles in chat
+
 
 After installing the skill, use these prompts in your coding chat:
 
@@ -137,11 +142,11 @@ $kip profile
 $kip profile reset
 ```
 
-Use `/kip` instead of `$kip` in Claude Code and Antigravity. These are chat instructions, not terminal commands. `profile value` selects Value for later tasks in the same chat; `--profile premium` overrides it for one task. `profile` shows the selection and `profile reset` clears it. New chats use host defaults until you choose a profile.
+Use `/kip` instead of `$kip` in Claude Code and Antigravity. These are chat instructions, not terminal commands. `profile value` saves Value for later tasks in this project, including new chats; `--profile premium` overrides it for one task. `profile` shows the selection and `profile reset` clears it. The helper stores only the profile slug in `.kip/profile.json`, ignored through `.kip/.gitignore`. New chats restore that project selection; other projects use their own selection or host defaults. If persistence is unavailable, Kip reports a chat-only selection.
 
-Seven presets run from most to least expensive: **Maximum, Premium, Strong lead, Balanced, Value, Budget, Minimum cost**. Select by slug (`strong-lead`, `minimum-cost`) or number 1–7. Each specifies one root, one reviewer, and two workers, including model and thinking effort. See the [complete profile table](skills/kip/references/profiles.md); Value is the recommended starting point.
+Seven presets run from most to least expensive: **Maximum, Premium, Strong lead, Balanced, Value, Budget, Minimum cost**. Select by slug (`strong-lead`, `minimum-cost`) or number 1–7. Each specifies settings for a root, an optional reviewer, and up to two optional workers, including model and thinking effort. See the [complete profile table](skills/kip/references/profiles.md); Value is the recommended starting point.
 
-Select the root model and thinking effort in your host app. Kip applies reviewer and worker settings only when the host exposes suitable delegation tools and model controls. Unsupported settings are disclosed; hosts without delegation execute roles sequentially using the current model. Profiles do not add OpenAI models to Claude Code or Antigravity. Actual cost depends on task usage and host billing.
+Select the root model and thinking effort in your host app. Kip works solo by default. Profile selection does not authorize subagents. Explicit human authorization (or a higher-priority requirement), useful independent scopes, and suitable host tools are required before delegation. At most two workers and one reviewer may be used per task, with no recursive delegation. Unsupported settings are disclosed; hosts without delegation execute roles sequentially using the current model. Profiles do not add OpenAI models to Claude Code or Antigravity. Actual cost depends on task usage and host billing.
 
 For an older installation, follow [Update an existing installation](#update-an-existing-installation) to install the bundled profile catalog.
 
@@ -193,11 +198,11 @@ Run terminal commands from your cloned Kip folder. In chat, use `$kip` for Codex
 | Chat     | `$kip review <scope>`                              | Review the specified code or changes.                                                   |
 | Chat     | `$kip <purpose> <instructions>`                    | Apply Kip to another purpose described in your own words.                               |
 | Chat     | `$kip profiles`                                    | List all seven profiles, their models and thinking efforts, and the current selection.  |
-| Chat     | `$kip profile`                                     | Show the current chat's selected profile, or host defaults if unset.                    |
-| Chat     | `$kip profile <name>`                              | Select a profile for later Kip tasks in this chat, such as `value` or `strong-lead`.    |
+| Chat     | `$kip profile`                                     | Show the saved project profile, or host defaults if unset.                    |
+| Chat     | `$kip profile <name>`                              | Save a profile for later Kip tasks in this project, such as `value` or `strong-lead`.    |
 | Chat     | `$kip profile <number>`                            | Select a profile by number, from `1` (Maximum) to `7` (Minimum cost).                   |
-| Chat     | `$kip <purpose> --profile <name-or-number> <task>` | Override the profile for one task without changing the chat's selection.                |
-| Chat     | `$kip profile reset`                               | Clear the chat's profile selection and return to host defaults.                         |
+| Chat     | `$kip <purpose> --profile <name-or-number> <task>` | Override the profile for one task without changing the saved project selection.                |
+| Chat     | `$kip profile reset`                               | Clear the saved project profile and return to host defaults.                         |
 | Chat     | `Use Kip to <task>`                                | Invoke Kip using natural language in any supported host.                                |
 
 Chat commands are instructions interpreted by the skill. Model selection, thinking effort, and delegation remain subject to host support as described above.

@@ -80,13 +80,15 @@ export async function install(root) {
   } catch (e) {
     if (e.code !== "EEXIST") throw e;
   }
-  for (const name of await fs.readdir(bundle)) {
+  for (const folder of await fs.readdir(bundle)) {
+    const name =
+      folder === "kip-orchestrator" ? folder : folder.replace(/^kip-/, "");
     const target = await safePath(root, `.kip/skills/${name}/SKILL.md`);
     await fs.mkdir(path.dirname(target), { recursive: true });
     try {
       await fs.writeFile(
         target,
-        await fs.readFile(path.join(bundle, name, "SKILL.md")),
+        await fs.readFile(path.join(bundle, folder, "SKILL.md")),
         { flag: "wx" },
       );
     } catch (e) {

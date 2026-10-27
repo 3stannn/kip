@@ -1,8 +1,10 @@
 ---
 name: kip-orchestrator
-description: Migrate older Kip CLI workflows to the Kip skill in the current chat.
+description: Migrate a legacy Kip runner request to the current Kip skill. Use only for Kip migration.
 ---
 
 # Kip migration
 
-Kip now runs inside the current host chat. Do not use `kip login`, `kip status`, `kip plan`, or `kip run`. Install the portable skill using `node bin/kip.js install` from the GitHub clone, then restart the host. Use `$kip` in Codex or `/kip` in Claude Code and Antigravity. Natural language invocation and host-selected implicit invocation are also supported. Kip adds no authentication or API calls. Read the installed `kip/SKILL.md` for the workflow; preserve existing project `.kip` files.
+Use the current Kip skill as the authority for orchestration. Read `../kip/SKILL.md` in this checkout or the installed `kip/SKILL.md`. Do not run legacy `kip login`, `kip status`, `kip plan`, or `kip run` commands. If installation is needed, use `node bin/kip.js install` from the clone and restart the host.
+
+Use `$kip` in Codex or `/kip` in Claude Code and Antigravity. Preserve existing project `.kip` files. Profile memory now belongs to `.kip/profile.json`; do not derive it from legacy runner model settings. Profile selection grants no subagent authority. Never start a second orchestrator, authenticate separately, or duplicate profile tables here.

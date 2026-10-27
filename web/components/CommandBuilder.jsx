@@ -99,7 +99,7 @@ export function CommandBuilder({ profile, onProfileChange }) {
               </select>
               <p className="mb-0 mt-2 text-[11px] leading-6 text-muted">
                 {profile
-                  ? "Adds a one-task override. It does not change a profile already selected in your chat."
+                  ? "Adds a one-task override. It does not change a profile saved for your project."
                   : "Uses your current chat and host settings without requesting role overrides."}
               </p>
             </div>

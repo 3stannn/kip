@@ -7,7 +7,7 @@ const commands = [
   ["review", "Review code and report findings"],
   ["glisse", "Build a Liquid Glass interface with Glisse"],
   ["profiles", "List all model profiles"],
-  ["profile", "Select, show, or reset your chat profile"],
+  ["profile", "Select, show, or reset your project profile"],
   ["update", "Pull updates and refresh installed Kip skills"],
 ];
 const profileOptions = profiles.map(({ slug, name }) => [

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kip Frontend Design"
+  short_description: "Focused JavaScript workflow guidance for Kip"
+  default_prompt: "Use $kip-frontend-design to apply Kip frontend-design guidance to this task."

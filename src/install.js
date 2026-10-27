@@ -80,7 +80,7 @@ async function copyBundle(target) {
   for (const name of specialties) {
     await fs.mkdir(path.join(target, "references"), { recursive: true });
     await fs.copyFile(
-      path.join(bundle, name, "SKILL.md"),
+      path.join(bundle, `kip-${name}`, "SKILL.md"),
       path.join(target, "references", `${name}.md`),
     );
   }
@@ -189,8 +189,15 @@ export async function inspectSkills(host = "all", options = {}) {
         "SKILL.md",
         "agents/openai.yaml",
         "references/profiles.md",
+        "references/orchestration.md",
+        "references/frontend-tailwind.md",
+        "references/frontend-icons.md",
+        "references/frontend-shadcn.md",
+        "references/website-art-direction.md",
+        "references/backend-auth.md",
         "references/update.md",
         "installation.json",
+        "scripts/profile.mjs",
         ...specialties.map((name) => `references/${name}.md`),
       ];
       const missing = [];

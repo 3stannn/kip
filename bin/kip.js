@@ -21,7 +21,8 @@ Switch profiles in chat (use /kip outside Codex):
   $kip build --profile premium <instructions>
   $kip profile reset
   $kip update
-Profiles request a root, reviewer, and two workers with thinking efforts.
+Profiles remember project settings across chats in .kip/profile.json.
+Subagents require explicit authorization and useful scopes; profiles do not start teams.
 Select root settings in your host; delegation settings depend on host support.
 
 Install and doctor are offline and need only Node.js 22+.

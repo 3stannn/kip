@@ -1,4 +1,0 @@
-interface:
-  display_name: "Backend"
-  short_description: "Focused JavaScript workflow guidance for Kip"
-  default_prompt: "Use $backend to complete the relevant part of this JavaScript task."

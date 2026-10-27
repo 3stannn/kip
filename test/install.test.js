@@ -41,7 +41,7 @@ test("installs self-contained skills for every host without external dependencie
           "utf8",
         ),
         await fs.readFile(
-          new URL(`../skills/${name}/SKILL.md`, import.meta.url),
+          new URL(`../skills/kip-${name}/SKILL.md`, import.meta.url),
           "utf8",
         ),
       );

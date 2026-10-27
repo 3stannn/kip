@@ -16,9 +16,9 @@ export function Profiles({ onSelect }) {
       <div className="docs-section-header">
         <h2 id="profiles-heading">Model profiles</h2>
         <p>
-          Preview seven optional requests for a root, reviewer, and two workers.
-          Host defaults remain active until you choose a profile in chat or add
-          one to a task.
+          Preview seven presets for a root and optional reviewer and workers.
+          Kip restores your saved project profile. A task override applies once.
+          Subagents require explicit authorization and useful scopes.
         </p>
       </div>
       <div>
@@ -70,9 +70,9 @@ export function Profiles({ onSelect }) {
         <div className="flex flex-col items-start justify-between gap-5 border-t border-line pt-6 md:flex-row md:items-center">
           <p className="m-0 max-w-xl text-xs leading-6 text-muted">
             The root model and effort must be selected in your host. Reviewer
-            and worker settings require host-native delegation support; Kip
-            discloses unavailable settings instead of silently substituting
-            them.
+            and worker settings require explicit delegation permission and host
+            support; Kip discloses unavailable settings instead of silently
+            substituting them.
           </p>
           <ScrollLink
             className="text-link max-w-full shrink-0"

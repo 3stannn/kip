@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kip Anti Ai Slop"
+  short_description: "Focused JavaScript workflow guidance for Kip"
+  default_prompt: "Use $kip-anti-ai-slop to apply Kip anti-ai-slop guidance to this task."

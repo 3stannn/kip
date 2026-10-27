@@ -16,7 +16,7 @@ export function FAQ() {
         {[
           [
             "Do I need to sign in or supply an API key?",
-            "Kip adds no sign-in, API key, server, or separate runner. It runs inside the coding chat you already use. Optional profiles use your host’s delegation tools and usage allowance. Your host application retains its own access requirements and usage limits.",
+            "Kip adds no sign-in, API key, server, or separate runner. It runs inside the coding chat you already use. Profiles save project preferences. Authorized subagents use your host’s delegation tools and usage allowance. Your host application retains its own access requirements and usage limits.",
           ],
           [
             "Can I type /kip in Codex?",
@@ -24,7 +24,7 @@ export function FAQ() {
           ],
           [
             "Can it activate automatically?",
-            "Yes, the skill allows implicit invocation for staged coding work across specialties. Your host decides when the description matches. You can always invoke it explicitly or say ‘Use Kip to …’.",
+            "Yes, the skill can activate for Kip requests and continuations of an active Kip task. Your host decides when the description matches. You can always invoke it explicitly or say ‘Use Kip to …’.",
           ],
           [
             "Does Kip change my project?",
@@ -32,7 +32,7 @@ export function FAQ() {
           ],
           [
             "Which model does it use?",
-            "The root uses the model and thinking effort selected in your current chat. Use $kip profiles (or /kip profiles) to see seven optional profiles for a root, reviewer, and two workers. Select one with $kip profile value, or override one task with $kip build --profile premium followed by your task. Reviewer and worker settings require host-native delegation support; Kip discloses unsupported settings.",
+            "The root uses the model and thinking effort selected in your current chat. Use $kip profiles (or /kip profiles) to see seven presets for a root and optional reviewer and workers. Select one with $kip profile value, or override one task with $kip build --profile premium followed by your task. Selections persist per project across chats. Profiles do not start agents: explicit authorization, useful scopes, and host support are required. Kip discloses unsupported settings.",
           ],
           [
             "Where does it install?",

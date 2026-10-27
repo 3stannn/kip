@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kip Security"
+  short_description: "Focused JavaScript workflow guidance for Kip"
+  default_prompt: "Use $kip-security to apply Kip security guidance to this task."
