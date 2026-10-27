@@ -121,6 +121,28 @@
   .suggestion-description {
     @apply mt-1 block text-[11px] leading-5 text-muted;
   }
+  .skills-carousel {
+    @apply overflow-hidden py-5;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+  .skills-carousel-track {
+    display: flex;
+    width: max-content;
+    animation: skills-carousel 32s linear infinite;
+    will-change: transform;
+  }
+  .skills-carousel:hover .skills-carousel-track {
+    animation-play-state: paused;
+  }
+  .skills-carousel-set {
+    @apply flex shrink-0 items-center gap-3 px-1.5;
+  }
 }
 
 /* Use themed native pickers where supported; keep native select behavior elsewhere. */
@@ -192,7 +214,27 @@
   }
 }
 
+@keyframes skills-carousel {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .skills-carousel {
+    overflow-x: auto;
+    mask-image: none;
+  }
+  .skills-carousel-track {
+    animation: none;
+    transform: none;
+  }
+  .skills-carousel-set[aria-hidden="true"] {
+    display: none;
+  }
   .mascot-blink {
     animation: none;
   }
