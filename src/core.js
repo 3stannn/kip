@@ -14,10 +14,12 @@ export const defaults = {
 const routes = {
   "responsive-design":
     /\b(responsive|responsiveness|viewport|viewports|mobile|tablet|desktop|ultrawide|breakpoint|breakpoints|reflow|overflow)\b/i,
-  "frontend-design": /\b(design|landing|typography|visual|layout|brand)\b/i,
+  "frontend-design":
+    /\b(design|landing|typography|visual|layout|brand|icon|icons|keyline)\b/i,
   frontend:
-    /\b(frontend|front.end|react|vue|css|html|ui|component|accessibility|landing)\b/i,
-  backend: /\b(backend|back.end|api|database|server|endpoint|migration)\b/i,
+    /\b(frontend|front.end|react|vue|css|tailwind|html|ui|component|accessibility|landing|keyline(?:[ -]?icons?)?)\b/i,
+  backend:
+    /\b(backend|back.end|api|database|server|endpoint|migration|better[ -]?auth)\b/i,
   security:
     /\b(security|auth|login|password|permission|payment|upload|injection|secret)\b/i,
   testing:

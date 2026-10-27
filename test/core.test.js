@@ -19,6 +19,11 @@ test("install preserves custom settings and skill edits", async (t) => {
 });
 test("routing selects relevant skills without loading all specialties", () => {
   assert.ok(route("Build a React login").includes("security"));
+  assert.ok(route("Standardize our Tailwind theme").includes("frontend"));
+  assert.ok(route("Configure Better Auth sessions").includes("backend"));
+  assert.ok(route("Configure Better Auth sessions").includes("security"));
+  assert.ok(route("Use Keyline Icons").includes("frontend"));
+  assert.ok(route("Use Keyline Icons").includes("frontend-design"));
   assert.ok(!route("Explain sorting").includes("frontend"));
   assert.throws(() => route("task", ["unknown"]));
 });

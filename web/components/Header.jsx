@@ -3,7 +3,7 @@ import React from "react";
 
 export function Header({ isDocs = false }) {
   return (
-    <header className="mx-auto grid min-h-24 max-w-[1320px] grid-cols-2 items-center gap-x-5 gap-y-4 px-6 py-5 md:grid-cols-[1fr_auto_1fr] md:px-14">
+    <header className="mx-auto grid min-h-24 max-w-330 grid-cols-2 items-center gap-x-5 gap-y-4 px-6 py-5 md:grid-cols-[1fr_auto_1fr] md:px-14">
       <a
         className="inline-flex items-center gap-2.5 justify-self-start text-[26px] font-black tracking-[-1px]"
         href="/"
