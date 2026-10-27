@@ -59,6 +59,15 @@ test("doctor detects a missing profile catalog in an installed skill", async (t)
   assert.deepEqual(inspection.missing, ["references/profiles.md"]);
 });
 
+test("doctor detects missing Glisse guidance", async (t) => {
+  const options = await fixture(t);
+  const [target] = await installSkills("claude", options);
+  await fs.rm(path.join(target, "references/glisse.md"));
+  const [inspection] = await inspectSkills("claude", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual(inspection.missing, ["references/glisse.md"]);
+});
+
 test("isolates each host and respects CODEX_HOME", async (t) => {
   const options = await fixture(t);
   options.codexHome = path.join(options.home, "custom-codex");

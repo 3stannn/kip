@@ -112,6 +112,18 @@ Kip interprets the purpose and instructions, inspects the relevant project conte
 
 Kip adds no authentication step. The application you already use retains its own access requirements, model selection, usage limits, and approval rules. Optional profiles request role models through host-native delegation; they do not change the current chat's model or require another subscription.
 
+## Glisse Liquid Glass interfaces
+
+Use `/kip glisse <task>` (or `$kip glisse <task>` in Codex) to apply the bundled [Glisse skill](skills/glisse/SKILL.md):
+
+```text
+/kip glisse Build an accessible settings panel with glass buttons and switches.
+```
+
+Glisse is a React component library. This mode inspects the target project, installs `glisse` there when needed, and implements the requested interface with its components. Invoking `/kip glisse` alone explains the mode and asks what to build. Glisse also appears in the website's prompt builder and command suggestions.
+
+The source checkout keeps a pinned reference installation under `skills/glisse`; restore it with `npm install --prefix skills/glisse`. Installed Kip copies bundle the guidance as `references/glisse.md`, so skill installation remains offline. Applications using the components need their own `npm install glisse`. Refresh existing Kip installations to receive the new mode.
+
 ## Switch profiles in chat
 
 After installing the skill, use these prompts in your coding chat:

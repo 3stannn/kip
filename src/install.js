@@ -7,6 +7,7 @@ import { randomUUID } from "node:crypto";
 const bundle = fileURLToPath(new URL("../skills/", import.meta.url));
 const sourceRoot = fileURLToPath(new URL("../", import.meta.url));
 export const specialties = [
+  "glisse",
   "frontend-design",
   "responsive-design",
   "anti-ai-slop",

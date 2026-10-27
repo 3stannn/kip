@@ -40,6 +40,9 @@ export function buildPrompt({ task, purpose, host, implicit, profile }) {
   const instructions = task.trim() || "Describe your task";
   const selected = profiles.find((item) => item.slug === profile);
   if (implicit) {
+    if (purpose === "glisse") {
+      return `Use Kip with Glisse${selected ? ` and the ${selected.name} profile` : ""} to ${instructions}`;
+    }
     return selected
       ? `Use Kip with the ${selected.name} profile to ${purpose}: ${instructions}`
       : `Use Kip to ${purpose}: ${instructions}`;

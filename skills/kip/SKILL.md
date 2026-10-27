@@ -9,6 +9,10 @@ Work inside the current chat using its model, tools, project context, and permis
 
 Treat `/kip <purpose> <instructions>`, `$kip <purpose> <instructions>`, and “use Kip to …” as requests to apply this workflow when the host passes them to you. The host may also select this skill from its description. Use the text following the invocation as the task; ask for a task if none was supplied, except for update and profile commands below.
 
+## Glisse
+
+For `/kip glisse`, `$kip glisse`, or a request to use Kip with Glisse, read [references/glisse.md](references/glisse.md) and apply its workflow to the remaining task. In the source checkout, read `../glisse/SKILL.md` instead. This mode uses the Glisse React library for Liquid Glass interfaces. With no task, explain the mode and ask what to build. Apply an explicitly selected profile as usual when a task is supplied.
+
 ## Update
 
 For `/kip update`, `$kip update`, or an explicit request to update the installed Kip skill, read [references/update.md](references/update.md). Run the updater through the host's terminal tools and permissions; this is skill maintenance, not a coding task or profile dispatch.

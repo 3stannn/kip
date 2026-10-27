@@ -11,7 +11,8 @@ test("suggests invocations and filters command prefixes for either host", () => 
       ["plan", "profiles", "profile"],
     );
     assert.equal(getCompletions(`${prefix} bu`)[0].text, `${prefix} build `);
-    assert.equal(getCompletions(`${prefix} `).length, 7);
+    assert.equal(getCompletions(`${prefix} `).length, 8);
+    assert.equal(getCompletions(`${prefix} gli`)[0].text, `${prefix} glisse `);
     assert.equal(getCompletions(`${prefix} up`)[0].text, `${prefix} update `);
   }
 });
@@ -33,7 +34,7 @@ test("suggests all profile names and reset only for saved selection", () => {
 });
 
 test("offers task override flags and profile values before freeform task text", () => {
-  for (const purpose of ["build", "fix", "plan", "review"]) {
+  for (const purpose of ["build", "fix", "plan", "review", "glisse"]) {
     assert.equal(
       getCompletions(`$kip ${purpose} --`)[0].text,
       `$kip ${purpose} --profile `,

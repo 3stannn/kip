@@ -21,8 +21,8 @@ export function CommandBuilder({ profile, onProfileChange }) {
       <div className="docs-section-header">
         <h2 id="playground-heading">Build a prompt</h2>
         <p>
-          Name the outcome, choose whether Kip should build, fix, plan, or
-          review, then copy the result into your coding chat.
+          Name the outcome, choose a purpose or Glisse for a Liquid Glass
+          interface, then copy the result into your coding chat.
         </p>
       </div>
       <div className="docs-panel">
@@ -60,7 +60,7 @@ export function CommandBuilder({ profile, onProfileChange }) {
                   value={purpose}
                   onChange={(e) => setPurpose(e.target.value)}
                 >
-                  {["build", "fix", "plan", "review"].map((value) => (
+                  {["build", "fix", "plan", "review", "glisse"].map((value) => (
                     <option key={value} value={value}>
                       {value}
                     </option>
