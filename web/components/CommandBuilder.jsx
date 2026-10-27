@@ -21,8 +21,8 @@ export function CommandBuilder({ profile, onProfileChange }) {
       <div className="docs-section-header">
         <h2 id="playground-heading">Build a prompt</h2>
         <p>
-          Choose your host, describe the task, and copy the generated prompt
-          into your coding chat. You can also type a command with autocomplete.
+          Name the outcome, choose whether Kip should build, fix, plan, or
+          review, then copy the result into your coding chat.
         </p>
       </div>
       <div className="docs-panel">
@@ -99,8 +99,8 @@ export function CommandBuilder({ profile, onProfileChange }) {
               </select>
               <p className="mb-0 mt-2 text-[11px] leading-6 text-muted">
                 {profile
-                  ? "Applies to this task only. Your chat’s saved selection stays the same."
-                  : "Leaves model selection to your current chat and host settings."}
+                  ? "Adds a one-task override. It does not change a profile already selected in your chat."
+                  : "Uses your current chat and host settings without requesting role overrides."}
               </p>
             </div>
             <div className="my-5 flex flex-wrap gap-2">
@@ -122,8 +122,9 @@ export function CommandBuilder({ profile, onProfileChange }) {
           {host === "codex"
             ? "Codex uses $kip or its /skills picker. "
             : "Your host exposes the installed skill as /kip. "}
-          Paste this into chat, not your terminal. Nothing runs in this browser.
-          Hosts may also select Kip automatically for relevant tasks.
+          Paste the prompt into chat, not your terminal. This page only prepares
+          text; it does not run Kip or change host settings. Hosts may also
+          select Kip automatically when its description matches the task.
         </p>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { ScrollLink } from "./ScrollLink.jsx";
 import React from "react";
+import { ArrowDownIcon, ArrowUpRightIcon } from "./Icons.jsx";
 
 export function Header({ isDocs = false }) {
   return (
@@ -32,14 +33,14 @@ export function Header({ isDocs = false }) {
           className="button-primary col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:col-start-3"
           href="#get-started"
         >
-          Get started <span>↓</span>
+          Get started <ArrowDownIcon />
         </ScrollLink>
       ) : (
         <a
           className="button-primary col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:col-start-3"
           href="/docs"
         >
-          Get started <span>↗</span>
+          Get started <ArrowUpRightIcon />
         </a>
       )}
     </header>

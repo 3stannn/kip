@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CodeBlock } from "./CodeBlock.jsx";
+import { ChevronDownIcon } from "./Icons.jsx";
 
 export function Updates() {
   const [host, setHost] = useState("codex");
@@ -17,8 +18,8 @@ export function Updates() {
       <div className="docs-section-header">
         <h2 id="updates-heading">Update Kip</h2>
         <p>
-          Pull the latest changes and refresh your installed skills from the
-          coding chat you already use.
+          Refresh existing installations from the upstream configured on your
+          current Kip clone. Updates run only when you ask.
         </p>
       </div>
       <div className="docs-panel">
@@ -58,12 +59,13 @@ export function Updates() {
           {terminal
             ? "Run this from your existing Kip clone. "
             : "Paste this into your coding chat. "}
-          Updates existing copies for the selected host. Nothing runs in this
-          browser.
+          This updates existing copies for the selected host; it does not
+          install missing hosts. Nothing runs in this browser.
         </p>
         <p className="text-xs leading-6 text-muted">
-          The updater pulls from the clone’s upstream, backs up installed
-          skills, refreshes them, and asks you to restart your host.
+          The updater pulls with fast-forward-only behavior, backs up installed
+          skills, refreshes them, and reports the backup paths. Restart the host
+          or open a new session afterward.
         </p>
         <p className="text-xs leading-6 text-muted">
           Requires Git, Node.js 22+, network access, and a clean clone with a
@@ -74,9 +76,7 @@ export function Updates() {
         <details className="mt-5 border-t border-line pt-5">
           <summary className="flex list-none items-center justify-between gap-3 text-xs font-extrabold">
             Updating an older installation?{" "}
-            <span aria-hidden="true" className="text-lg text-subtle">
-              ↗
-            </span>
+            <ChevronDownIcon className="size-4 text-subtle" />
           </summary>
           <p className="my-4 text-xs leading-6 text-muted">
             Older skills need a one-time terminal update before they recognize

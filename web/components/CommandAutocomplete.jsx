@@ -1,6 +1,7 @@
 import React, { useId, useLayoutEffect, useRef, useState } from "react";
 import { getCompletions } from "../data/completions.js";
 import { CodeBlock } from "./CodeBlock.jsx";
+import { ArrowRightIcon } from "./Icons.jsx";
 
 export function CommandAutocomplete({ host, onHostChange }) {
   const prefix = host === "codex" ? "$kip" : "/kip";
@@ -118,7 +119,7 @@ export function CommandAutocomplete({ host, onHostChange }) {
                 aria-hidden="true"
                 className="grid size-8 shrink-0 place-items-center rounded-lg border border-line bg-page text-sm text-muted"
               >
-                ↳
+                <ArrowRightIcon className="size-4" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="suggestion-keyword">{suggestion.label}</span>
@@ -138,8 +139,8 @@ export function CommandAutocomplete({ host, onHostChange }) {
       )}
       <p id={`${id}-hint`} className="my-3 text-[11px] leading-6 text-muted">
         Suggestions update as you type commands, --profile, and profile names.
-        Use ↑ ↓ to choose, Tab or Enter to complete, and Esc to dismiss. Then
-        add your task in your own words.
+        Use the arrow keys to choose, Tab or Enter to complete, and Esc to
+        dismiss. Then add your task in your own words.
       </p>
       <CodeBlock text={text} title="Your coding chat" />
     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { profiles } from "../data/profiles.js";
 import { ScrollLink } from "./ScrollLink.jsx";
+import { ArrowRightIcon } from "./Icons.jsx";
 
 export function Profiles({ onSelect }) {
   const [preview, setPreview] = useState("value");
@@ -15,8 +16,9 @@ export function Profiles({ onSelect }) {
       <div className="docs-section-header">
         <h2 id="profiles-heading">Model profiles</h2>
         <p>
-          Preview seven optional presets for the root, reviewer, and two
-          workers. Value is a suggested starting point; host defaults also work.
+          Preview seven optional requests for a root, reviewer, and two workers.
+          Host defaults remain active until you choose a profile in chat or add
+          one to a task.
         </p>
       </div>
       <div>
@@ -61,18 +63,24 @@ export function Profiles({ onSelect }) {
             </div>
           ))}
         </div>
+        <p className="status-note" role="status">
+          Previewing <strong>{selected.name}</strong>. This page has not changed
+          your chat, model, or host settings.
+        </p>
         <div className="flex flex-col items-start justify-between gap-5 border-t border-line pt-6 md:flex-row md:items-center">
           <p className="m-0 max-w-xl text-xs leading-6 text-muted">
-            Select the root model and thinking effort in your host. Reviewer and
-            worker settings depend on host delegation support. Actual cost
-            varies with usage and host billing.
+            The root model and effort must be selected in your host. Reviewer
+            and worker settings require host-native delegation support; Kip
+            discloses unavailable settings instead of silently substituting
+            them.
           </p>
           <ScrollLink
-            className="shrink-0 text-sm font-extrabold underline decoration-line underline-offset-4 hover:decoration-accent"
+            className="text-link max-w-full shrink-0"
             href="#playground"
             onClick={() => onSelect?.(preview)}
           >
-            Use {selected.name} in the builder →
+            <span className="min-w-0">Add {selected.name} to one task</span>
+            <ArrowRightIcon className="size-4 shrink-0" />
           </ScrollLink>
         </div>
         <p className="mb-0 mt-5 text-[10px] leading-5 text-muted">

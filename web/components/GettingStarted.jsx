@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useRef } from "react";
 import { steps } from "../data/steps.js";
 import { CodeBlock } from "./CodeBlock.jsx";
+import { ArrowRightIcon } from "./Icons.jsx";
 
 export function GettingStarted() {
   const [active, setActive] = useState(0);
@@ -30,8 +31,8 @@ export function GettingStarted() {
       <div className="docs-section-header" id="how-it-works">
         <h2 id="get-started-heading">Install and get started</h2>
         <p>
-          Requires Git and Node.js 22+. Install Kip once, then use it from your
-          project’s coding chat.
+          Requires Git and Node.js 22+. Install Kip once, restart your host,
+          then invoke it from the coding chat where you already work.
         </p>
       </div>
       <div>
@@ -69,16 +70,7 @@ export function GettingStarted() {
           tabIndex={0}
           aria-labelledby={`step-${active}`}
         >
-          <h3>
-            {
-              [
-                "Clone the repository",
-                "Install the skill",
-                "Start a task",
-                "Continue in your host",
-              ][active]
-            }
-          </h3>
+          <h3>{steps[active].title}</h3>
           <p>{steps[active].text}</p>
           <CodeBlock
             text={steps[active].command}
@@ -86,11 +78,11 @@ export function GettingStarted() {
           />
           <p className="mt-4">{steps[active].note}</p>
           <button
-            className="mt-6 inline-flex items-center gap-4 text-xs font-extrabold text-charcoal hover:text-accent"
+            className="text-link mt-6"
             onClick={() => setActive((active + 1) % steps.length)}
           >
-            {active === steps.length - 1 ? "Back to setup" : "Next step"}{" "}
-            <span>→</span>
+            {active === steps.length - 1 ? "Back to setup" : "Next step"}
+            <ArrowRightIcon />
           </button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { CopyIcon } from "./Icons.jsx";
 
 export function Copy({ text, label = "Copy command" }) {
   const [state, setState] = useState("");
@@ -21,7 +22,11 @@ export function Copy({ text, label = "Copy command" }) {
       aria-label={state || label}
       aria-live="polite"
     >
-      {state || "Copy ↗"}
+      {state || (
+        <span className="inline-flex items-center gap-1.5">
+          Copy <CopyIcon className="size-3" />
+        </span>
+      )}
     </button>
   );
 }

@@ -5,43 +5,47 @@ const demos = [
   {
     command: "node bin/kip.js install",
     output: [
-      "Install Kip globally for:",
+      "Installer scope",
       "Codex · Claude Code · Antigravity",
       "",
-      "Restart your host, then open your project.",
+      "Restart the host, then open your project.",
     ],
-    label: "Local installer",
+    label: "Terminal · local installer",
   },
   {
     command: "$kip plan Build an accessible React login",
     output: [
-      "Illustrative chat response",
-      "I’ll inspect the existing components,",
-      "load relevant guidance, and outline",
-      "the implementation and checks.",
+      "Example plan response",
+      "Relevant guidance: frontend, security, testing",
+      "Inspect the existing auth flow",
+      "Define states, boundaries, and checks",
+      "Return the plan without editing files",
     ],
-    label: "Codex chat",
+    label: "Codex · coding chat",
   },
   {
     command: "/kip build Create an accessible React login",
     output: [
-      "Illustrative chat response",
-      "I’ll implement this in your project",
-      "and run the appropriate checks",
-      "using this chat’s tools.",
+      "Example build response",
+      "Inspect the current project and constraints",
+      "Implement the requested flow",
+      "Run relevant checks",
+      "Report changes and remaining gaps",
     ],
-    label: "Claude Code / Antigravity chat",
+    label: "Claude Code / Antigravity · chat",
   },
 ];
 export function Terminal({ active }) {
   const demo = demos[active];
   return (
-    <div className="relative z-10 w-full max-w-[470px] -rotate-3 overflow-hidden rounded-xl border border-[#353537] bg-black text-[#e5e5e5] shadow-2xl shadow-black/20">
+    <div className="terminal-card relative z-10 w-full max-w-[470px]">
       <WindowChrome title={demo.label} />
       <div className="min-h-[285px] px-4 py-5 font-mono text-[10px] leading-6 sm:px-5 sm:text-[11px]">
-        <p className="mb-3 text-[#737373]"># your next idea starts here</p>
+        <p className="mb-3 text-terminal-muted">
+          # example — nothing runs on this page
+        </p>
         <p className="break-words">
-          <span className="text-[#a1a1aa]">
+          <span className="text-terminal-subtle">
             {active === 0 ? "terminal > " : "you > "}
           </span>
           {demo.command}
@@ -52,9 +56,9 @@ export function Terminal({ active }) {
           ))}
         </div>
       </div>
-      <div className="flex justify-between gap-2 border-t border-white/10 bg-[#111113] px-4 py-2 font-mono text-[9px] text-[#8e8e93]">
+      <div className="flex justify-between gap-2 border-t border-white/10 bg-terminal-raised px-4 py-2 font-mono text-[9px] text-terminal-subtle">
         <span>
-          {active === 0 ? "No network calls" : "Your current model and tools"}
+          {active === 0 ? "Local installer" : "Current model and tools"}
         </span>
         <span>No Kip sign-in</span>
       </div>

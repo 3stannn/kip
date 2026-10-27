@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Header } from "./components/Header.jsx";
 import { Footer } from "./components/Footer.jsx";
+import { FloatingMascot } from "./components/FloatingMascot.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { DocsPage } from "./pages/DocsPage.jsx";
 
@@ -9,8 +10,8 @@ export default function App() {
 
   useEffect(() => {
     document.title = isDocs
-      ? "Kip Docs — Get started and find your flow"
-      : "Kip — Your coding buddy";
+      ? "Kip Docs — Install, prompt, and update"
+      : "Kip — Focused work in your coding chat";
     // Resolve deep links after React has mounted the page's sections.
     if (window.location.hash) {
       const target = document.getElementById(window.location.hash.slice(1));
@@ -27,6 +28,7 @@ export default function App() {
         {isDocs ? <DocsPage /> : <HomePage />}
       </main>
       <Footer isDocs={isDocs} />
+      <FloatingMascot hasHeroMascot={!isDocs} />
     </>
   );
 }

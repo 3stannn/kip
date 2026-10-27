@@ -1,8 +1,8 @@
 # Kip
 
-A portable coding skill for Codex, Claude Code, and Antigravity. Invoke Kip inside your existing chat, or let the host select it when relevant. Kip works with the model and tools already available in that session. No Kip sign-in, API key, server, or separate runner.
+A focused workflow for Codex, Claude Code, and Antigravity. Give Kip one task in your existing coding chat and it loads only the guidance that task needs, using the model, tools, and permissions already available there. No Kip sign-in, API key, server, or separate runner.
 
-[Install](#install-from-github) · [Update](#update-an-existing-installation) · [Profiles](#switch-profiles-in-chat) · [Command playground](#command-playground) · [Run the website](#run-the-website-locally)
+[Website](https://usekip.vercel.app) · [Install](#install-from-github) · [Update](#update-an-existing-installation) · [Profiles](#switch-profiles-in-chat) · [Command playground](#command-playground) · [Local development](#run-the-website-locally)
 
 ## Install from GitHub
 
@@ -135,12 +135,12 @@ For an older installation, follow [Update an existing installation](#update-an-e
 
 ## Command playground
 
-The website includes two ways to prepare a prompt:
+The [Kip website](https://usekip.vercel.app) includes a quick-start guide, the complete profile explorer, update instructions, and two ways to prepare a prompt:
 
 - **Guided builder:** choose your coding host, task purpose, and optional model profile. Copy an explicit invocation or natural language prompt into your coding chat.
 - **Type a command:** type `$kip ` or `/kip ` to see matching commands. Suggestions also cover profile names, `--profile`, and `update --host` options. Use the arrow keys to choose, Tab or Enter to complete, and Escape to dismiss. You can also click a suggestion.
 
-The profile explorer shows the requested role settings for all seven profiles. Choosing **Try** applies a profile to the guided builder. The update guide provides commands for each host, a terminal alternative, and bootstrap steps for older installations.
+The profile explorer shows the requested role settings for all seven profiles. Choosing a profile applies it to the guided builder. The update guide provides commands for each host, a terminal alternative, and bootstrap steps for older installations.
 
 The playground prepares text to copy; it does not execute commands or change host settings. Its autocomplete belongs to the website and does not add a suggestion dropdown to your host's chat input.
 

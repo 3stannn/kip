@@ -1,101 +1,61 @@
-import React from "react";
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import React, { useState } from "react";
 import { Mascot } from "./Mascot.jsx";
 import { Terminal } from "./Terminal.jsx";
+import { ArrowUpRightIcon } from "./Icons.jsx";
 
 export function Hero() {
   const [demo, setDemo] = useState(1);
-  const [floating, setFloating] = useState(false);
-  const hero = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      setFloating(!entry.isIntersecting);
-    });
-    observer.observe(hero.current);
-    return () => observer.disconnect();
-  }, []);
 
   return (
-    <section
-      ref={hero}
-      className="relative grid items-center gap-10 px-6 pb-20 pt-10 md:min-h-[590px] md:grid-cols-2 md:px-14 md:py-16"
-    >
+    <section className="relative grid items-center gap-12 px-6 py-12 md:min-h-147.5 md:grid-cols-2 md:px-14 md:py-16">
       <div className="min-w-0">
-        <div className="eyebrow">
-          <span /> YOUR FOLDER. YOUR WORKFLOW.
-        </div>
-        <h1 className="my-6 text-[44px] leading-[1.08] font-black tracking-[-2px] sm:text-5xl lg:text-[64px] lg:tracking-[-2.8px]">
-          Big ideas.
-          <br />
-          Little commands.
-          <span className="block text-accent"> Your buddy, Kip.</span>
-        </h1>
-        <p className="text-base leading-7 text-muted">
-          Bring a little structure to your coding chat.
-          <br className="hidden sm:block" /> Pick a task, make a plan, and take
-          the next step with Codex, Claude Code, or Antigravity.
+        <p className="mb-5 max-w-md text-sm font-extrabold text-muted">
+          A focused workflow for Codex, Claude Code, and Antigravity.
         </p>
-        <div className="mt-7 flex flex-wrap items-center gap-6">
+        <h1 className="text-balance text-5xl leading-[1.02] font-black tracking-[-2.4px] sm:text-6xl lg:text-7xl lg:tracking-[-3.2px]">
+          Big Ideas. Little commands.
+          <span className="mt-2 block text-accent">Your buddy, Kip.</span>
+        </h1>
+        <p className="mt-7 max-w-xl text-base leading-8 text-muted">
+          Kip reads the task, loads only the guidance it needs, and works with
+          your project using the model and tools already available to you.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center gap-5">
           <a className="button-primary" href="/docs">
-            Find your flow <span>↗</span>
+            Find your flow <ArrowUpRightIcon />
           </a>
-          <a
-            className="inline-flex items-center gap-3 text-sm font-extrabold text-charcoal transition hover:text-accent"
-            href="/docs#get-started"
-          >
-            Show me how <span>↗</span>
+          <a className="text-link" href="/docs#playground">
+            Build a prompt <ArrowUpRightIcon />
           </a>
         </div>
-        <div className="mt-6 flex items-center gap-2 text-[11px] text-muted [&>span]:text-base [&>i]:mx-1 [&>i]:size-1 [&>i]:rounded-full [&>i]:bg-line">
-          <span>⌘</span> No Kip sign-in <i /> No API key
-        </div>
+        <p className="mt-6 text-xs font-bold text-muted">
+          No Kip account, API key, server, or separate runner.
+        </p>
       </div>
-      <div className="pointer-events-none z-30 mx-auto flex size-24 justify-center sm:size-28 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
-        {floating ? (
-          createPortal(
-            <div className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-50">
-              <Mascot small />
-            </div>,
-            document.body,
-          )
-        ) : (
+      <div className="relative flex min-h-125 min-w-0 items-center justify-center">
+        <div
+          className="pointer-events-none absolute -top-1 right-4 z-20 w-24 sm:right-8"
+          data-hero-mascot
+        >
           <Mascot />
-        )}
-      </div>
-      <div className="relative flex h-[510px] min-w-0 items-center justify-center md:h-[510px]">
-        <div className="absolute right-1 top-0 rotate-[7deg] text-xs italic text-muted [&>span]:block [&>span]:text-center [&>span]:text-3xl">
-          a small command, a fresh start <span>↴</span>
         </div>
-        <div className="absolute size-[280px] rounded-full bg-accent/15 sm:size-[350px]" />
-        <Terminal active={demo} />
-        <div className="absolute -right-1 bottom-16 z-20 rotate-6 rounded-xl bg-surface px-4 py-3 text-[11px] font-extrabold shadow-lg shadow-ink/5 [&>span]:mr-2 [&>span]:text-lg [&>span]:text-accent">
-          <span>▰</span> your next great idea
+        <div className="relative z-10 w-full max-w-125.5 rounded-[1.75rem] bg-accent/35 p-4">
+          <Terminal active={demo} />
         </div>
         <div
-          className="absolute bottom-0 flex gap-1 rounded-full border border-line bg-soft p-1 [&_button]:rounded-full [&_button]:px-4 [&_button]:py-2 [&_button]:text-[11px] [&_button]:font-extrabold [&_button]:text-muted [&_button_span]:ml-3"
-          aria-label="Workflow demo"
+          className="segmented-control absolute bottom-2 z-20"
+          aria-label="Example Kip workflow"
         >
-          {["Set up", "Plan it", "Run it"].map((s, i) => (
+          {["Install", "Plan", "Build"].map((label, index) => (
             <button
-              key={s}
-              aria-pressed={demo === i}
-              className={
-                demo === i
-                  ? "!bg-surface !text-charcoal shadow-sm"
-                  : "hover:bg-surface/50"
-              }
-              onClick={() => setDemo(i)}
+              key={label}
+              aria-pressed={demo === index}
+              onClick={() => setDemo(index)}
             >
-              {s}
-              <span>{i === demo ? "↗" : "·"}</span>
+              {label}
             </button>
           ))}
         </div>
-        <span className="absolute -bottom-7 text-[11px] italic text-muted">
-          ↑ take it for a little spin
-        </span>
       </div>
     </section>
   );

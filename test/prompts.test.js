@@ -34,11 +34,11 @@ test("every profile generates a task override for each purpose", () => {
 test("natural language includes selected profile and blank tasks have a placeholder", () => {
   assert.equal(
     buildPrompt({ ...task, implicit: true, profile: "strong-lead" }),
-    "Use Kip to fix with the Strong lead profile — Fix mobile overflow.",
+    "Use Kip with the Strong lead profile to fix: Fix mobile overflow.",
   );
   assert.equal(
     buildPrompt({ ...task, implicit: true }),
-    "Use Kip to fix — Fix mobile overflow.",
+    "Use Kip to fix: Fix mobile overflow.",
   );
   assert.equal(
     buildPrompt({ ...task, task: "  " }),

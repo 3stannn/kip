@@ -6,51 +6,43 @@ import { Closing } from "../components/Closing.jsx";
 
 const highlights = [
   {
-    label: "Small, focused tasks",
-    icon: <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" />,
+    label: "Your current chat",
+    text: "Kip uses the model, tools, and permissions already available there.",
   },
   {
-    label: "Skills that fit your work",
-    icon: <path d="M4 8c3 0 3 4 6 4s3 4 6 4 3-4 4-4" />,
+    label: "Relevant guidance",
+    text: "It loads the smallest useful set of skills for the task you described.",
   },
   {
-    label: "Context you control",
-    icon: (
-      <>
-        <circle cx="12" cy="12" r="8" />
-        <circle cx="12" cy="12" r="4" />
-      </>
-    ),
+    label: "The scope you asked for",
+    text: "A plan stays a plan. A build continues through changes and checks.",
   },
   {
-    label: "Output you review",
-    icon: <path d="M7 17 17 7M9 7h8v8" />,
+    label: "An honest handoff",
+    text: "Kip reports what changed, what ran, and what remains unverified.",
   },
 ];
 
 export function HomePage() {
   return (
-    <div className="mx-auto max-w-[1320px]">
+    <div className="site-shell">
       <Hero />
-      <div className="mx-6 grid grid-cols-2 items-center gap-5 border-y border-line py-6 text-[11px] font-bold text-muted md:mx-14 md:flex md:justify-between">
-        {highlights.map(({ label, icon }) => (
-          <span className="flex items-center gap-2" key={label}>
-            <svg
-              aria-hidden="true"
-              className="size-5 shrink-0 text-subtle"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-            >
-              {icon}
-            </svg>
-            {label}
-          </span>
+      <section
+        aria-label="How Kip works"
+        className="facts-grid mx-6 grid border-y border-line sm:grid-cols-2 md:mx-14 xl:grid-cols-4"
+      >
+        {highlights.map(({ label, text }, index) => (
+          <div className="fact-item" key={label}>
+            <span className="mb-3 block font-mono text-xs text-subtle">
+              0{index + 1}
+            </span>
+            <h2 className="m-0 text-sm font-extrabold tracking-normal">
+              {label}
+            </h2>
+            <p className="mt-2 text-xs leading-6 text-muted">{text}</p>
+          </div>
         ))}
-      </div>
+      </section>
       <Skills />
       <FAQ />
       <Closing />
