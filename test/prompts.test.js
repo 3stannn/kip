@@ -23,7 +23,7 @@ test("host defaults omit profile overrides and preserve host invocation", () => 
 test("every profile generates a task override for each purpose", () => {
   for (const host of ["codex", "claude", "antigravity"]) {
     for (const profile of getProfiles(host)) {
-      for (const purpose of ["build", "fix", "plan", "review", "glisse"]) {
+      for (const purpose of ["build", "fix", "plan", "review"]) {
         assert.equal(
           buildPrompt({ ...task, host, purpose, profile: profile.slug }),
           `${host === "codex" ? "$kip" : "/kip"} ${purpose} --profile ${profile.slug} Fix mobile overflow.`,
@@ -57,19 +57,6 @@ test("profile selections remain portable while role models match the host", () =
 });
 
 test("natural language includes selected profile and blank tasks have a placeholder", () => {
-  assert.equal(
-    buildPrompt({ ...task, purpose: "glisse", implicit: true }),
-    "Use Kip with Glisse to Fix mobile overflow.",
-  );
-  assert.equal(
-    buildPrompt({
-      ...task,
-      purpose: "glisse",
-      implicit: true,
-      profile: "value",
-    }),
-    "Use Kip with Glisse and the Value profile to Fix mobile overflow.",
-  );
   assert.equal(
     buildPrompt({ ...task, implicit: true, profile: "strong-lead" }),
     "Use Kip with the Strong lead profile to fix: Fix mobile overflow.",

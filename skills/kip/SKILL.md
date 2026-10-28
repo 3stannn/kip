@@ -17,7 +17,6 @@ Interpret `$kip <purpose> <task>`, `/kip <purpose> <task>`, and â€œuse Kip to â€
 
 - For `profiles`, `profile [name|number|reset]`, a task's `--profile`, or a natural language profile choice, read [references/profiles.md](references/profiles.md). Resolve project memory and the current host's preset table before every Kip task, including a new chat. Codex, Claude Code, and Antigravity share profile slugs but use their own native models and controls. Selection alone never starts agents or implementation.
 - For `update` or a request to refresh an installed skill, read [references/update.md](references/update.md). This is maintenance, not profile dispatch.
-- For `glisse` or a request to use Glisse with Kip, read `references/glisse.md` after installation or `../kip-glisse/SKILL.md` in this checkout. Preserve the active profile. With no task, explain the mode and ask what to build.
 
 ## Execution contract
 
@@ -40,4 +39,6 @@ Interpret `$kip <purpose> <task>`, `/kip <purpose> <task>`, and â€œuse Kip to â€
 
 Supporting guidance belongs to Kip. Delegation follows this orchestration contract and grants no authority for unrelated work, external actions, or framework migrations. Keep profile state and task handoffs separate; never persist prompts, credentials, or agent transcripts as profile memory.
 
-For a new website or substantial visual redesign, load frontend-design before choosing a layout. Its portfolio reference absorbs Bryl Lim's minimal design as the portfolio default; its website reference captures Kip's own website style as the default for other websites. Explicit briefs and existing brand conventions take precedence. Load only the selected reference and give it to the frontend worker. Give that guidance to the assigned frontend worker without adding an extra specialist solely for the skill name. Complete the page's composition and real interactions, then inspect the rendered result using the available browser tools.
+For website creation or UI edits, give the frontend worker [shadcn/ui guidance](references/frontend-shadcn.md) during component planning. Use shadcn/ui by default for compatible React projects, initialize it when needed, and reuse the project's local components. Preserve established alternative component systems, requested stacks, and the scope of small repairs; this default does not authorize a framework migration. Apply the selected visual system through tokens and shared variants.
+
+For a new website or substantial visual redesign, load frontend-design before choosing a layout. Its portfolio reference absorbs Bryl Lim's minimal design as the portfolio default; its website reference captures Kip's own website style as the default for other websites. Read [website-layouts](references/website-layouts.md) to choose a composition suited to the content and primary action. Explicit briefs and existing brand conventions take precedence. Give the selected visual reference and layout guidance to the assigned frontend worker without adding an extra specialist solely for the skill name. Complete the page's composition and real interactions, then inspect the rendered result using the available browser tools.

@@ -1,7 +1,0 @@
-{
-  "name": "kip-glisse-reference",
-  "private": true,
-  "dependencies": {
-    "glisse": "0.4.3"
-  }
-}

@@ -77,6 +77,7 @@ test("installs self-contained skills for every host without external dependencie
     for (const name of [
       "portfolio-design",
       "website-art-direction",
+      "website-layouts",
       "orchestration-claude",
       "orchestration-antigravity",
     ]) {
@@ -140,13 +141,13 @@ test("doctor detects missing portfolio design guidance", async (t) => {
   assert.deepEqual(inspection.missing, ["references/portfolio-design.md"]);
 });
 
-test("doctor detects missing Glisse guidance", async (t) => {
+test("doctor detects missing website layout guidance", async (t) => {
   const options = await fixture(t);
   const [target] = await installSkills("claude", options);
-  await fs.rm(path.join(target, "references/glisse.md"));
+  await fs.rm(path.join(target, "references/website-layouts.md"));
   const [inspection] = await inspectSkills("claude", options);
   assert.equal(inspection.ready, false);
-  assert.deepEqual(inspection.missing, ["references/glisse.md"]);
+  assert.deepEqual(inspection.missing, ["references/website-layouts.md"]);
 });
 
 test("isolates each host and respects CODEX_HOME", async (t) => {

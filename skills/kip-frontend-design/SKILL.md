@@ -1,6 +1,6 @@
 ---
 name: kip-frontend-design
-description: Design websites within Kip with Bryl Lim minimal for portfolios and Kip website styling for other websites, with responsive composition and brand-specific adaptations. Use for design work within Kip or when explicitly requested for Kip.
+description: Design websites within Kip with content-led layout selection, Bryl Lim minimal for portfolios, and Kip styling for other websites. Use for design work within Kip or when explicitly requested for Kip.
 ---
 
 # Frontend Design
@@ -17,6 +17,8 @@ Choose the default before selecting typography or layout:
 - **Other websites:** read [website-art-direction.md](../kip/references/website-art-direction.md). This captures Kip's actual website: Nunito typography, an off-white foundation, soft blue accents, dark pill actions, rounded surfaces, and purposeful interactive demonstrations. Apply its tokens and component character by default; adapt composition to the subject rather than cloning Kip's content.
 
 Classify by the site's primary purpose. Personal and studio sites mainly showcasing work are portfolios; a business or product site containing case studies remains a non-portfolio site. Explicit briefs and existing brand/design systems take precedence, and small edits preserve surrounding conventions. These defaults belong to Kip's bundled guidance and require no standalone design skills.
+
+For a new website or substantial layout redesign, also read [website-layouts.md](../kip/references/website-layouts.md). It absorbs Figma's twelve layout approaches into content-based selection and implementation guidance. Choose a structure for the actual reading, comparison, browsing, or interaction task; apply the selected visual system to it. Kip's palette and components do not require repeating its homepage composition. Small repairs need only the relevant existing pattern.
 
 The chosen reference governs palette, font roles, layout, labels, and motion where it is more specific than the general craft guidance below. In particular, the portfolio's four font roles and meaningful mono micro-labels are intentional exceptions to the general typography guidance. Dashboards and utilities use the non-portfolio visual system with working-screen density and predictable controls, rather than inheriting a marketing hero.
 
@@ -61,9 +63,9 @@ Give motion a purpose: feedback, spatial continuity, state explanation, or softe
 
 Polish the details users expect without noticing: press feedback, sensible focus movement, reachable controls, stable loading states, clear empty and error states, and consistent radii, spacing, and alignment. Good defaults matter more than a large customization surface.
 
-## When the project uses shadcn/ui
+## Website components: shadcn/ui
 
-Read [frontend-shadcn.md](../kip/references/frontend-shadcn.md) only for this stack or requested integration.
+For website creation and UI edits, read [frontend-shadcn.md](../kip/references/frontend-shadcn.md) before choosing or implementing components. Use shadcn/ui by default in compatible React projects, initializing it when needed and reusing local components when present. Apply the chosen visual direction through tokens and variants. Preserve established component systems and non-React stacks unless adoption or migration is part of the request; small text repairs keep their existing implementation.
 
 ## Critique the rendered result
 

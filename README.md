@@ -118,19 +118,11 @@ Host capabilities vary by version and surface. Bundle checks and documentation r
 
 ## Website design direction
 
+For website creation and UI edits, Kip defaults to [shadcn/ui components](skills/kip/references/frontend-shadcn.md) in compatible React projects. It initializes the needed setup when no component system exists, reuses local UI components, adds only what the task needs, and applies the chosen design through shared tokens and variants. Established alternative component systems, non-React stacks, and small repair scopes are preserved. The bundled guidance covers setup, component selection, customization, accessibility, and verification using the [official documentation](https://ui.shadcn.com/docs).
+
 Kip's bundled frontend design guidance defaults to [Bryl Lim minimal design for portfolio websites](skills/kip/references/portfolio-design.md) and [Kip's own website style for other websites](skills/kip/references/website-art-direction.md): Nunito typography, off-white surfaces, soft blue accents, dark pill actions, and rounded panels. Explicit briefs and existing brand conventions take precedence. These references ship inside Kip without separate design skills; refresh an existing installation to receive them.
 
-## Glisse Liquid Glass interfaces
-
-Use `/kip glisse <task>` (or `$kip glisse <task>` in Codex) to apply the bundled [Glisse skill](skills/kip-glisse/SKILL.md):
-
-```text
-/kip glisse Build an accessible settings panel with glass buttons and switches.
-```
-
-Glisse is a React component library. This mode inspects the target project, installs `glisse` there when needed, and implements the requested interface with its components. Invoking `/kip glisse` alone explains the mode and asks what to build. Glisse also appears in the website's prompt builder and command suggestions.
-
-The source checkout keeps a pinned reference installation under `skills/kip-glisse`; restore it with `npm install --prefix skills/kip-glisse`. Installed Kip copies bundle the guidance as `references/glisse.md`, so skill installation remains offline. Applications using the components need their own `npm install glisse`. Refresh existing Kip installations to receive the new mode.
+Kip also bundles [layout selection guidance](skills/kip/references/website-layouts.md) inspired by [Figma's twelve website layout ideas](https://www.figma.com/resource-library/website-layout-ideas/). It covers grids, split and asymmetric compositions, full-screen openings, horizontal collections, cards, editorial and gallery structures, zig-zag and F-pattern reading, interaction, and animation. Choose by the visitor's task and available content, then adapt for responsive behavior and accessibility within the selected visual system.
 
 ## Switch profiles in chat
 

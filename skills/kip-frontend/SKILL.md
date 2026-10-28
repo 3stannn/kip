@@ -9,6 +9,10 @@ This guidance supports Kip's assigned worker or reviewer scope. The root owns te
 
 Reuse the project's framework, component system, and data conventions. Prefer native platform capabilities and existing dependencies over new abstraction layers. Separate rendering from transport when it clarifies the data contract or makes behavior easier to test. Define the contract before inventing mock responses.
 
+## Website component default
+
+For website creation and UI edits, read [frontend-shadcn.md](../kip/references/frontend-shadcn.md). Use shadcn/ui components by default in compatible React applications, including setting them up when the app has no established component system. Reuse existing local UI source before generating more. Preserve an established alternative system, non-React stack, and the scope of small repairs. Apply the selected brand or Kip visual direction through shared tokens and variants, with working interactions and accessible composition.
+
 ## Correctness and accessibility
 
 For expressive marketing pages, implement the chosen type and composition as real responsive content. Load the intended fonts, reserve media aspect ratios, keep decorative layers outside the interaction and accessibility paths, and give fixed navigation appropriate document and focus clearance. Deliver working destinations and controls before adding animation. Scroll effects must preserve readable static content, native scrolling, and reduced-motion behavior; a static reference is not evidence that a particular animation exists.

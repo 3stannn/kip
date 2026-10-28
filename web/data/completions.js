@@ -5,7 +5,6 @@ const commands = [
   ["fix", "Investigate and resolve an issue"],
   ["plan", "Outline the work before implementation"],
   ["review", "Review code and report findings"],
-  ["glisse", "Build a Liquid Glass interface with Glisse"],
   ["profiles", "List all model profiles"],
   ["profile", "Select, show, or reset your project profile"],
   ["update", "Pull updates and refresh installed Kip skills"],
@@ -38,9 +37,7 @@ export function getCompletions(text, caret = text.length, prefix = "$kip") {
         ];
     } else if (context[1] === "profile" && context.length === 2) {
       options = [...profileOptions, ["reset", "Return to host defaults"]];
-    } else if (
-      ["build", "fix", "plan", "review", "glisse"].includes(context[1])
-    ) {
+    } else if (["build", "fix", "plan", "review"].includes(context[1])) {
       if (context.length === 2)
         options = [["--profile", "Choose a profile for this task only"]];
       else if (context.length === 3 && context[2] === "--profile")

@@ -7,7 +7,6 @@ import { randomUUID } from "node:crypto";
 const bundle = fileURLToPath(new URL("../skills/", import.meta.url));
 const sourceRoot = fileURLToPath(new URL("../", import.meta.url));
 export const specialties = [
-  "glisse",
   "frontend-design",
   "responsive-design",
   "anti-ai-slop",
@@ -206,6 +205,7 @@ export async function inspectSkills(host = "all", options = {}) {
         "references/frontend-shadcn.md",
         "references/website-art-direction.md",
         "references/portfolio-design.md",
+        "references/website-layouts.md",
         "references/backend-auth.md",
         "references/update.md",
         "installation.json",
