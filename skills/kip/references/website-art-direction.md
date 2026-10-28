@@ -1,46 +1,241 @@
-# Website design: Kip
+# Website design: Interactive indie craft (Bendy, Clucky, Keeby, Kip)
 
-Use Kip's own website as the default visual system for new non-portfolio websites and substantial redesigns. Portfolio websites use `portfolio-design.md`. Explicit briefs and established brand conventions take precedence; small edits preserve the surrounding design.
+Use this as Kip's default visual system and interaction specification for new non-portfolio websites, product landing pages, and substantial redesigns. Portfolio websites use `portfolio-design.md`. Explicit briefs and established brand conventions take precedence; small repairs preserve surrounding conventions.
 
-Extracted from `web/style.css`, `web/components/Hero.jsx`, `Header.jsx`, `FAQ.jsx`, `Closing.jsx`, and the home/docs pages in this repository. This reference is self-contained in installed copies; the source website is not required at runtime. Source inspection establishes design values and implemented controls, not proof of browser verification.
+This reference synthesizes the design and engineering patterns of viral, high-craft interactive indie applications—specifically **Bendy** (`trybendy.app`), **Clucky** (`tryclucky.com`), **Keeby** (`getkeeby.com`), and **Kip**'s own website. It teaches how to build websites that visitors do not just read, but *play with*.
 
-## Visual system
+---
 
-The character is friendly, calm, and practical: generous space, rounded readable typography, pale blue accents, and confident dark actions. Apply this system to the target content. The earlier studio references are no longer the default.
+## 1. The Core Philosophy: Playable Toy Over Passive Pitch
 
-| Role | Default |
-| --- | --- |
-| Typeface | Nunito, system-ui, sans-serif; load the real font with swap behavior |
-| Page / surface | `#f9f9f9` / `#ffffff` |
-| Ink / charcoal | `#202020` / `#303030` |
-| Muted text | `#686868` |
-| Quiet fill / border | `#eeeeee` / `#e2e2e2` |
-| Accent / stronger accent | `#93b4e8` / `#41699f` |
-| Accent surface | `#e8f0fb` |
-| Technical demonstration | `#0b0b0c`, raised `#111113`, light text `#e5e5e5` |
+Standard SaaS and corporate websites treat the landing page as a passive billboard: marketing adjectives, static screenshots, feature grids, and stock illustrations.
 
-Use semantic tokens. Pale blue supplies framing, selected surfaces, and large display emphasis; darken it when needed for readable text and control contrast. Kip also uses subtle gray `#999999`, but do not assume it passes for small text. Verify actual surface contrast. Adapt colors to an established identity while retaining coherent hierarchy. Kip's light page is the default; support dark mode when requested or already present with deliberate token mappings.
+**The interactive indie standard inverts this:**
+1. **The Hero is a Playable Toy:** The primary hero element is an in-browser, interactive simulation of the core product or mascot. Visitors immediately experience the app's tactile character before reading any sales pitch.
+   - *Bendy (`trybendy.app`):* A CSS 3D MacBook whose screen physically folds, tilts, blurs, and shades in real time as the visitor scrolls the page or drags a slider.
+   - *Keeby (`getkeeby.com`):* A live mechanical keyboard soundboard. Visitors click switches or press keys on their physical keyboard to trigger authentic spatial mechanical keystroke audio with a reactive camera-notch visualizer.
+   - *Clucky (`tryclucky.com`):* An expressive rooster mascot with a "Hey, click me!" callout. Clicking triggers multi-phase SVG flipbook animations (sleeping → shocked → waving → settling), plays randomized authentic rooster cluck audio, and turns interactive alarm dials linked to scroll.
+2. **Tactile Feedback:** Every interaction gives instant sensory feedback: physical CSS transforms, audio clicks/thocks, cursor bursts, or live counters.
+3. **Proof of Life:** Subtle live community counters (e.g., bends made, clucks triggered, keys typed) show active real-time engagement.
+4. **Honest Craft:** No stock photography or invented claims. Real looping `<video>` clips, interactive settings sliders, and transparent "Private by design / on-device" security cards.
 
-## Typography and layout
+---
 
-- Use Nunito with heavy 800-1000 headings, bold compact labels and controls, and quieter regular body copy. Reserve monospace for real technical content. Do not apply the portfolio's pixel font and uppercase mono labels here.
-- Marketing hero titles run roughly 3rem on phones to 4.5rem on wide screens, with about 1.02 line height and tight tracking. Section headings run about 1.875rem to 2.25rem. Body copy is about 0.875rem to 1rem with comfortable line height. Use bounded fluid sizes and line breaks suited to the actual words.
-- Use a centered shell up to 82.5rem (1320px), gutters about 1.5rem on phones and 3.5rem on desktop, and section block padding about 3.5rem to 5rem. Reading copy stays narrower than the shell.
-- A marketing hero can pair left-aligned copy and a clear primary action with a meaningful product demonstration on the right. Stack intentionally on phones. Without a real demonstration, use relevant media or a content-led composition.
-- Keep the header quiet: brand, a few links, and a dark primary action. Reflow narrow navigation while preserving destinations. Kip's header is in normal flow; sticky or floating navigation is a separate decision.
-- Vary sections by purpose: ruled fact rows, an asymmetric FAQ, useful examples or tools, and a softly filled closing invitation. Finish with a restrained aligned footer and working links. These are examples, not a required section list.
+## 2. Visual System & Design Tokens
 
-## Components and interactions
+The visual style is warm, tactile, and restrained: clean off-white surfaces, deep ink typography, generous corner radii, and pill-shaped interactive controls.
 
-- Primary buttons: dark ink fill, white text, full pill radius, bold small labels, approximately 3rem minimum height, and generous horizontal padding. Secondary actions use underlined text links with a small directional icon where useful.
-- Panels: white surfaces, thin light borders, 12-16px radii, and restrained shadows. Larger closing sections may use 24px radii. Cards express grouping or state rather than wrapping every sentence.
-- Forms: softly filled inputs, light borders, 8-12px radii, clear labels, and visible focus. Segmented controls use a pill track with a dark selected segment; selection changes real content and has accessible state.
-- Technical products can use a dark demonstration panel containing real code, commands, or a working example. Other industries need relevant evidence rather than decorative terminal windows.
-- Kip's mascot is a brand asset. Use original subject-specific artwork when useful; do not copy Kip's identity or give every site a mascot. Pale-blue framing can add personality without an illustration.
-- Motion explains interaction and stays interruptible. Do not copy continuous marquees or floating decoration into every site. Respect reduced motion and hover capability; repeated actions need immediate feedback.
+### Color Tokens
 
-## Working screens and verification
+| Role | Light Theme (Default) | Dark Theme (When Supported) | Usage |
+|---|---|---|---|
+| Page Background | `#f5f5f5` | `#0f0f12` | Main page canvas |
+| Surface / Cards | `#ffffff` | `#1a1a1f` | Elevated cards, stage panels, bento tiles |
+| Primary Ink | `#111111` | `#f0f0f2` | Headings, primary text, dark buttons |
+| Body / Charcoal | `#2e2e33` | `#c8c8cc` | Paragraph copy, list items |
+| Muted Text | `#6f6f73` | `#8a8a90` | Subtitles, labels, captions, metadata |
+| Faint / Hairlines | `#efefef` / `#e5e5e5` | `#26262c` / `#32323a` | Dividers, card borders, subtle outlines |
+| Highlight / Tint | `#fafafa` | `#222228` | Hover states, disabled tracks |
+| Live / Active Green | `#78907b` / `#2f9e5b` | `#8fa892` / `#5fd08a` | Live counter dot, active status indicator |
+| Warm Brand Accent | Contextual (e.g. soft blue `#93b4e8` or amber `#ff9500`) | Contextual | Selective brand highlights and interactive active states |
 
-Dashboards, docs, editors, and utilities retain these tokens, typography, and control character while prioritizing information density, clear state, and predictable navigation. Do not add a marketing hero to a working screen merely to reproduce Kip. Preserve the project's stack and component APIs.
+### Typography & Scale
 
-Implement working destinations, menus, forms, and selection states before ornament. Keep semantic landmarks, keyboard access, visible focus, and useful loading, empty, and error states. Inspect the rendered result at narrow and wide widths and affected intermediate breakpoints, with long content and zoom. Check wrapping, contrast, media quality, navigation clearance, and interaction states. Use Kip's responsive-design guidance for relevant checks and report browser verification gaps honestly.
+- **Typefaces:** Clean, modern geometric/humanist sans: Apple System (`-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display"`), Inter (`"InterVariable"`), or rounded friendly Nunito. Load real fonts with `display: swap`.
+- **Display Headings (`h1`):** 36px–48px (28px–34px on mobile), weight 500–700, line-height 1.1–1.15, tight letter-spacing (`-0.03em` to `-0.035em`), and `text-wrap: balance`. Keep headlines concise and descriptive ("Your desktop bends as you close the lid").
+- **Subheadings & Lede:** 18px–20px, line-height 1.4–1.5, letter-spacing `-0.015em`, color muted/charcoal, max measure `34ch`–`42ch`.
+- **Card Headings (`h2`, `h3`):** 18px–24px, weight 600, letter-spacing `-0.02em`.
+- **Body & Lists:** 14px–15px, line-height 1.5–1.6, weight 400–500.
+- **Micro-Labels & Meta:** 11px–13px, weight 500–600, letter-spacing `-0.01em`, often with `font-variant-numeric: tabular-nums` for counters, timers, and prices.
+
+### Shape & Geometry
+
+- **Pills (`border-radius: 999px`):** Primary action buttons, live counter badges, price chips, segmented filter controls, and status pills.
+- **Cards & Bento Tiles:** `14px`–`24px` corner radii with a 1px hairline border (`#efefef` or `#e5e5e5`) and soft, low-alpha ground shadows.
+- **Stage Width:** Focused single-column reading and interactive stage (`max-width: 640px` to `800px` centered), expanding to multi-column bento grids (`max-width: 1040px` to `1200px`) where feature comparisons or media tiles genuinely benefit.
+
+---
+
+## 3. The Five Core Interactive Patterns
+
+### Pattern A: The Playable Simulation Hero (CSS 3D / State Machine)
+
+Build a live, interactive CSS-based model or SVG state machine representing the product.
+
+#### Recipe: CSS 3D Laptop / Screen Tilt (Bendy style)
+Use container units (`cqw`, `cqh`) or proportional percentages so the device scales seamlessly to any viewport width:
+```html
+<div class="stage">
+  <div class="mac" id="mac">
+    <div class="lid" id="lid">
+      <div class="screen">
+        <div class="screen-art sharp">...</div>
+        <div class="screen-art blurred">...</div>
+        <div class="screen-shade" id="shade"></div>
+        <div class="notch"></div>
+      </div>
+    </div>
+    <div class="deck"><div class="lip"></div></div>
+  </div>
+  <p class="caption">Scroll. The screen bends, blurs and shades in real time.</p>
+</div>
+```
+```css
+.mac {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  perspective: 1000px;
+  position: relative;
+}
+.lid {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%;
+  transform: rotateX(calc(var(--bend-angle, 0deg)));
+  transition: transform 60ms linear;
+  will-change: transform;
+}
+.screen-shade {
+  position: absolute; inset: 0;
+  background: #000;
+  opacity: var(--shade-opacity, 0);
+  pointer-events: none;
+}
+```
+
+#### Recipe: Interactive Mascot / Character Flipbook (Clucky style)
+Pair an SVG sprite or frame sequence with state transitions:
+```tsx
+type MascotPhase = "sleeping" | "shocked" | "waving" | "settling";
+
+export function InteractiveMascot({ onInteract }: { onInteract: () => void }) {
+  const [phase, setPhase] = useState<MascotPhase>("sleeping");
+
+  const handleClick = () => {
+    onInteract();
+    if (phase === "sleeping" || phase === "settling") {
+      setPhase("shocked");
+    } else if (phase === "shocked") {
+      setPhase("waving");
+    }
+  };
+
+  return (
+    <button type="button" className="mascot-button" onClick={handleClick} aria-label="Interact with mascot">
+      <div className={`mascot-art is-${phase}`}>
+        {/* Flipbook SVG frames or animated vector elements */}
+      </div>
+      <span className="click-prompt">Hey, click me!</span>
+    </button>
+  );
+}
+```
+
+---
+
+### Pattern B: Tactile Audio & Sound Design
+
+Sound turns visual interactions into memorable physical sensations. Follow these strict engineering rules:
+1. **User-Gesture Bound:** Never play audio unprompted or on scroll alone. Audio plays on pointer clicks, button presses, or keydown events.
+2. **Audio Pooling & Randomization:** Do not replay a single identical audio file. Pool 4–8 variations (e.g. `cluck-01.mp3` through `cluck-08.mp3` or distinct switch keystrokes) to produce natural acoustic variance:
+```ts
+class SoundPool {
+  private audioList: HTMLAudioElement[] = [];
+  private lastIndex = -1;
+
+  constructor(sources: string[]) {
+    if (typeof window !== "undefined") {
+      this.audioList = sources.map((src) => {
+        const a = new Audio(src);
+        a.preload = "auto";
+        return a;
+      });
+    }
+  }
+
+  playRandom() {
+    if (!this.audioList.length) return;
+    let idx = Math.floor(Math.random() * this.audioList.length);
+    if (idx === this.lastIndex && this.audioList.length > 1) {
+      idx = (idx + 1) % this.audioList.length;
+    }
+    this.lastIndex = idx;
+    const sound = this.audioList[idx];
+    sound.currentTime = 0;
+    sound.play().catch(() => {}); // Safely swallow browser policy blocks
+  }
+}
+```
+3. **Physical Keystroke Listeners (Keeby style):** For keyboard, audio, or utility apps, attach global or focused `window.addEventListener("keydown", ...)` handlers so visitors typing on their laptop keyboard instantly hear the app's sound design.
+
+---
+
+### Pattern C: Scroll-Linked Scrubbing & Dials
+
+Use smooth scrolling (e.g. `lenis`) and bind the scroll progress to numerical values, rotary dials, or 3D rotations:
+```ts
+// Calculate normalized scroll progress: 0.0 -> 1.0
+const scrollY = window.scrollY;
+const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+const progress = maxScroll > 0 ? Math.min(1, Math.max(0, scrollY / maxScroll)) : 0;
+
+// Apply to CSS variables without DOM thrashing
+element.style.setProperty("--bend-angle", `${progress * 65}deg`);
+element.style.setProperty("--shade-opacity", `${progress * 0.7}`);
+```
+For rotary dials (hours, minutes, angle degrees), render numbers along an arc using trigonometric positioning (`R + M * cos(angle)`, `R + M * sin(angle)`) so the dial physically rotates as users scroll or drag.
+
+---
+
+### Pattern D: Live Community Counter Pill
+
+Place a live global counter pill in the top-right corner (or fixed bottom on phones) to create shared community atmosphere:
+```html
+<p class="live-counter" title="Total interactions made by visitors">
+  <span class="status-dot"></span>
+  <strong>48,219</strong>
+  <span>bends and counting</span>
+</p>
+```
+- **Batched Persistence:** When a visitor clicks, increment the counter optimistically in the UI. Queue increments and flush every 1–2 seconds via a batched `POST` request with `keepalive: true` (ensuring completion on page navigation or tab close).
+- **Graceful Fallback:** If the API is unreachable, display a sensible formatted baseline without showing error states to visitors.
+
+---
+
+### Pattern E: Bento Feature Cards & Looping Uncut Media
+
+Replace generic stock photography and multi-column marketing grids with focused **Bento Grids**:
+1. **Uncut Looping Video:** Use silent, looping MP4/WebM videos (`autoplay muted loop playsinline preload="metadata"`) demonstrating real features recorded on real hardware (no fake device mockups, no video cuts).
+2. **Interactive Controls in Cards:** Place real working controls inside bento cards: switch style pickers, slider adjustments, sound test buttons.
+3. **Privacy & Architecture Callout:** Dedicated bento card for "On-device / No account / Private by design" explaining offline operation, security boundaries, and licensing terms plainly.
+
+---
+
+## 4. Building the Purchase & Action Row
+
+Indie websites use compact, high-converting action rows:
+- **Pill CTA Button:** Dark ink button with high contrast, containing the action verb, an arrow icon, and an embedded price badge:
+  ```html
+  <a href="/buy" class="button-cta">
+    <span>Buy Bendy</span>
+    <span class="amount">$4.99</span>
+  </a>
+  ```
+- **Bonus / Cross-Sell Badge:** A small secondary card beside the button highlighting an indie bundle or bonus perk (e.g., *"Get Keeby for free too! A license code lands in your inbox right after purchase"*).
+- **Clear System Requirements:** Single clean note under the button specifying required OS version, compatible chips, and permissions.
+
+---
+
+## 5. Accessibility, Motion & Quality Safeguards
+
+1. **`prefers-reduced-motion` Contract:**
+   - Any continuous rotation, 3D device tilt, scroll-scrubbing angle, or flipbook animation must be disabled when `prefers-reduced-motion: reduce` is detected.
+   - Fall back to a sharp, beautiful static poster illustration or neutral resting state.
+2. **Audio Consideration:**
+   - All sound effects must be user-initiated (never autoplay on page load).
+   - Audio failures must be caught cleanly (`.catch(() => {})`) to avoid uncaught promise exceptions in browsers with strict audio restrictions.
+3. **Responsive Reflow:**
+   - On desktop (≥900px): Fixed or absolute live counter in the top-right; centered stage; side-by-side purchase row.
+   - On mobile (≤900px): Live counter moves to a floating bottom pill; stage padding scales to 16px–24px; purchase row stacks vertically with full-width tap targets (≥44px height); 3D transforms scale proportionally.
+4. **Browser Inspection:**
+   - Always verify the interactive website rendered in actual browser viewports at desktop (1280px), tablet (768px), and phone (390px) widths before declaring the implementation complete.
