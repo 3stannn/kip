@@ -45,11 +45,11 @@ Keep secrets and authorization enforcement on the server. Treat client checks as
 
 ## Icons
 
-Read [frontend-icons.md](frontend-icons.md) only for this stack or requested integration. In the source checkout, use `../kip/references/frontend-icons.md`.
+Read [frontend-icons.md](../kip/references/frontend-icons.md) only for this stack or requested integration.
 
 ## When the project uses Tailwind CSS
 
-Read [frontend-tailwind.md](frontend-tailwind.md) only for this stack or requested integration. In the source checkout, use `../kip/references/frontend-tailwind.md`.
+Read [frontend-tailwind.md](../kip/references/frontend-tailwind.md) only for this stack or requested integration.
 
 ## Verification
 

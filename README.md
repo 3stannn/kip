@@ -106,7 +106,7 @@ In every host, a natural language request also works:
 Use Kip to fix mobile overflow in the dashboard.
 ```
 
-Kip's metadata permits implicit selection for staged coding work across specialties. The host decides when to select it; explicit invocation is the reliable choice. `/kip` is an invocation intent understood by the instructions when passed through to the model, but registering an arbitrary `/kip` command in Codex is controlled by Codex. Use `$kip` there if `/kip` is not offered.
+Kip supports both implicit activation for suitable multi-step coding work and explicit invocation through `$kip`, `/kip`, or a natural language Kip request. Both paths use the same worker-and-reviewer workflow for actionable tasks; neither requires an extra 'use subagents' instruction. The host decides whether to select the skill automatically; explicit invocation is the reliable choice. `/kip` is an invocation intent understood by the instructions when passed through to the model, but registering an arbitrary `/kip` command in Codex is controlled by Codex. Use `$kip` there if `/kip` is not offered.
 
 Kip interprets the purpose and instructions, restores the project profile, inspects the relevant project context, loads only the supporting guidance needed, then performs the work with the current host's tools and permissions. It supports frontend design, responsive design, frontend, backend, security, testing, token efficiency, and refinement of code and copy. Supporting skills are namespaced `kip-*` and apply to Kip tasks. Conditional framework references load only when needed. A request for a plan produces a plan; an implementation request continues through changes and appropriate verification.
 
@@ -114,7 +114,7 @@ Kip adds no authentication step. The application you already use retains its own
 
 ## Website design direction
 
-Kip's website design guidance favors strong typography, substantial imagery, varied editorial layouts, and selective graphic accents when the brief leaves room. The [website art direction reference](skills/kip/references/website-art-direction.md) captures the supplied studio examples and explains how to translate them to each brand, with responsive and rendered-page checks. Existing identities and explicit briefs take precedence.
+Kip's bundled frontend design guidance defaults to [Bryl Lim minimal design for portfolio websites](skills/kip/references/portfolio-design.md) and [Kip's own website style for other websites](skills/kip/references/website-art-direction.md): Nunito typography, off-white surfaces, soft blue accents, dark pill actions, and rounded panels. Explicit briefs and existing brand conventions take precedence. These references ship inside Kip without separate design skills; refresh an existing installation to receive them.
 
 ## Glisse Liquid Glass interfaces
 
@@ -146,7 +146,7 @@ Use `/kip` instead of `$kip` in Claude Code and Antigravity. These are chat inst
 
 Seven presets run from most to least expensive: **Maximum, Premium, Strong lead, Balanced, Value, Budget, Minimum cost**. Select by slug (`strong-lead`, `minimum-cost`) or number 1–7. Each specifies settings for a root, two workers, and one independent reviewer, including model and thinking effort. See the [complete profile table](skills/kip/references/profiles.md); Value is the recommended starting point.
 
-Select the root model and thinking effort in your host app. Invoking Kip for an actionable task requests orchestration; no extra “use subagents” phrase is needed. An explicit or remembered profile assigns two workers and one independent reviewer. Without a profile, Kip uses host-inherited settings for at least one worker and an independent reviewer. Assign bounded scopes, serialize shared-file edits, and prohibit recursive delegation. A plan or review task can delegate analysis but stays read-only. Profile list/show/select/reset and update commands alone do not launch a coding team.
+Select the root model and thinking effort in your host app. Whether the host selects Kip implicitly or the user invokes it explicitly, an actionable task uses host-native workers and an independent reviewer; no extra “use subagents” phrase is needed. An explicit or remembered profile assigns two workers and one independent reviewer. Without a profile, Kip uses host-inherited settings for at least one worker and an independent reviewer. Assign bounded scopes, serialize shared-file edits, and prohibit recursive delegation. A plan or review task can delegate analysis but stays read-only. Profile list/show/select/reset and update commands alone do not launch a coding team.
 
 An explicit request to work solo or use a smaller team overrides the default. When capacity is limited, Kip stages the roles. If required delegation is unavailable or blocked by higher-priority limits, Kip reports the blocker and stops affected execution; it does not automatically implement alone or claim agents ran. Unsupported model settings are disclosed. Profiles do not add OpenAI models to Claude Code or Antigravity. Actual cost depends on task usage and host billing.
 

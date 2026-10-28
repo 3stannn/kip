@@ -20,6 +20,46 @@ async function fixture(t) {
   return { home, codexHome: path.join(home, ".codex") };
 }
 
+async function assertLocalMarkdownLinks(root) {
+  let checked = 0;
+  async function scan(directory) {
+    for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
+      if (entry.name === "node_modules" || entry.name === ".git") continue;
+      const file = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        await scan(file);
+      } else if (entry.isFile() && entry.name.endsWith(".md")) {
+        const markdown = await fs.readFile(file, "utf8");
+        for (const [, href] of markdown.matchAll(/\[[^\]]*\]\(([^)\s]+)\)/g)) {
+          if (/^[a-z][a-z0-9+.-]*:|^#|^\/\//i.test(href)) continue;
+          const localPath = decodeURIComponent(href.split(/[?#]/, 1)[0]);
+          const resolved = path.resolve(path.dirname(file), localPath);
+          const relative = path.relative(root, resolved);
+          assert.ok(
+            relative !== ".." &&
+              !relative.startsWith(`..${path.sep}`) &&
+              !path.isAbsolute(relative),
+            `${file}: link escapes the skill bundle: ${href}`,
+          );
+          assert.ok(
+            (await fs.stat(resolved)).isFile(),
+            `${file}: missing local Markdown target: ${href}`,
+          );
+          checked++;
+        }
+      }
+    }
+  }
+  await scan(root);
+  assert.ok(checked > 0, `No local Markdown links checked under ${root}`);
+}
+
+test("source skill Markdown links resolve within the skill bundle", async () => {
+  await assertLocalMarkdownLinks(
+    fileURLToPath(new URL("../skills/", import.meta.url)),
+  );
+});
+
 test("installs self-contained skills for every host without external dependencies", async (t) => {
   const options = await fixture(t);
   const targets = await installSkills("all", options);
@@ -34,18 +74,26 @@ test("installs self-contained skills for every host without external dependencie
         "utf8",
       ),
     );
-    for (const name of specialties) {
+    for (const name of ["portfolio-design", "website-art-direction"]) {
       assert.equal(
         await fs.readFile(
           path.join(target, "references", `${name}.md`),
           "utf8",
         ),
         await fs.readFile(
-          new URL(`../skills/kip-${name}/SKILL.md`, import.meta.url),
+          new URL(`../skills/kip/references/${name}.md`, import.meta.url),
           "utf8",
         ),
       );
     }
+    for (const name of specialties) {
+      const guidance = await fs.readFile(
+        path.join(target, "references", `${name}.md`),
+        "utf8",
+      );
+      assert.match(guidance, new RegExp(`^name: kip-${name}$`, "m"));
+    }
+    await assertLocalMarkdownLinks(target);
     assert.ok((await fs.lstat(target)).isDirectory());
   }
 });
@@ -57,6 +105,15 @@ test("doctor detects a missing profile catalog in an installed skill", async (t)
   const [inspection] = await inspectSkills("claude", options);
   assert.equal(inspection.ready, false);
   assert.deepEqual(inspection.missing, ["references/profiles.md"]);
+});
+
+test("doctor detects missing portfolio design guidance", async (t) => {
+  const options = await fixture(t);
+  const [target] = await installSkills("claude", options);
+  await fs.rm(path.join(target, "references/portfolio-design.md"));
+  const [inspection] = await inspectSkills("claude", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual(inspection.missing, ["references/portfolio-design.md"]);
 });
 
 test("doctor detects missing Glisse guidance", async (t) => {

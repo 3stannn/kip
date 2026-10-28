@@ -1,6 +1,6 @@
 # Kip orchestration contract
 
-Kip is the root coordinator of a delegated workflow. For an actionable Kip task, dispatch subagents through the host's native tools without requesting another delegation phrase. This includes build, fix, planning, and review requests, with or without a profile. Do not treat “the user did not explicitly say subagents” as a reason to work alone.
+Kip is the root coordinator of a delegated workflow. For actionable work, dispatch subagents through the host's native tools whether Kip was selected implicitly by the host or explicitly invoked by the user. Both activation paths use the same worker/reviewer contract without requesting another delegation phrase or a Kip command. This includes build, fix, planning, and review requests, with or without a profile. Do not treat “the user did not explicitly say subagents” as a reason to work alone.
 
 ## Team and task scope
 

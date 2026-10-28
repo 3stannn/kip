@@ -24,7 +24,7 @@ export function FAQ() {
           ],
           [
             "Can it activate automatically?",
-            "Yes, the skill can activate for Kip requests and continuations of an active Kip task. Your host decides when the description matches. You can always invoke it explicitly or say ‘Use Kip to …’.",
+            "Yes. Your host can select Kip automatically for suitable multi-step coding work, even when you do not name Kip. Automatic activation and explicit invocation both use workers and an independent reviewer for actionable tasks; no extra ‘use subagents’ instruction is needed. Your host decides when the skill matches. You can also invoke it explicitly or say ‘Use Kip to …’.",
           ],
           [
             "Does Kip change my project?",

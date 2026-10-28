@@ -79,9 +79,18 @@ async function copyBundle(target) {
   await fs.cp(path.join(bundle, "kip"), target, { recursive: true });
   for (const name of specialties) {
     await fs.mkdir(path.join(target, "references"), { recursive: true });
-    await fs.copyFile(
+    const guidance = await fs.readFile(
       path.join(bundle, `kip-${name}`, "SKILL.md"),
+      "utf8",
+    );
+    // Specialty guidance moves beside these references in the installed bundle.
+    const installedGuidance = guidance.replace(
+      /(\]\()\.\.\/kip\/references\/(?=[^)\s]+\))/g,
+      "$1",
+    );
+    await fs.writeFile(
       path.join(target, "references", `${name}.md`),
+      installedGuidance,
     );
   }
   await fs.writeFile(
@@ -194,6 +203,7 @@ export async function inspectSkills(host = "all", options = {}) {
         "references/frontend-icons.md",
         "references/frontend-shadcn.md",
         "references/website-art-direction.md",
+        "references/portfolio-design.md",
         "references/backend-auth.md",
         "references/update.md",
         "installation.json",

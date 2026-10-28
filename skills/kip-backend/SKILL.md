@@ -13,7 +13,7 @@ Define input, output, errors, and authorization at each endpoint. Validate input
 
 ## When the project uses Better Auth
 
-Read [backend-auth.md](backend-auth.md) only for this stack or requested integration. In the source checkout, use `../kip/references/backend-auth.md`.
+Read [backend-auth.md](../kip/references/backend-auth.md) only for this stack or requested integration.
 
 ## Kip maintenance
 

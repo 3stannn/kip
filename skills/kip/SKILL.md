@@ -1,15 +1,15 @@
 ---
 name: kip
-description: Orchestrate Kip coding tasks through workers and an independent reviewer, using remembered project profiles and focused guidance. Use when the user invokes Kip or continues an active Kip task.
+description: Orchestrate staged coding work through workers and an independent reviewer, using remembered project profiles and focused guidance. Use for build, fix, planning, and review tasks that benefit from delegated implementation or analysis and independent verification, when explicitly invoked as Kip, or when continuing an active Kip task. Supports implicit host selection without a Kip command.
 ---
 
 # Kip
 
 Use the current chat's tools, permissions, and project conventions. Kip adds no account, API key, model service, or separate runner. Do not launch the legacy runner or change host model settings.
 
-Kip is an orchestrator. Invoking Kip for actionable work requests subagents; never require the user to add “use subagents.” A selected or task-specific profile supplies the team's model and effort settings. Without a profile, delegate with host-inherited settings. Profile display/selection/reset and installation/update commands without a coding task are administrative operations and do not start a coding team. Follow explicit user instructions to work solo and higher-priority host limits. If the host cannot delegate, report the blocker rather than automatically implementing alone.
+Kip is an orchestrator. Whether the host selects this skill implicitly for a matching task or the user invokes it explicitly, actionable work uses native subagents under the same orchestration contract. Never require a Kip command or an extra “use subagents” phrase after implicit activation, and never reduce implicit activation to root-only implementation. The host controls skill selection; enabling implicit invocation makes Kip eligible, not guaranteed to activate for every coding request. A selected or task-specific profile supplies the team's model and effort settings. Without a profile, delegate with host-inherited settings. Profile display/selection/reset and installation/update commands without a coding task are administrative operations and do not start a coding team. Follow explicit user instructions to work solo and higher-priority host limits. If the host cannot delegate, report the blocker rather than automatically implementing alone.
 
-Interpret `$kip <purpose> <task>`, `/kip <purpose> <task>`, and “use Kip to …” as this workflow. Continue an active Kip task when the user steers it. With no task or command, ask for an outcome without editing files.
+Interpret `$kip <purpose> <task>`, `/kip <purpose> <task>`, and “use Kip to …” as explicit invocation of this workflow. For implicit activation, infer the requested purpose and outcome from the coding request without rewriting it as a command or expanding its scope. Continue an active Kip task when the user steers it. With no task or command, ask for an outcome without editing files.
 
 ## Commands
 
@@ -38,4 +38,4 @@ Interpret `$kip <purpose> <task>`, `/kip <purpose> <task>`, and “use Kip to �
 
 Supporting guidance belongs to Kip. Delegation follows this orchestration contract and grants no authority for unrelated work, external actions, or framework migrations. Keep profile state and task handoffs separate; never persist prompts, credentials, or agent transcripts as profile memory.
 
-For a new website or substantial visual redesign, load frontend-design before choosing a layout. Its website reference carries the user's preferred visual direction; apply it when the brand and brief leave room. Give that guidance to the assigned frontend worker without adding an extra specialist solely for the skill name. Complete the page's composition and real interactions, then inspect the rendered result using the available browser tools.
+For a new website or substantial visual redesign, load frontend-design before choosing a layout. Its portfolio reference absorbs Bryl Lim's minimal design as the portfolio default; its website reference captures Kip's own website style as the default for other websites. Explicit briefs and existing brand conventions take precedence. Load only the selected reference and give it to the frontend worker. Give that guidance to the assigned frontend worker without adding an extra specialist solely for the skill name. Complete the page's composition and real interactions, then inspect the rendered result using the available browser tools.

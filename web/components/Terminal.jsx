@@ -38,19 +38,19 @@ const demos = [
 export function Terminal({ active }) {
   const demo = demos[active];
   return (
-    <div className="terminal-card relative z-10 w-full max-w-[470px]">
+    <div className="terminal-card relative z-10 w-full max-w-117.5">
       <WindowChrome title={demo.label} />
-      <div className="min-h-[285px] px-4 py-5 font-mono text-[10px] leading-6 sm:px-5 sm:text-[11px]">
+      <div className="min-h-71.25 px-4 py-5 font-mono text-[10px] leading-6 sm:px-5 sm:text-[11px]">
         <p className="mb-3 text-terminal-muted">
           # example — nothing runs on this page
         </p>
-        <p className="break-words">
+        <p className="wrap-break-word">
           <span className="text-terminal-subtle">
             {active === 0 ? "terminal > " : "you > "}
           </span>
           {demo.command}
         </p>
-        <div className="mt-4 min-h-[145px]" aria-live="polite">
+        <div className="mt-4 min-h-36.25" aria-live="polite">
           {demo.output.map((line, i) => (
             <p key={i}>{line || "\u00a0"}</p>
           ))}

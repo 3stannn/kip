@@ -1,41 +1,46 @@
-# Kip website art direction
+# Website design: Kip
 
-Use this reference for new marketing websites, portfolios, studios, and expressive brand pages, or when the user asks for this direction. The user's supplied DOW Studio screenshots establish a preference for confident typography, generous composition, substantial imagery, and deliberate personality. Translate those qualities to the target brand. Existing identity, an explicit brief, and the needs of a working application take precedence.
+Use Kip's own website as the default visual system for new non-portfolio websites and substantial redesigns. Portfolio websites use `portfolio-design.md`. Explicit briefs and established brand conventions take precedence; small edits preserve the surrounding design.
 
-## What the references demonstrate
+Extracted from `web/style.css`, `web/components/Hero.jsx`, `Header.jsx`, `FAQ.jsx`, `Closing.jsx`, and the home/docs pages in this repository. This reference is self-contained in installed copies; the source website is not required at runtime. Source inspection establishes design values and implemented controls, not proof of browser verification.
 
-The six supplied desktop screenshots show a coherent page with distinct compositions:
+## Visual system
 
-- A light hero dominated by a huge, heavy condensed headline. A quiet navigation, short supporting paragraph, and compact actions leave the headline in control. Colorful tilted sticker graphics punctuate the mostly monochrome field.
-- A project gallery with large two-column image surfaces, strong black frames, small captions, and restrained service tags. The work occupies most of each surface; decoration does not replace the project imagery.
-- An asymmetric testimonial composition: a narrow context column and a much wider, oversized quote with a small attribution.
-- A dark studio section with a human cutout beside large editorial text and quieter supporting facts.
-- Three aligned pricing panels on a dark field. A light middle panel establishes emphasis; prices, scope, and actions share a clear comparison structure.
-- A nearly edge-to-edge typographic closing invitation above a ruled, multi-column footer. The footer feels designed as part of the page.
+The character is friendly, calm, and practical: generous space, rounded readable typography, pale blue accents, and confident dark actions. Apply this system to the target content. The earlier studio references are no longer the default.
 
-A compact floating navigation appears in several screenshots. Static images do not establish its scroll behavior, hover states, timing, or the presence of text-reveal animation. Treat motion as a new design decision and verify it when implemented. Browser tabs, address bars, and third-party award ribbons are outside the requested page design.
+| Role | Default |
+| --- | --- |
+| Typeface | Nunito, system-ui, sans-serif; load the real font with swap behavior |
+| Page / surface | `#f9f9f9` / `#ffffff` |
+| Ink / charcoal | `#202020` / `#303030` |
+| Muted text | `#686868` |
+| Quiet fill / border | `#eeeeee` / `#e2e2e2` |
+| Accent / stronger accent | `#93b4e8` / `#41699f` |
+| Accent surface | `#e8f0fb` |
+| Technical demonstration | `#0b0b0c`, raised `#111113`, light text `#e5e5e5` |
 
-## Translate the direction
+Use semantic tokens. Pale blue supplies framing, selected surfaces, and large display emphasis; darken it when needed for readable text and control contrast. Kip also uses subtle gray `#999999`, but do not assume it passes for small text. Verify actual surface contrast. Adapt colors to an established identity while retaining coherent hierarchy. Kip's light page is the default; support dark mode when requested or already present with deliberate token mappings.
 
-Before implementation, record a short decision set: audience and primary action, page argument, type roles, palette, grid, available imagery, and one recurring visual motif. Use the supplied reference to decide relationships and hierarchy; create original copy, assets, and composition for the actual product. Do not copy the studio's logo, claims, testimonials, prices, location, or project portfolio.
+## Typography and layout
 
-For an open marketing brief, start with these preferences:
+- Use Nunito with heavy 800-1000 headings, bold compact labels and controls, and quieter regular body copy. Reserve monospace for real technical content. Do not apply the portfolio's pixel font and uppercase mono labels here.
+- Marketing hero titles run roughly 3rem on phones to 4.5rem on wide screens, with about 1.02 line height and tight tracking. Section headings run about 1.875rem to 2.25rem. Body copy is about 0.875rem to 1rem with comfortable line height. Use bounded fluid sizes and line breaks suited to the actual words.
+- Use a centered shell up to 82.5rem (1320px), gutters about 1.5rem on phones and 3.5rem on desktop, and section block padding about 3.5rem to 5rem. Reading copy stays narrower than the shell.
+- A marketing hero can pair left-aligned copy and a clear primary action with a meaningful product demonstration on the right. Stack intentionally on phones. Without a real demonstration, use relevant media or a content-led composition.
+- Keep the header quiet: brand, a few links, and a dark primary action. Reflow narrow navigation while preserving destinations. Kip's header is in normal flow; sticky or floating navigation is a separate decision.
+- Vary sections by purpose: ruled fact rows, an asymmetric FAQ, useful examples or tools, and a softly filled closing invitation. Finish with a restrained aligned footer and working links. These are examples, not a required section list.
 
-- **Type leads.** Choose a distinctive display face with suitable weight and width, paired with a readable text face. Confirm the font exists and its license permits use. Give the main statement enough scale to shape the viewport; supporting text should remain visibly subordinate. Choose line breaks from the words and available width, not arbitrary emphasis spans. Avoid stretching a normal font with transforms to imitate a condensed face.
-- **Contrast creates hierarchy.** Use a disciplined neutral foundation and a small purposeful accent vocabulary. Light/dark section changes can mark a change in the story. Another brand may call for a different palette; black and white are a reference choice, not a compulsory theme.
-- **Composition changes with content.** Alternate a strong statement, immersive work, asymmetric evidence, and a clear invitation when the material warrants them. Share alignment and spacing rules across sections without turning them all into the same centered heading and three-card grid. Large margins must frame something worth seeing.
-- **Work has visual weight.** Use large, carefully cropped real project images, product views, or relevant photography. Distinguish an actual case study from a concept. If assets are missing, choose a content-led composition or clearly labeled representative media; do not fill a portfolio with fabricated client work or empty rectangles.
-- **Personality is concentrated.** A small family of custom stickers, cutouts, or graphic marks can bring warmth to disciplined typography. Tie it to the brand, keep it secondary, and leave clear reading and interaction space. Stickers may use intentional borders, gloss, shadow, or rotation; those treatments belong to that motif rather than every component.
-- **The close matters.** Give the final invitation and footer their own composition, useful links, and a working contact path. Do not finish an expressive page with an unrelated boilerplate footer.
+## Components and interactions
 
-This is a vocabulary, not a required section list. A site without real testimonials or pricing should use other relevant evidence. A quiet legal service, a museum, and a playful studio should not emerge as recolored copies of the same template.
+- Primary buttons: dark ink fill, white text, full pill radius, bold small labels, approximately 3rem minimum height, and generous horizontal padding. Secondary actions use underlined text links with a small directional icon where useful.
+- Panels: white surfaces, thin light borders, 12-16px radii, and restrained shadows. Larger closing sections may use 24px radii. Cards express grouping or state rather than wrapping every sentence.
+- Forms: softly filled inputs, light borders, 8-12px radii, clear labels, and visible focus. Segmented controls use a pill track with a dark selected segment; selection changes real content and has accessible state.
+- Technical products can use a dark demonstration panel containing real code, commands, or a working example. Other industries need relevant evidence rather than decorative terminal windows.
+- Kip's mascot is a brand asset. Use original subject-specific artwork when useful; do not copy Kip's identity or give every site a mascot. Pale-blue framing can add personality without an illustration.
+- Motion explains interaction and stays interruptible. Do not copy continuous marquees or floating decoration into every site. Respect reduced motion and hover capability; repeated actions need immediate feedback.
 
-## Implement and inspect
+## Working screens and verification
 
-Use the target stack. Familiar components can supply semantics and behavior while the page gets its own composition. Define shared type, spacing, surface, border, and motion values; avoid uncoordinated one-off overrides.
+Dashboards, docs, editors, and utilities retain these tokens, typography, and control character while prioritizing information density, clear state, and predictable navigation. Do not add a marketing hero to a working screen merely to reproduce Kip. Preserve the project's stack and component APIs.
 
-Keep display text as real text. Use bounded fluid sizes, content-aware wrapping, and narrower-screen compositions. Overlays and decorative media must not block links, text selection, or focus. Give floating navigation scroll clearance and safe-area spacing; simplify it on narrow screens rather than covering content. Reserve media dimensions and load the intended fonts before judging line breaks.
-
-Make project links, menus, pricing actions, contact controls, and any quote navigation work. Use accessible controls and honest destinations. Do not add a carousel or scroll choreography just because a static reference suggests one. Where motion helps, prefer transforms and opacity, support reduced motion, and keep essential text readable without animation or JavaScript.
-
-Inspect the rendered page at a representative desktop width, a narrow phone width, and affected intermediate breakpoints. Compare the full-page rhythm as well as individual sections. Check type scale and line breaks, real image quality, light/dark transitions, focused controls, floating navigation overlap, footer quality, overflow, and reduced motion. Correct the largest visible mismatch with the chosen direction, inspect again, and stop when the brief and checks are satisfied. Report any browser verification gap honestly; code compilation alone cannot establish visual quality.
+Implement working destinations, menus, forms, and selection states before ornament. Keep semantic landmarks, keyboard access, visible focus, and useful loading, empty, and error states. Inspect the rendered result at narrow and wide widths and affected intermediate breakpoints, with long content and zoom. Check wrapping, contrast, media quality, navigation clearance, and interaction states. Use Kip's responsive-design guidance for relevant checks and report browser verification gaps honestly.
