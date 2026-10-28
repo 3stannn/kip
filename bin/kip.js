@@ -22,6 +22,7 @@ Switch profiles in chat (use /kip outside Codex):
   $kip profile reset
   $kip update
 Profiles remember project settings across chats in .kip/profile.json.
+The seven profile names use native models for Codex, Claude Code, or Antigravity.
 Actionable Kip tasks use subagents automatically; no extra delegation phrase is needed.
 An active profile assigns two workers and an independent reviewer.
 Without a profile, use host-inherited settings for a worker and reviewer.

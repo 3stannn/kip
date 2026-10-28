@@ -74,7 +74,12 @@ test("installs self-contained skills for every host without external dependencie
         "utf8",
       ),
     );
-    for (const name of ["portfolio-design", "website-art-direction"]) {
+    for (const name of [
+      "portfolio-design",
+      "website-art-direction",
+      "orchestration-claude",
+      "orchestration-antigravity",
+    ]) {
       assert.equal(
         await fs.readFile(
           path.join(target, "references", `${name}.md`),
@@ -105,6 +110,25 @@ test("doctor detects a missing profile catalog in an installed skill", async (t)
   const [inspection] = await inspectSkills("claude", options);
   assert.equal(inspection.ready, false);
   assert.deepEqual(inspection.missing, ["references/profiles.md"]);
+});
+
+test("doctor detects missing host orchestration adapters", async (t) => {
+  for (const host of ["claude", "antigravity"]) {
+    await t.test(host, async (t) => {
+      const options = await fixture(t);
+      const targets = await installSkills(host, options);
+      const reference = `references/orchestration-${host}.md`;
+      for (const target of targets) {
+        await fs.rm(path.join(target, reference));
+      }
+      const inspections = await inspectSkills(host, options);
+      assert.equal(inspections.length, targets.length);
+      for (const inspection of inspections) {
+        assert.equal(inspection.ready, false);
+        assert.deepEqual(inspection.missing, [reference]);
+      }
+    });
+  }
 });
 
 test("doctor detects missing portfolio design guidance", async (t) => {
@@ -151,7 +175,71 @@ test("conflicts preserve existing content and prevent partial installation", asy
   assert.equal((await inspectSkills("codex", options))[0].ready, false);
 });
 
-test("CLI installs and diagnoses offline without Codex on PATH or credentials", async (t) => {
+test("CLI installs and diagnoses each host offline without host binaries or credentials", async (t) => {
+  for (const host of ["codex", "claude", "antigravity"]) {
+    await t.test(host, async (t) => {
+      const options = await fixture(t);
+      const env = {
+        HOME: options.home,
+        USERPROFILE: options.home,
+        CODEX_HOME: options.codexHome,
+        PATH: "",
+      };
+      const args = ["--host", host];
+      await execute(process.execPath, [cli, "install", ...args], {
+        env,
+        cwd: options.home,
+      });
+      const { stdout } = await execute(
+        process.execPath,
+        [cli, "doctor", ...args],
+        {
+          env,
+          cwd: options.home,
+        },
+      );
+      const inspections = JSON.parse(stdout);
+      const expectedTargets = {
+        codex: [
+          path.join(options.codexHome, "skills", "kip"),
+          path.join(options.home, ".agents", "skills", "kip"),
+        ],
+        claude: [path.join(options.home, ".claude", "skills", "kip")],
+        antigravity: [
+          path.join(options.home, ".gemini", "config", "skills", "kip"),
+          path.join(
+            options.home,
+            ".gemini",
+            "antigravity-cli",
+            "skills",
+            "kip",
+          ),
+        ],
+      };
+      assert.deepEqual(
+        inspections.map((entry) => entry.path),
+        expectedTargets[host],
+      );
+      assert.ok(inspections.every((entry) => entry.ready));
+      for (const otherHost of ["codex", "claude", "antigravity"].filter(
+        (candidate) => candidate !== host,
+      )) {
+        assert.ok(
+          (await inspectSkills(otherHost, options)).every(
+            (entry) => !entry.ready,
+          ),
+        );
+      }
+      await fs.rm(path.join(inspections[0].path, "references/frontend.md"));
+      await assert.rejects(
+        execute(process.execPath, [cli, "doctor", ...args], { env }),
+        (error) => error.code === 1 && error.stdout.includes('"ready": false'),
+      );
+    });
+  }
+});
+
+test("CLI rejects legacy runner commands without host binaries or credentials", async (t) => {
   const options = await fixture(t);
   const env = {
     HOME: options.home,
@@ -159,23 +247,6 @@ test("CLI installs and diagnoses offline without Codex on PATH or credentials", 
     CODEX_HOME: options.codexHome,
     PATH: "",
   };
-  const args = ["--host", "codex"];
-  await execute(process.execPath, [cli, "install", ...args], {
-    env,
-    cwd: options.home,
-  });
-  const { stdout } = await execute(process.execPath, [cli, "doctor", ...args], {
-    env,
-    cwd: options.home,
-  });
-  assert.ok(JSON.parse(stdout).every((entry) => entry.ready));
-  await fs.rm(
-    path.join(options.codexHome, "skills/kip/references/frontend.md"),
-  );
-  await assert.rejects(
-    execute(process.execPath, [cli, "doctor", ...args], { env }),
-    (error) => error.code === 1 && error.stdout.includes('"ready": false'),
-  );
   for (const command of ["login", "status", "plan", "run"]) {
     await assert.rejects(
       execute(process.execPath, [cli, command, "test task"], { env }),

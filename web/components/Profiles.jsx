@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { profiles } from "../data/profiles.js";
+import { getProfiles, profileHostDetails } from "../data/profiles.js";
 import { ScrollLink } from "./ScrollLink.jsx";
 import { ArrowRightIcon } from "./Icons.jsx";
 
-export function Profiles({ onSelect }) {
+export function Profiles({ onSelect, host, onHostChange }) {
   const [preview, setPreview] = useState("value");
+  const profiles = getProfiles(host);
+  const hostDetails = profileHostDetails[host];
   const selected = profiles.find((profile) => profile.slug === preview);
 
   return (
@@ -23,6 +25,20 @@ export function Profiles({ onSelect }) {
         </p>
       </div>
       <div>
+        <div className="mb-6 max-w-xs">
+          <label htmlFor="profile-host">Your coding host</label>
+          <select
+            id="profile-host"
+            value={host}
+            onChange={(event) => onHostChange(event.target.value)}
+          >
+            {Object.entries(profileHostDetails).map(([value, details]) => (
+              <option key={value} value={value}>
+                {details.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="mb-3 flex justify-between text-xs text-muted">
           <span>Higher intended cost</span>
           <span>Lower intended cost</span>
@@ -65,8 +81,8 @@ export function Profiles({ onSelect }) {
           ))}
         </div>
         <p className="status-note" role="status">
-          Previewing <strong>{selected.name}</strong>. This page has not changed
-          your chat, model, or host settings.
+          Previewing <strong>{selected.name}</strong> for {hostDetails.name}.
+          This page has not changed your chat, model, or host settings.
         </p>
         <div className="flex flex-col items-start justify-between gap-5 border-t border-line pt-6 md:flex-row md:items-center">
           <p className="m-0 max-w-xl text-xs leading-6 text-muted">
@@ -85,8 +101,7 @@ export function Profiles({ onSelect }) {
           </ScrollLink>
         </div>
         <p className="mb-0 mt-5 text-[10px] leading-5 text-muted">
-          Astra = gpt-6-astra · Sol = gpt-6.1-sol · Luna = gpt-6-luna. Profiles
-          request settings through your existing host.
+          {hostDetails.note}
         </p>
       </div>
     </section>

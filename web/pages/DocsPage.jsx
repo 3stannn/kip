@@ -7,6 +7,7 @@ import { ScrollLink } from "../components/ScrollLink.jsx";
 
 export function DocsPage() {
   const [profile, setProfile] = useState("");
+  const [host, setHost] = useState("codex");
 
   return (
     <div className="docs-layout mx-auto max-w-[1320px] px-6 pb-16 md:px-14">
@@ -35,8 +36,13 @@ export function DocsPage() {
         </aside>
         <div className="docs-content min-w-0">
           <GettingStarted />
-          <Profiles onSelect={setProfile} />
-          <CommandBuilder profile={profile} onProfileChange={setProfile} />
+          <Profiles onSelect={setProfile} host={host} onHostChange={setHost} />
+          <CommandBuilder
+            profile={profile}
+            onProfileChange={setProfile}
+            host={host}
+            onHostChange={setHost}
+          />
           <Updates />
         </div>
       </div>

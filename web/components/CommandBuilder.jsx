@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { CodeBlock } from "./CodeBlock.jsx";
-import { buildPrompt, profiles } from "../data/profiles.js";
+import {
+  buildPrompt,
+  getProfiles,
+  profileHostDetails,
+} from "../data/profiles.js";
 import { CommandAutocomplete } from "./CommandAutocomplete.jsx";
 
-export function CommandBuilder({ profile, onProfileChange }) {
+export function CommandBuilder({
+  profile,
+  onProfileChange,
+  host,
+  onHostChange,
+}) {
   const [task, setTask] = useState(
     "Create an accessible React login and verify it.",
   );
   const [purpose, setPurpose] = useState("build");
-  const [host, setHost] = useState("codex");
+  const profiles = getProfiles(host);
   const [implicit, setImplicit] = useState(false);
   const [typing, setTyping] = useState(false);
   const command = buildPrompt({ task, purpose, host, implicit, profile });
@@ -43,7 +52,11 @@ export function CommandBuilder({ profile, onProfileChange }) {
           ))}
         </div>
         {typing ? (
-          <CommandAutocomplete key={host} host={host} onHostChange={setHost} />
+          <CommandAutocomplete
+            key={host}
+            host={host}
+            onHostChange={onHostChange}
+          />
         ) : (
           <>
             <label htmlFor="task">What would you like to work on?</label>
@@ -72,7 +85,7 @@ export function CommandBuilder({ profile, onProfileChange }) {
                 <select
                   id="host"
                   value={host}
-                  onChange={(e) => setHost(e.target.value)}
+                  onChange={(e) => onHostChange(e.target.value)}
                 >
                   <option value="codex">Codex</option>
                   <option value="claude">Claude Code</option>
@@ -99,7 +112,7 @@ export function CommandBuilder({ profile, onProfileChange }) {
               </select>
               <p className="mb-0 mt-2 text-[11px] leading-6 text-muted">
                 {profile
-                  ? "Adds a one-task override. It does not change a profile saved for your project."
+                  ? `Adds a one-task override using ${profileHostDetails[host].name} settings. It does not change a profile saved for your project.`
                   : "Uses your current chat and host settings without requesting role overrides."}
               </p>
             </div>

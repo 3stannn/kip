@@ -32,7 +32,7 @@ export function FAQ() {
           ],
           [
             "Which model does it use?",
-            "The root uses the model and thinking effort selected in your current chat. Use $kip profiles (or /kip profiles) to see seven presets for a root, two workers, and one independent reviewer. Select one with $kip profile value, or override one task with $kip build --profile premium followed by your task. Selections persist per project across chats. Actionable Kip tasks automatically delegate, with no extra consent phrase. Without a profile, a worker and reviewer inherit host settings. Profile-only and update commands do not launch a coding team. Kip discloses unsupported settings and stops affected execution if delegation is unavailable. An explicit solo or smaller-team request takes precedence.",
+            "The root uses the model and thinking effort selected in your current chat. Each host has seven presets for a root, two workers, and an independent reviewer: Codex uses Astra, Sol, and Luna; Claude Code uses Opus, Sonnet, and Haiku; Antigravity uses Pro and Flash tiers with host-controlled agent thinking. Use $kip profiles (or /kip profiles) to see your host’s settings. Select one with $kip profile value, or override one task with $kip build --profile premium followed by your task. Selections persist per project across chats and resolve for the current host. Without a profile, a worker and reviewer inherit host settings. Profile-only and update commands do not launch a coding team. Kip discloses unsupported settings and stops affected execution if delegation is unavailable. An explicit solo or smaller-team request takes precedence.",
           ],
           [
             "Where does it install?",

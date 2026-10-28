@@ -199,6 +199,8 @@ export async function inspectSkills(host = "all", options = {}) {
         "agents/openai.yaml",
         "references/profiles.md",
         "references/orchestration.md",
+        "references/orchestration-claude.md",
+        "references/orchestration-antigravity.md",
         "references/frontend-tailwind.md",
         "references/frontend-icons.md",
         "references/frontend-shadcn.md",

@@ -112,6 +112,10 @@ Kip interprets the purpose and instructions, restores the project profile, inspe
 
 Kip adds no authentication step. The application you already use retains its own access requirements, model selection, usage limits, and approval rules. Actionable Kip tasks automatically use host-native subagents. Profiles set the role models; they do not change the current chat's model or require another subscription.
 
+The bundled orchestration adapters explain native dispatch and result collection for [Claude Code](skills/kip/references/orchestration-claude.md) and [Antigravity](skills/kip/references/orchestration-antigravity.md). Claude uses its session's `Agent` tool; Antigravity uses transient definitions and native invocation where available. Kip checks the exposed controls, supplies scoped context, integrates worker changes, and sends the result to a separate reviewer. Children are explicitly prohibited from starting recursive Kip teams. No vendor CLI runner or persistent host agent configuration is added.
+
+Host capabilities vary by version and surface. Bundle checks and documentation review do not demonstrate live execution in another host. The [host smoke checklist](skills/kip/references/orchestration.md#host-smoke-checks) covers dispatch, continuation, independent review, profile resolution, and unsupported controls; report actual host runs separately from static checks.
+
 ## Website design direction
 
 Kip's bundled frontend design guidance defaults to [Bryl Lim minimal design for portfolio websites](skills/kip/references/portfolio-design.md) and [Kip's own website style for other websites](skills/kip/references/website-art-direction.md): Nunito typography, off-white surfaces, soft blue accents, dark pill actions, and rounded panels. Explicit briefs and existing brand conventions take precedence. These references ship inside Kip without separate design skills; refresh an existing installation to receive them.
@@ -144,11 +148,19 @@ $kip profile reset
 
 Use `/kip` instead of `$kip` in Claude Code and Antigravity. These are chat instructions, not terminal commands. `profile value` saves Value for later tasks in this project, including new chats; `--profile premium` overrides it for one task. `profile` shows the selection and `profile reset` clears it. The helper stores only the profile slug in `.kip/profile.json`, ignored through `.kip/.gitignore`. New chats restore that project selection; other projects use their own selection or host defaults. If persistence is unavailable, Kip reports a chat-only selection.
 
-Seven presets run from most to least expensive: **Maximum, Premium, Strong lead, Balanced, Value, Budget, Minimum cost**. Select by slug (`strong-lead`, `minimum-cost`) or number 1–7. Each specifies settings for a root, two workers, and one independent reviewer, including model and thinking effort. See the [complete profile table](skills/kip/references/profiles.md); Value is the recommended starting point.
+Seven presets progress toward lower intended cost: **Maximum, Premium, Strong lead, Balanced, Value, Budget, Minimum cost**. Select by slug (`strong-lead`, `minimum-cost`) or number 1–7. Each specifies settings for a root, two workers, and one independent reviewer. The same saved slug resolves to native settings for the host running the task:
+
+| Host | Profile model choices | Thinking controls |
+| --- | --- | --- |
+| Codex | Astra, Sol, Luna | Requested effort for each role |
+| Claude Code | `opus`, `sonnet`, `haiku` aliases | Requested effort where the resolved model and host support it |
+| Antigravity | Pro/Flash root model families; `pro`/`flash` agent tiers | Root reasoning level; agent effort remains host-controlled |
+
+See the [complete host-specific profile tables](skills/kip/references/profiles.md); Value is the recommended starting point. A project saved as Value uses Claude settings when opened in Claude Code and Antigravity settings when opened there. No memory migration or new command is needed. Antigravity has fewer independent controls, so some role settings overlap and cost order is approximate. Model aliases and tiers resolve through the host; available models can vary by plan and version.
 
 Select the root model and thinking effort in your host app. Whether the host selects Kip implicitly or the user invokes it explicitly, an actionable task uses host-native workers and an independent reviewer; no extra “use subagents” phrase is needed. An explicit or remembered profile assigns two workers and one independent reviewer. Without a profile, Kip uses host-inherited settings for at least one worker and an independent reviewer. Assign bounded scopes, serialize shared-file edits, and prohibit recursive delegation. A plan or review task can delegate analysis but stays read-only. Profile list/show/select/reset and update commands alone do not launch a coding team.
 
-An explicit request to work solo or use a smaller team overrides the default. When capacity is limited, Kip stages the roles. If required delegation is unavailable or blocked by higher-priority limits, Kip reports the blocker and stops affected execution; it does not automatically implement alone or claim agents ran. Unsupported model settings are disclosed. Profiles do not add OpenAI models to Claude Code or Antigravity. Actual cost depends on task usage and host billing.
+An explicit request to work solo or use a smaller team overrides the default. When capacity is limited, Kip stages the roles. If required delegation is unavailable or blocked by higher-priority limits, Kip reports the blocker and stops affected execution; it does not automatically implement alone or claim agents ran. Unsupported model or effort settings are disclosed before affected delegation. Profiles use each host's available models and controls; they do not grant access to models or change the current chat's settings. Actual cost depends on task usage and host billing.
 
 For an older installation, follow [Update an existing installation](#update-an-existing-installation) to install the bundled profile catalog.
 
@@ -159,7 +171,7 @@ The [Kip website](https://usekip.vercel.app) includes a quick-start guide, the c
 - **Guided builder:** choose your coding host, task purpose, and optional model profile. Copy an explicit invocation or natural language prompt into your coding chat.
 - **Type a command:** type `$kip ` or `/kip ` to see matching commands. Suggestions also cover profile names, `--profile`, and `update --host` options. Use the arrow keys to choose, Tab or Enter to complete, and Escape to dismiss. You can also click a suggestion.
 
-The profile explorer shows the requested role settings for all seven profiles. Choosing a profile applies it to the guided builder. The update guide provides commands for each host, a terminal alternative, and bootstrap steps for older installations.
+The profile explorer shows the selected host's requested role settings for all seven profiles. Choosing a profile applies it and its host to the guided builder. The update guide provides commands for each host, a terminal alternative, and bootstrap steps for older installations.
 
 The playground prepares text to copy; it does not execute commands or change host settings. Its autocomplete belongs to the website and does not add a suggestion dropdown to your host's chat input.
 
@@ -199,7 +211,7 @@ Run terminal commands from your cloned Kip folder. In chat, use `$kip` for Codex
 | Chat     | `$kip plan <task>`                                 | Produce a plan for the task.                                                            |
 | Chat     | `$kip review <scope>`                              | Review the specified code or changes.                                                   |
 | Chat     | `$kip <purpose> <instructions>`                    | Apply Kip to another purpose described in your own words.                               |
-| Chat     | `$kip profiles`                                    | List all seven profiles, their models and thinking efforts, and the current selection.  |
+| Chat     | `$kip profiles`                                    | List the current host's seven profiles, role settings, and current selection.  |
 | Chat     | `$kip profile`                                     | Show the saved project profile, or host defaults if unset.                    |
 | Chat     | `$kip profile <name>`                              | Save a profile for later Kip tasks in this project, such as `value` or `strong-lead`.    |
 | Chat     | `$kip profile <number>`                            | Select a profile by number, from `1` (Maximum) to `7` (Minimum cost).                   |
