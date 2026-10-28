@@ -17,7 +17,7 @@ For work Kip produces for another product, use that product's identity. Do not s
 
 Identify the real subject, user, action, constraints, and available evidence before rewriting. Prefer product facts, actual interface states, real examples, and existing conventions. Mark unknowns or use honest representative content instead of inventing customers, metrics, awards, integrations, capabilities, or research findings.
 
-Do not ban a visual or writing device merely because generated work often misuses it. A card, gradient, serif, badge, or short sentence is valid when it serves the brief. Remove it when it is interchangeable decoration, repeated without information value, or compensating for weak content.
+Do not ban a visual or writing device merely because generated work often misuses it. A card, gradient, badge, or short sentence is valid when it serves the brief. A requested brand serif may be the chosen family; it is not a reason to add an ornamental second family. Remove it when it is interchangeable decoration, repeated without information value, or compensating for weak content.
 
 For the user's expressive website direction, preserve purposeful oversized type, sticker graphics, strong frames, pricing panels, and light/dark contrast when they form a coherent design. Anti-slop does not mean making every page small, flat, monochrome, or undecorated. Judge specificity, hierarchy, and execution. Conversely, adding a giant headline and colorful stickers to a generic template does not establish a distinct identity.
 
@@ -30,6 +30,8 @@ For the user's expressive website direction, preserve purposeful oversized type,
 - Keep terminology stable. Prefer the product's vocabulary over synonyms introduced for novelty.
 
 ## Interface design
+
+For website work, apply [frontend-system.md](../kip/references/frontend-system.md), including its single-family scale and screenshot-specific rejected defaults. Critique plain-name rendering, availability, avatar treatment, theme control, and contact composition; do not reintroduce them as generic dashboard chrome.
 
 - Let hierarchy, spacing, type, imagery, and content do the work before adding ornamental chrome. Remove unexplained eyebrows, decorative pills, arbitrary numbering, random glow, and repeated icon-card grids.
 - Avoid applying one surface treatment, radius, shadow, or animation to every component regardless of role. Structural devices should communicate grouping, sequence, priority, or state.

@@ -2,6 +2,8 @@
 
 Use this as Kip's default visual system and interaction specification for new non-portfolio websites, product landing pages, and substantial redesigns. Portfolio websites use `portfolio-design.md`. Explicit briefs and established brand conventions take precedence; small repairs preserve surrounding conventions.
 
+Read [frontend-system.md](frontend-system.md) first. Its single-family typography, readable scale, and shared component rules govern this reference. The patterns below are optional examples for products whose behavior benefits from demonstration, not required sections or decorations. A clear product explanation or real screenshot may be the right hero. Do not add audio, counters, mascots, or bento cards merely to follow this reference.
+
 This reference synthesizes the design and engineering patterns of viral, high-craft interactive indie applications—specifically **Bendy** (`trybendy.app`), **Clucky** (`tryclucky.com`), **Keeby** (`getkeeby.com`), and **Kip**'s own website. It teaches how to build websites that visitors do not just read, but *play with*.
 
 ---
@@ -11,19 +13,19 @@ This reference synthesizes the design and engineering patterns of viral, high-cr
 Standard SaaS and corporate websites treat the landing page as a passive billboard: marketing adjectives, static screenshots, feature grids, and stock illustrations.
 
 **The interactive indie standard inverts this:**
-1. **The Hero is a Playable Toy:** The primary hero element is an in-browser, interactive simulation of the core product or mascot. Visitors immediately experience the app's tactile character before reading any sales pitch.
+1. **Demonstrate meaningful behavior:** When appropriate, the hero can be an in-browser interaction with the core product. Visitors immediately experience the app's tactile character before reading any sales pitch.
    - *Bendy (`trybendy.app`):* A CSS 3D MacBook whose screen physically folds, tilts, blurs, and shades in real time as the visitor scrolls the page or drags a slider.
    - *Keeby (`getkeeby.com`):* A live mechanical keyboard soundboard. Visitors click switches or press keys on their physical keyboard to trigger authentic spatial mechanical keystroke audio with a reactive camera-notch visualizer.
    - *Clucky (`tryclucky.com`):* An expressive rooster mascot with a "Hey, click me!" callout. Clicking triggers multi-phase SVG flipbook animations (sleeping → shocked → waving → settling), plays randomized authentic rooster cluck audio, and turns interactive alarm dials linked to scroll.
-2. **Tactile Feedback:** Every interaction gives instant sensory feedback: physical CSS transforms, audio clicks/thocks, cursor bursts, or live counters.
-3. **Proof of Life:** Subtle live community counters (e.g., bends made, clucks triggered, keys typed) show active real-time engagement.
+2. **Useful feedback:** Controls respond visibly and consistently. Sound and physical effects are optional product behaviors, never defaults for ordinary navigation.
+3. **Evidence:** Use real product output or supplied usage evidence. A community counter is appropriate only when relevant and backed by real data.
 4. **Honest Craft:** No stock photography or invented claims. Real looping `<video>` clips, interactive settings sliders, and transparent "Private by design / on-device" security cards.
 
 ---
 
 ## 2. Visual System & Design Tokens
 
-The visual style is warm, tactile, and restrained: clean off-white surfaces, deep ink typography, generous corner radii, and pill-shaped interactive controls.
+The visual style is warm and restrained: clean off-white surfaces, deep ink typography, and consistent shared controls. Use tactile treatments only where they help explain the product.
 
 ### Color Tokens
 
@@ -41,22 +43,17 @@ The visual style is warm, tactile, and restrained: clean off-white surfaces, dee
 
 ### Typography & Scale
 
-- **Typefaces:** Clean, modern geometric/humanist sans: Apple System (`-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display"`), Inter (`"InterVariable"`), or rounded friendly Nunito. Load real fonts with `display: swap`.
-- **Display Headings (`h1`):** 36px–48px (28px–34px on mobile), weight 500–700, line-height 1.1–1.15, tight letter-spacing (`-0.03em` to `-0.035em`), and `text-wrap: balance`. Keep headlines concise and descriptive ("Your desktop bends as you close the lid").
-- **Subheadings & Lede:** 18px–20px, line-height 1.4–1.5, letter-spacing `-0.015em`, color muted/charcoal, max measure `34ch`–`42ch`.
-- **Card Headings (`h2`, `h3`):** 18px–24px, weight 600, letter-spacing `-0.02em`.
-- **Body & Lists:** 14px–15px, line-height 1.5–1.6, weight 400–500.
-- **Micro-Labels & Meta:** 11px–13px, weight 500–600, letter-spacing `-0.01em`, often with `font-variant-numeric: tabular-nums` for counters, timers, and prices.
+Use the exact semantic roles in [frontend-system.md](frontend-system.md). Choose one family, Geist by default, for all content and controls. Use 16px body/navigation/actions, 14px supporting text, 18px lead/item titles, 24px section headings, 32px page headings, and bounded 32–48px hero type when needed. Weights and whitespace establish hierarchy; no secondary mono, pixel, or serif font and no 11–13px micro-label register.
 
 ### Shape & Geometry
 
-- **Pills (`border-radius: 999px`):** Primary action buttons, live counter badges, price chips, segmented filter controls, and status pills.
-- **Cards & Bento Tiles:** `14px`–`24px` corner radii with a 1px hairline border (`#efefef` or `#e5e5e5`) and soft, low-alpha ground shadows.
+- **Controls:** Use shared control variants and geometry. Fully rounded pills are reserved for real tags or discrete state; do not turn every CTA, price, link, or status into a pill.
+- **Grouped panels:** Use the shared panel radius (16px by default), semantic hairline border, and a soft shadow only when elevation communicates a role. A bento layout is optional, not a reason to box every section.
 - **Stage Width:** Focused single-column reading and interactive stage (`max-width: 640px` to `800px` centered), expanding to multi-column bento grids (`max-width: 1040px` to `1200px`) where feature comparisons or media tiles genuinely benefit.
 
 ---
 
-## 3. The Five Core Interactive Patterns
+## 3. Optional interactive patterns
 
 ### Pattern A: The Playable Simulation Hero (CSS 3D / State Machine)
 
@@ -198,13 +195,13 @@ Place a live global counter pill in the top-right corner (or fixed bottom on pho
 </p>
 ```
 - **Batched Persistence:** When a visitor clicks, increment the counter optimistically in the UI. Queue increments and flush every 1–2 seconds via a batched `POST` request with `keepalive: true` (ensuring completion on page navigation or tab close).
-- **Graceful Fallback:** If the API is unreachable, display a sensible formatted baseline without showing error states to visitors.
+- **Graceful Fallback:** Show a cached real value with a clear stale state, or omit the counter if unavailable. Never invent a baseline or imply a local count is global.
 
 ---
 
 ### Pattern E: Bento Feature Cards & Looping Uncut Media
 
-Replace generic stock photography and multi-column marketing grids with focused **Bento Grids**:
+Use grouped media cards only when the content benefits from that structure:
 1. **Uncut Looping Video:** Use silent, looping MP4/WebM videos (`autoplay muted loop playsinline preload="metadata"`) demonstrating real features recorded on real hardware (no fake device mockups, no video cuts).
 2. **Interactive Controls in Cards:** Place real working controls inside bento cards: switch style pickers, slider adjustments, sound test buttons.
 3. **Privacy & Architecture Callout:** Dedicated bento card for "On-device / No account / Private by design" explaining offline operation, security boundaries, and licensing terms plainly.
@@ -213,8 +210,8 @@ Replace generic stock photography and multi-column marketing grids with focused 
 
 ## 4. Building the Purchase & Action Row
 
-Indie websites use compact, high-converting action rows:
-- **Pill CTA Button:** Dark ink button with high contrast, containing the action verb, an arrow icon, and an embedded price badge:
+When a purchase flow is actually in scope, use the shared readable action variants. The following are optional content patterns, not required decorations:
+- **Purchase action:** A shared high-contrast button variant with a clear action and real price when supplied; do not require an embedded badge or arrow:
   ```html
   <a href="/buy" class="button-cta">
     <span>Buy Bendy</span>

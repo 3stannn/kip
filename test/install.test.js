@@ -76,6 +76,9 @@ test("installs self-contained skills for every host without external dependencie
     );
     for (const name of [
       "portfolio-design",
+      "bryllim",
+      "marwieang",
+      "frontend-system",
       "website-art-direction",
       "website-layouts",
       "orchestration-claude",
@@ -139,6 +142,15 @@ test("doctor detects missing portfolio design guidance", async (t) => {
   const [inspection] = await inspectSkills("claude", options);
   assert.equal(inspection.ready, false);
   assert.deepEqual(inspection.missing, ["references/portfolio-design.md"]);
+});
+
+test("doctor detects missing shared frontend system guidance", async (t) => {
+  const options = await fixture(t);
+  const [target] = await installSkills("claude", options);
+  await fs.rm(path.join(target, "references/frontend-system.md"));
+  const [inspection] = await inspectSkills("claude", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual(inspection.missing, ["references/frontend-system.md"]);
 });
 
 test("doctor detects missing website layout guidance", async (t) => {

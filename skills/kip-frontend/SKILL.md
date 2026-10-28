@@ -9,6 +9,10 @@ This guidance supports Kip's assigned worker or reviewer scope. The root owns te
 
 Reuse the project's framework, component system, and data conventions. Prefer native platform capabilities and existing dependencies over new abstraction layers. Separate rendering from transport when it clarifies the data contract or makes behavior easier to test. Define the contract before inventing mock responses.
 
+## Shared typography and components
+
+Read [frontend-system.md](../kip/references/frontend-system.md) for website creation and typography or component changes. Implement its one-family rule (Geist by default), semantic type scale, and shared component variants. Native controls inherit the family; library components must use the same readable tokens. Fix repeated inconsistencies in shared source rather than with per-instance overrides.
+
 ## Website component default
 
 For website creation and UI edits, read [frontend-shadcn.md](../kip/references/frontend-shadcn.md). Use shadcn/ui components by default in compatible React applications, including setting them up when the app has no established component system. Reuse existing local UI source before generating more. Preserve an established alternative system, non-React stack, and the scope of small repairs. Apply the selected brand or Kip visual direction through shared tokens and variants, with working interactions and accessible composition.
