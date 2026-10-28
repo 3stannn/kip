@@ -1,6 +1,6 @@
 # Shared frontend system
 
-Read this for website creation, substantial visual changes, and typography or component repairs. It defines Kip's defaults across portfolio and other website references. Explicit user direction and established brand systems take precedence; small edits preserve the surrounding system. A visual reference supplies composition and tone, not permission to import conflicting font or component recipes.
+Read this for website creation, substantial visual changes, and typography or component repairs. It defines Kip's defaults across portfolio and other website references. Explicit user direction and established brand systems take precedence; small edits preserve the surrounding system. For portfolios, choose and read one primary skill using [portfolio-design.md](portfolio-design.md). That selected skill governs composition, navigation, geometry, spacing, palette, and surfaces. Apply this shared system as narrow typography, component consistency, and accessibility overrides; do not erase the selected skill's identity or replace it with generic minimalism.
 
 ## One family, one type scale
 

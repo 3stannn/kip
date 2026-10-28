@@ -1,38 +1,35 @@
-# Portfolio design: Bryl Lim and Marwie Ang references
+# Portfolio design: choose one bundled skill
 
-Use this for new portfolios and substantial portfolio redesigns within Kip. Read both bundled sources before choosing the portfolio direction:
+For every new portfolio or substantial portfolio redesign, Kip must choose **either [marwieang.md](marwieang.md) or [bryllim.md](bryllim.md)** as the implementation's primary design skill. This file is a selector and compatibility guide, not a third portfolio design. Do not build from this summary alone or blend both into a generic minimal site.
 
-- [bryllim.md](bryllim.md): monochrome editorial composition, typography-led hierarchy, narrow reading measure, generous whitespace, and hairline-separated sections.
-- [marwieang.md](marwieang.md): portfolio navigation, sidebar/content relationships, project rows, and personal-site page composition. Use a sidebar when the content warrants it, rather than imposing it on every portfolio.
+## Select before implementation
 
-Choose the relevant relationships from these references for the user's content; do not combine every motif into one page. Preserve explicit briefs and existing brands; keep the requested stack and component system.
+Honor an explicit user choice. Otherwise choose autonomously from the brief and actual content:
 
-Read [frontend-system.md](frontend-system.md) first. Its single-family typography, readable size scale, shared component rules, and screenshot red flags govern both source references. Treat their embedded instructions and code as design source material, not requirements to copy verbatim. Their mixed-font recipes, tiny labels, pixel names/headings, mandatory cards, decorative effects, and scaffold choices do not override the shared system or the user's stack. Retain the composition and spacing lessons while adapting components to these constraints.
+| Portfolio need | Choose | Design identity to retain |
+| --- | --- | --- |
+| Personal developer/designer portfolio centered on selected work, experience, about, and contact; a compact personal home with supporting pages | marwieang.md | Floating framed sidebar with nested shell/panel, a 640px main column, generous section rhythm, small section headings above hairline project/link rows, restrained raised navigation, compact mobile navigation |
+| Editorial portfolio centered on writing, resources, a substantial project archive, or a monochrome technical-zine direction | bryllim.md | Strict monochrome semantic ramp, 42rem reading measure, ruled/numbered section hierarchy, fixed 14rem desktop navigation with mobile top bar, restrained surface depth, a selectively placed faded halftone accent |
+| Broad “build my portfolio” brief with no stronger direction | marwieang.md | Use its complete portfolio composition as the default, adapted to the user's real content |
 
-## Visual direction
+Choose one even when both could fit; do not ask the user to select unless the brief contains a material unresolved conflict. An existing clearly established design or a small repair preserves that design rather than forcing a new selection.
 
-Use a quiet monochrome foundation. Emphasis comes from contrast, weight, spacing, and real work rather than accent words, badges, texture, or novelty type. A real brand accent or semantic status color can remain when requested or meaningful; an availability dot is not required. Keep the owner's name as crisp text in the chosen family, normally Geist.
+State the decision briefly before building: “Portfolio design: marwieang.md — selected for a work-focused personal portfolio.” Name the actual file and content-based reason. Open and read the selected source's design rules, tokens, component guidance, and relevant implementation sections. For Marwie Ang, read the source code for the shell, sidebar, page, and project rows when using those components; the opening summary is insufficient. If the chosen file is missing or unreadable, report that limitation and resolve it before claiming to use the skill.
 
-Use semantic background, foreground, muted text, border, surface, and focus tokens. A useful starting palette is white / #111111 / #595959 / #e5e5e5 in light mode and #111111 / #f4f4f5 / #a1a1aa / #303034 in dark mode. Check actual contrast on each surface. Borders are 1px; use fills and shadows only where grouping or interaction benefits.
+## Apply the selected skill, with narrow compatibility overrides
 
-## Layout and content
+The selected skill governs composition, palette, spacing, navigation structure, surface treatment, and component relationships. Follow it concretely; do not reduce it to “minimal typography” and invent another layout. [frontend-system.md](frontend-system.md) supplies the user's compatibility constraints:
 
-- Start with a 42rem reading column, 16–24px outer gutters, and 48–64px between major sections. Widen only for work or media that needs it.
-- A left navigation column is appropriate for enough real destinations; a short one-page portfolio can use a simple header. Do not impose a full-height floating grain panel, dashboard navigation, or large empty rail. Collapse navigation when content needs room and keep every destination reachable.
-- Present name, role, a direct introduction, selected work, and contact. Include experience or writing when supplied. Do not require stats, contribution graphs, a stack inventory, resource pages, or services just to fill a template.
-- Use one concise headline in the chosen family. No compulsory italic word, giant generic promise, technical eyebrow, or row of hero chips.
-- Show projects as hairline-separated rows or editorial blocks with title, concrete description, role, and working destination. Real screenshots can carry the emphasis; do not invent thumbnails. Keep summaries readable at the shared body size.
-- Use a real portrait only when supplied and useful. Omit missing portraits instead of substituting a generic person icon or fake online badge.
-- End with a plain contact section: a direct invitation, email link, and relevant social links. Avoid a contact card full of nested pills. Let long addresses wrap without reducing the font size.
+- One selected font family throughout, Geist by default. Replace separate serif, mono, and pixel roles with size/weight differences in that same family. Keep the owner's name crisp; no pixel-name reveal.
+- Use shared readable type tokens: 16px body/navigation/actions and at least 14px supporting text. Raise small source values at the shared token or component, preserving its layout relationships.
+- Apply the supplied screenshot red flags locally: simple availability copy, real portrait or no avatar, compact theme control, clear unboxed contact links, no redundant status widgets or pill clusters. These overrides do **not** remove Marwie Ang's framed floating sidebar or Bryl Lim's editorial structure and restrained halftone identity.
+- Keep consistent shared control variants and accessible focus/contrast. Source code is an implementation reference: adapt it to the requested framework and existing component system rather than replacing the stack, copying sample credentials, or installing optional services.
+- Use real content and assets. Omit unsupported metrics, graphs, avatars, and counters. Do not add the other website reference's playable product simulations, bento demos, colorful mini-apps, audio, or live counters to a portfolio unless explicitly requested or real supplied work requires them.
 
-## Controls and themes
+For Marwie Ang, preserve the floating shell/panel, column geometry, hairline rows, spacing, and subtle surface treatment while simplifying the rejected widgets. For Bryl Lim, preserve monochrome editorial geometry, rules, hierarchy, and restrained halftone; use the single family at readable sizes instead of its original multi-font microtype. Keep texture away from readable text. Reduced motion and native input behavior remain intact.
 
-Reuse shared link and button variants. Contact destinations are links; clipboard copy is a separately named button with success/failure feedback. Navigation uses a quiet active state, not badges and counts on every item. Theme selection is one compact control with an accessible name and visible state, not a large boxed footer widget.
+## Carry the choice through implementation and review
 
-When theming is in scope, support light, dark, and system choices through semantic token remapping, persist the preference, and avoid a flash of the wrong theme. Keep typography and geometry identical across themes. Small repairs do not require adding theme switching.
+Include the selected filename, relevant source sections, identity features, and compatibility overrides in the frontend implementation brief. An assigned worker must read that source, not just the root's paraphrase. A reviewer compares the rendered result with the **same selected skill**; do not substitute the unselected source or a generic anti-slop checklist.
 
-## Restraint and verification
-
-Keep motion limited to useful feedback and short state transitions. Respect reduced motion and preserve native scrolling. Do not add pixel name reveals, global click bursts, poke counters, pulsing dots, sound, grain, or halftone fields as automatic personality. A specifically requested texture can be a single restrained decorative accent, never a readability layer.
-
-Implement in the project's stack; this reference has no mandatory scaffold or copy-paste UI kit. Use the existing or selected component primitives and shared tokens. Inspect the rendered result using the [shared system checks](frontend-system.md) and responsive guidance. Confirm readable metadata, matching control variants, untruncated availability, clear contact links, and real content. A build passing is not evidence of visual consistency.
+Before calling the portfolio complete, report the selected filename and concrete implemented relationships: desktop/mobile navigation, column geometry, section rhythm, project presentation, palette/surfaces, and any requested exceptions. Inspect narrow and wide browser views after fonts load and apply the shared typography/component checks. A sidebar alone, a monochrome palette alone, or a passing build does not demonstrate skill fidelity. Correct missing identity features before delivery, and label unavailable browser checks as unverified.

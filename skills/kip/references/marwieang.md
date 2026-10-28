@@ -5,6 +5,11 @@ description: Use when building, recreating or restyling a personal portfolio or 
 
 # Floating Sidebar Portfolio
 
+## Kip integration
+
+When used within Kip, this is a selectable primary portfolio skill under [portfolio-design.md](portfolio-design.md). Once selected, implement this source's composition, geometry, navigation, palette, spacing, and surface relationships. Apply [frontend-system.md](frontend-system.md) as narrow compatibility overrides: one font family, readable type sizes, consistent shared controls, accessible contrast/focus, and the user's rejected widget treatments. These overrides supersede conflicting font, microtype, decoration, and copy-verbatim/scaffold instructions below; they do not permit replacing the design with a generic minimal layout. Preserve the requested stack and real content.
+
+
 ## Overview
 
 A complete, working UI kit for a one-person portfolio: a floating grainy sidebar on the left, one 640px column of content on the right, and almost no color. Everything below is production code from a live site with the owner's content removed. Build it by copying the files at the bottom of this skill **verbatim**, then replacing the sample content in `lib/data.ts` with the user's own.

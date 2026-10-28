@@ -5,6 +5,11 @@ description: Apply the bryl-minimal design language — a monochrome, typography
 
 # bryl-minimal design language
 
+## Kip integration
+
+When used within Kip, this is a selectable primary portfolio skill under [portfolio-design.md](portfolio-design.md). Once selected, implement this source's composition, geometry, navigation, palette, spacing, and surface relationships. Apply [frontend-system.md](frontend-system.md) as narrow compatibility overrides: one font family, readable type sizes, consistent shared controls, accessible contrast/focus, and the user's rejected widget treatments. These overrides supersede conflicting font, microtype, decoration, and copy-verbatim/scaffold instructions below; they do not permit replacing the design with a generic minimal layout. Preserve the requested stack and real content.
+
+
 A monochrome, typography-first aesthetic: true black on white, no accent color, texture from halftone dots instead of color, hierarchy from font choice instead of size extremes, and restrained but deliberate motion. It should feel like a well-set technical zine — quiet, precise, slightly playful.
 
 This spec is technology-agnostic. Every rule is given as values and intent; implement it with whatever the project already uses (vanilla CSS, Tailwind, CSS-in-JS, a native toolkit's web view — anything). Never bolt on a new framework just to satisfy this skill.
