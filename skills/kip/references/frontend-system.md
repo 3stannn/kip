@@ -32,6 +32,8 @@ Use readable foreground tokens in each supported theme. Check actual foreground/
 
 ## Shared components before page styling
 
+For compatible React interfaces without an established component system, use shadcn/ui as the main component foundation and follow [frontend-shadcn.md](frontend-shadcn.md). Own and customize the local source, compose its primitives, and use Phosphor Icons for new icon systems. Preserve existing systems and requested stacks.
+
 Create or reuse a small set of shared primitives and semantic variants for the components actually needed. Centralize font roles, spacing, radii, borders, colors, control heights, focus rings, and icon dimensions. Repeated navigation items, buttons, fields, links, and status treatments must use the same implementation and variant for the same role. A component library supplies behavior; its default sizes must still map to this system.
 
 - Start with ordinary text links, rows, and open sections. Add a container only when it clarifies a distinct group or interaction. Do not give every section a rounded box, shadow, badge, or icon tile.

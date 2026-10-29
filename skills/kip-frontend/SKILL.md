@@ -13,9 +13,9 @@ Reuse the project's framework, component system, and data conventions. Prefer na
 
 Read [frontend-system.md](../kip/references/frontend-system.md) for website creation and typography or component changes. Implement its one-family rule (Geist by default), semantic type scale with consistent increments, and shared component variants. Different weights, true italics, and supported variable styles within that family are welcome; map faces and sizes to reusable roles. Native controls inherit the family; library components must use the same readable tokens. Fix repeated inconsistencies in shared source rather than with per-instance overrides.
 
-## Website component default
+## Primary component foundation: shadcn/ui
 
-For website creation and UI edits, read [frontend-shadcn.md](../kip/references/frontend-shadcn.md). Use shadcn/ui components by default in compatible React applications, including setting them up when the app has no established component system. Reuse existing local UI source before generating more. Preserve an established alternative system, non-React stack, and the scope of small repairs. Apply the selected brand or Kip visual direction through shared tokens and variants, with working interactions and accessible composition.
+For UI creation and component edits, read [frontend-shadcn.md](../kip/references/frontend-shadcn.md). Use shadcn/ui as the main component foundation in compatible React applications, including setting it up when the app has no established component system. Reuse and customize the local source before generating more or hand-building an equivalent primitive. For chat and agent interfaces, consult its AI Elements patterns and compose only the pieces needed. Preserve an established alternative system, non-React stack, and the scope of small repairs. Apply the selected brand or Kip visual direction through shared tokens and variants, with working interactions and accessible composition. New icon systems use Phosphor Icons.
 
 ## Correctness and accessibility
 
@@ -119,7 +119,7 @@ Keep secrets and authorization enforcement on the server. Treat client checks as
 
 ## Icons
 
-Read [frontend-icons.md](../kip/references/frontend-icons.md) only for this stack or requested integration.
+When adding or changing icons, read [frontend-icons.md](../kip/references/frontend-icons.md). Use Phosphor Icons for new interfaces without an established icon system.
 
 ## When the project uses Tailwind CSS
 

@@ -12,6 +12,8 @@ Briefly state that `marwieang.md` is being applied automatically. Pass the sourc
 
 Use the supplied code as the implementation baseline, preserving its concrete tokens and relationships. Implement the full design system and all components, pages, and interactions required by the brief. Carry the reference through the whole page and supporting routes, rather than stopping after the sidebar or hero. Read optional components and helpers too; include them when the brief and real content call for them.
 
+For a new portfolio without an established icon system, adapt the reference's interface icon primitives to Phosphor Icons using [frontend-icons.md](frontend-icons.md). Preserve the reference's rendered sizes, semantic colors, and alignment; choose the closest optical weight instead of copying its Lucide paths or forcing stroke-width overrides. Keep legitimate brand marks as brand assets.
+
 Preserve component and route module boundaries while adapting the source. Apply frontend guidance's React component and file boundaries: the app entry composes the shell and routes, pages own their content, and substantial layout and feature components live in their own modules. Do not concatenate the reference's source blocks into one `App.tsx`; inspect source organization as well as rendered fidelity during review.
 
 Track coverage in the working implementation brief, using the source's sections and source-file blocks. Mark each as implemented, adapted with a specific reason, or omitted with a specific scope/content/compatibility reason. Group closely related blocks when useful, but account for every block. Do not silently skip lower sections or invent content to populate optional pages.
