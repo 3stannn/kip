@@ -29,6 +29,72 @@ Support keyboard, pointer, and touch input without hover-only behavior. Respect 
 
 Validate long content, slow and failed requests, repeated actions, and responsive layout in a real browser. Read the frontend-design guidance when visual direction is part of the task and responsive-design for viewport verification.
 
+## React component and file boundaries
+
+For React work, plan the component hierarchy and file ownership before implementation. Follow the project's existing feature folders or framework route conventions. For new apps, keep `App.tsx` (or `App.jsx`) focused on providers, the app shell, and route composition; import substantial pages, layout components, and independent features from their own modules. Do not deliver a whole multi-page app in the root file with only a generated button in `components/ui`.
+
+Extract a component when it represents a distinct page, reusable UI pattern, substantial section, or interaction with its own state and behavior. A component can deserve its own module even when used once. Small private helpers can stay beside their owning component; do not split every element into a file or enforce arbitrary line limits. Moving the monolith into a single `components.tsx` or `Home.tsx` does not resolve mixed responsibilities.
+
+For new client-routed React apps without an established structure, use named component files grouped by responsibility, with route components under `pages/`.
+
+Create actual module boundaries rather than empty folders while leaving implementations in `App.tsx`. Import the named modules where they are composed. Use descriptive PascalCase filenames for application components and pages; preserve existing library conventions such as shadcn's `button.tsx`. Adapt domain folder and component names to the product, create only features the brief needs, and add `hooks/` only when extracted behavior needs it. Keep feature-only data, types, and helpers with their feature; use shared modules when there is a real shared owner. Next.js and other file-routed frameworks retain their native route and server/client boundaries rather than adopting a client-routed structure literally. Keep imports flowing from app/pages to features and shared primitives; shared components should not import pages or `App`.
+
+### Structure as the app grows
+
+For larger apps with distinct product domains, prefer feature ownership over a growing global component folder. Use this structure as the reference, adapting extensions to JavaScript or TypeScript:
+
+```text
+src/
+  assets/                     # bundled images, fonts, icons
+  components/
+    common/                   # shared Button/, Modal/, Input/
+    layout/                   # shared Header/, Footer/, Sidebar/
+    ui/                       # existing generated primitives, when used
+  features/
+    auth/
+      components/
+      hooks/
+      services/
+      authSlice.ts            # only when the chosen state library needs it
+      index.ts                # optional deliberate feature API
+    dashboard/
+    profile/
+  pages/                      # route views: Home/, About/, NotFound/
+  routes/                     # AppRoutes, route guards when needed
+  hooks/                      # hooks shared across features
+  context/                    # app-wide providers when needed
+  store/                      # app-wide state setup when needed
+  services/                   # shared API client and external integrations
+  utils/                      # shared pure helpers and constants
+  types/                      # shared TypeScript contracts
+  styles/                     # global styles, tokens, theme
+  config/                     # public app configuration
+  App.tsx                     # provider and shell composition
+  main.tsx                    # framework entry point
+tests/                        # cross-feature/integration tests when needed
+```
+
+- Feature components, hooks, API calls, types, and state belong inside their feature until multiple features need them. Pages compose route views from those features. Shared folders contain genuinely shared code; avoid parallel copies in `features/auth/services` and top-level `services`.
+- A component or page with supporting files can have its own directory, such as `components/common/Button/Button.tsx`, `Button.module.css`, and a meaningful colocated `Button.test.tsx`. A single component file is enough when there are no supporting files. Keep the existing styling and testing conventions; do not generate CSS modules, test stubs, or wrapper folders just to fill the tree.
+- An `index.ts` can expose a deliberate component or feature API; it is optional. Avoid indiscriminate barrel exports, circular imports, and importing an entire feature merely to reach one helper. Preserve the project's established import style.
+- Extract `routes/AppRoutes.tsx` when routing has enough configuration to warrant its own module; `App` can compose it. Add route guards only when the product needs them; client guards do not enforce server authorization.
+- Choose one coherent owner for each piece of state. Context providers and a Redux/Zustand-style store are conditional options, not required parallel systems. Do not install state libraries, Axios, or a fetching hook merely because they appear in an example tree. Keep server data under the project's existing data-fetching conventions.
+- Keep imported assets in `src/assets` and assets requiring unchanged public URLs in `public` according to the build tool. Retain the tool's HTML entry location: for Vite, `index.html` stays at the project root. Use the existing lint/config filenames, entry point, language, and styling system. Create a sanitized `.env.example` when configuration needs documentation; browser-exposed environment values are public.
+
+Scale the structure to the app. Apply the ownership rules without generating every directory or reorganizing unrelated code during a small edit.
+
+Use explicit props and composition across boundaries. Keep state with the component that owns it, lifting shared state to the closest common owner. Extract custom hooks for cohesive reusable stateful behavior, not to hide an entire page's unrelated logic; hooks share logic, not a single state instance. Avoid introducing context or a global store solely because files were separated.
+
+When adapting bundled design examples, preserve their component and route boundaries in the target stack instead of concatenating the reference into `App.tsx`. For refactors, preserve DOM structure, styling hooks, stable keys, state lifetime, URLs, focus behavior, and interactions unless the requested change requires otherwise. Define component types at module scope so extraction does not create remounts on every render.
+
+### Source organization review
+
+Before delivery, the worker and independent reviewer inspect the actual source tree, root file, route modules, and largest changed components. Confirm that substantial pages/features live in appropriately named modules, repeated UI uses shared components, and each module has a coherent responsibility. Check imports for cycles, duplicated state or logic, and unnecessary wrappers. A tiny `App` that delegates everything to another monolith also fails this check. Resolve mixed responsibilities within the changed scope; small fixes do not authorize reorganizing unrelated legacy code.
+
+Run the project's relevant build, type/lint checks, and behavior tests when available. After extraction, exercise affected routes and stateful interactions and compare the rendered result, including keyboard/focus behavior. A successful build or screenshot alone does not verify source organization. Report the important boundaries created and any checks unavailable in the host.
+
+These defaults apply React's [component hierarchy guidance](https://react.dev/learn/thinking-in-react), [file extraction guidance](https://react.dev/learn/importing-and-exporting-components), and [custom hook guidance](https://react.dev/learn/reusing-logic-with-custom-hooks). The folder example and root-file convention are Kip defaults, not React requirements.
+
 ## React state and rendering
 
 When working in React or a React framework:
