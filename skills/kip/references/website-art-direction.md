@@ -43,7 +43,7 @@ The visual style is warm and restrained: clean off-white surfaces, deep ink typo
 
 ### Typography & Scale
 
-Use the exact semantic roles in [frontend-system.md](frontend-system.md). Choose one family, Geist by default, for all content and controls. Use 16px body/navigation/actions, 14px supporting text, 18px lead/item titles, 24px section headings, 32px page headings, and bounded 32–48px hero type when needed. Weights and whitespace establish hierarchy; no secondary mono, pixel, or serif font and no 11–13px micro-label register.
+Use the semantic roles and increment-based scale in [frontend-system.md](frontend-system.md) for all content and controls. Choose one family, Geist by default, and use its different weights, true italics, or supported variable styles for deliberate role-based variation. Keep labels, body, item titles, and headings distinct while reusing tokens across sections. The shared reference owns the default sizes and responsive bounds; no secondary mono, pixel, or serif font and no 11–13px micro-label register.
 
 ### Shape & Geometry
 

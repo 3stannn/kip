@@ -11,7 +11,7 @@ Reuse the project's framework, component system, and data conventions. Prefer na
 
 ## Shared typography and components
 
-Read [frontend-system.md](../kip/references/frontend-system.md) for website creation and typography or component changes. Implement its one-family rule (Geist by default), semantic type scale, and shared component variants. Native controls inherit the family; library components must use the same readable tokens. Fix repeated inconsistencies in shared source rather than with per-instance overrides.
+Read [frontend-system.md](../kip/references/frontend-system.md) for website creation and typography or component changes. Implement its one-family rule (Geist by default), semantic type scale with consistent increments, and shared component variants. Different weights, true italics, and supported variable styles within that family are welcome; map faces and sizes to reusable roles. Native controls inherit the family; library components must use the same readable tokens. Fix repeated inconsistencies in shared source rather than with per-instance overrides.
 
 ## Website component default
 
