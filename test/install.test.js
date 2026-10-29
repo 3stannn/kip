@@ -76,7 +76,6 @@ test("installs self-contained skills for every host without external dependencie
     );
     for (const name of [
       "portfolio-design",
-      "bryllim",
       "marwieang",
       "frontend-system",
       "website-art-direction",

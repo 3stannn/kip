@@ -1,11 +1,11 @@
 ---
 name: kip-frontend-design
-description: Design websites within Kip with content-led layout selection, Bryl-inspired minimal portfolios, consistent single-family typography, and subject-specific website components. Use for design work within Kip or when explicitly requested for Kip.
+description: Design websites within Kip with content-led layout selection, Marwie Ang portfolio guidance, consistent single-family typography, and subject-specific website components. Use for design work within Kip or when explicitly requested for Kip.
 ---
 
 # Frontend Design
 
-This guidance supports Kip's assigned worker or reviewer scope. The root owns team dispatch, profile settings, and integration; do not spawn additional agents from a supporting role. Apply only sections relevant to the change.
+This guidance supports Kip's assigned worker or reviewer scope. The root owns team dispatch, profile settings, and integration; do not spawn additional agents from a supporting role. Apply only sections relevant to the change; the complete-read requirement below still applies when implementing or reviewing a new portfolio or substantial portfolio redesign.
 
 Treat visual design as a sequence of decisions tied to the brief, not a coat of polish applied after a generic layout. Preserve explicit brand direction and existing product conventions. When the brief leaves room, use that freedom to make choices that belong to this subject rather than falling back to a fashionable house style.
 
@@ -15,7 +15,7 @@ Read [frontend-system.md](../kip/references/frontend-system.md) before selecting
 
 Choose the default before selecting layout:
 
-- **Portfolio websites:** use [portfolio-design.md](../kip/references/portfolio-design.md) to choose exactly one primary skill: [marwieang.md](../kip/references/marwieang.md) for work-focused personal portfolios (the default for an unspecified portfolio), or [bryllim.md](../kip/references/bryllim.md) for editorial/writing/archive portfolios. State the chosen filename and reason, then read and implement that skill, including relevant source sections. Preserve its identifiable composition, navigation, spacing, palette, and surfaces; apply only the shared typography, accessibility, stack, and screenshot compatibility overrides. Do not blend both, implement only a generic summary, or replace the selection with another layout.
+- **Portfolio websites:** implicitly activate [marwieang.md](../kip/references/marwieang.md) for new portfolios and substantial portfolio redesigns, without requiring the user to name or select it. Read the entire file from top to bottom before implementation, including all source files through the final dither.py helper; a summary or selected excerpts is insufficient. Implement its complete design system and the components, pages, and interactions required by the brief, using [portfolio-design.md](../kip/references/portfolio-design.md) for compatibility and coverage review. Preserve its composition, navigation, geometry, spacing, palette, and surfaces under the shared typography, accessibility, stack, and screenshot overrides. Workers and reviewers must each read the full source, even when assigned a scoped portfolio task; implement only the assigned scope.
 - **Other websites:** read [website-art-direction.md](../kip/references/website-art-direction.md). Use Kip's clean foundations and subject-specific product evidence. Interactive demos and other indie-craft recipes are optional when they explain the actual product; they are not a checklist.
 
 Classify by the site's primary purpose. Personal and studio sites mainly showcasing work are portfolios; a business or product site containing case studies remains a non-portfolio site. Explicit briefs and existing brand/design systems take precedence, and small edits preserve surrounding conventions. These defaults belong to Kip's bundled guidance and require no standalone design skills.

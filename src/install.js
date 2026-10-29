@@ -205,7 +205,6 @@ export async function inspectSkills(host = "all", options = {}) {
         "references/frontend-shadcn.md",
         "references/website-art-direction.md",
         "references/portfolio-design.md",
-        "references/bryllim.md",
         "references/marwieang.md",
         "references/frontend-system.md",
         "references/website-layouts.md",

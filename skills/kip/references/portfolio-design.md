@@ -1,35 +1,42 @@
-# Portfolio design: choose one bundled skill
+# Portfolio design: implicit Marwie Ang implementation
 
-For every new portfolio or substantial portfolio redesign, Kip must choose **either [marwieang.md](marwieang.md) or [bryllim.md](bryllim.md)** as the implementation's primary design skill. This file is a selector and compatibility guide, not a third portfolio design. Do not build from this summary alone or blend both into a generic minimal site.
+For every new portfolio website or substantial portfolio redesign within Kip, implicitly activate [marwieang.md](marwieang.md). The user does not need to name the skill, choose a reference, or approve its use. Explicit design briefs and established brands take precedence; small repairs preserve the surrounding design.
 
-## Select before implementation
+## Read the complete source before building
 
-Honor an explicit user choice. Otherwise choose autonomously from the brief and actual content:
+The root, assigned frontend worker, and independent reviewer must each read `marwieang.md` from top to bottom before implementation or review. Read every section and every source block, through the final `dither.py` helper. When output is truncated, continue in ordered, bounded ranges until the end; do not treat a heading list, search results, opening summary, or selected excerpts as a complete read. Reuse a complete read already present in the same agent's context while the source is unchanged.
 
-| Portfolio need | Choose | Design identity to retain |
-| --- | --- | --- |
-| Personal developer/designer portfolio centered on selected work, experience, about, and contact; a compact personal home with supporting pages | marwieang.md | Floating framed sidebar with nested shell/panel, a 640px main column, generous section rhythm, small section headings above hairline project/link rows, restrained raised navigation, compact mobile navigation |
-| Editorial portfolio centered on writing, resources, a substantial project archive, or a monochrome technical-zine direction | bryllim.md | Strict monochrome semantic ramp, 42rem reading measure, ruled/numbered section hierarchy, fixed 14rem desktop navigation with mobile top bar, restrained surface depth, a selectively placed faded halftone accent |
-| Broad “build my portfolio” brief with no stronger direction | marwieang.md | Use its complete portfolio composition as the default, adapted to the user's real content |
+Briefly state that `marwieang.md` is being applied automatically. Pass the source path and complete-read requirement in implementation and review assignments. A parent's summary does not replace a worker's or reviewer's own reading. Read the full reference even for a scoped assignment within the portfolio build, while keeping edits within that assignment.
 
-Choose one even when both could fit; do not ask the user to select unless the brief contains a material unresolved conflict. An existing clearly established design or a small repair preserves that design rather than forcing a new selection.
+## Implement the source throughout the portfolio
 
-State the decision briefly before building: “Portfolio design: marwieang.md — selected for a work-focused personal portfolio.” Name the actual file and content-based reason. Open and read the selected source's design rules, tokens, component guidance, and relevant implementation sections. For Marwie Ang, read the source code for the shell, sidebar, page, and project rows when using those components; the opening summary is insufficient. If the chosen file is missing or unreadable, report that limitation and resolve it before claiming to use the skill.
+Use the supplied code as the implementation baseline, preserving its concrete tokens and relationships. Implement the full design system and all components, pages, and interactions required by the brief. Carry the reference through the whole page and supporting routes, rather than stopping after the sidebar or hero. Read optional components and helpers too; include them when the brief and real content call for them.
 
-## Apply the selected skill, with narrow compatibility overrides
+Track coverage in the working implementation brief, using the source's sections and source-file blocks. Mark each as implemented, adapted with a specific reason, or omitted with a specific scope/content/compatibility reason. Group closely related blocks when useful, but account for every block. Do not silently skip lower sections or invent content to populate optional pages.
 
-The selected skill governs composition, palette, spacing, navigation structure, surface treatment, and component relationships. Follow it concretely; do not reduce it to “minimal typography” and invent another layout. [frontend-system.md](frontend-system.md) supplies the user's compatibility constraints:
+Cover these relationships during implementation and review:
 
-- One selected font family throughout, Geist by default. Replace separate serif, mono, and pixel roles with size/weight differences in that same family. Keep the owner's name crisp; no pixel-name reveal.
-- Use shared readable type tokens: 16px body/navigation/actions and at least 14px supporting text. Raise small source values at the shared token or component, preserving its layout relationships.
-- Apply the supplied screenshot red flags locally: simple availability copy, real portrait or no avatar, compact theme control, clear unboxed contact links, no redundant status widgets or pill clusters. These overrides do **not** remove Marwie Ang's framed floating sidebar or Bryl Lim's editorial structure and restrained halftone identity.
-- Keep consistent shared control variants and accessible focus/contrast. Source code is an implementation reference: adapt it to the requested framework and existing component system rather than replacing the stack, copying sample credentials, or installing optional services.
-- Use real content and assets. Omit unsupported metrics, graphs, avatars, and counters. Do not add the other website reference's playable product simulations, bento demos, colorful mini-apps, audio, or live counters to a portfolio unless explicitly requested or real supplied work requires them.
+- Overview, non-negotiable rules, design tokens, component catalog, build steps, extension guidance, common mistakes, and verification requirements.
+- Global styles, layout, icon, data, and icon primitives: semantic colors in both themes, grain and layered surfaces, shared shapes, spacing, and type hierarchy.
+- Page shell and sidebar: floating framed shell/panel, 640px content column, desktop/mobile navigation, section rhythm, and active states.
+- Component source: project rows, contact feedback, carousels, photo stacks, contributions, name effects, click feedback, and poke controls/API. Implement applicable interactions completely, subject to the compatibility constraints below.
+- All route source: home, projects and detail, about, blog and detail, services, stack, gear, links, resources, and not-found. Preserve the source's page relationships for routes included in the brief.
+- Final image helper: use the supplied dithering treatment when appropriate for real gear imagery; account for its omission when that imagery or route is absent.
 
-For Marwie Ang, preserve the floating shell/panel, column geometry, hairline rows, spacing, and subtle surface treatment while simplifying the rejected widgets. For Bryl Lim, preserve monochrome editorial geometry, rules, hierarchy, and restrained halftone; use the single family at readable sizes instead of its original multi-font microtype. Keep texture away from readable text. Reduced motion and native input behavior remain intact.
+## Apply narrow compatibility constraints
 
-## Carry the choice through implementation and review
+[frontend-system.md](frontend-system.md) supplies the user's shared constraints. Apply them locally while retaining the source's composition, geometry, navigation, palette, spacing, and surfaces:
 
-Include the selected filename, relevant source sections, identity features, and compatibility overrides in the frontend implementation brief. An assigned worker must read that source, not just the root's paraphrase. A reviewer compares the rendered result with the **same selected skill**; do not substitute the unselected source or a generic anti-slop checklist.
+- One font family, Geist by default; express hierarchy with weight and size instead of the source's multiple fonts or pixel-name animation.
+- Readable shared tokens: 16px body/navigation/actions and at least 14px supporting text.
+- Simple availability copy, real portrait or no avatar, compact theme control, clear unboxed contact links, and no redundant status widgets or pill clusters. Retain the framed floating sidebar and nested shell/panel.
+- Consistent controls, accessible focus/contrast, reduced motion, and native input behavior.
+- Preserve the requested stack and existing component system. Adapt source syntax and dependencies as needed; use real content and assets. Do not copy sample credentials, invent metrics, or install optional services merely because the reference includes them.
 
-Before calling the portfolio complete, report the selected filename and concrete implemented relationships: desktop/mobile navigation, column geometry, section rhythm, project presentation, palette/surfaces, and any requested exceptions. Inspect narrow and wide browser views after fonts load and apply the shared typography/component checks. A sidebar alone, a monochrome palette alone, or a passing build does not demonstrate skill fidelity. Correct missing identity features before delivery, and label unavailable browser checks as unverified.
+Reading the entire file is mandatory; adding every optional route, widget, or service is governed by the brief and these constraints. Record adaptations and omissions in the coverage notes so fidelity can be reviewed concretely.
+
+## Review the entire implementation
+
+The reviewer reads the same complete source and checks the coverage notes against the code and rendered result. Inspect narrow and wide browser views after fonts load, exercise included interactions and routes, and check supported themes and reduced motion. Apply shared typography, component, and responsive checks.
+
+Compare desktop/mobile navigation, column geometry, section spacing, row presentation, palette, surfaces, and interaction states with the source. Correct missing relationships before delivery. A sidebar alone, a monochrome palette, or a passing build does not establish fidelity. Report material adaptations or omissions and label unavailable browser checks explicitly.
