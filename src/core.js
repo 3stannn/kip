@@ -15,9 +15,9 @@ const routes = {
   "responsive-design":
     /\b(responsive|responsiveness|viewport|viewports|mobile|tablet|desktop|ultrawide|breakpoint|breakpoints|reflow|overflow)\b/i,
   "frontend-design":
-    /\b(design|landing|typography|visual|layout|brand|icon|icons|keyline)\b/i,
+    /\b(design|landing|typography|visual|layout|brand|icon|icons|keyline|website|portfolio)\b/i,
   frontend:
-    /\b(frontend|front.end|react|vue|css|tailwind|html|ui|component|accessibility|landing|keyline(?:[ -]?icons?)?)\b/i,
+    /\b(frontend|front.end|react|vue|css|tailwind|html|ui|component|accessibility|landing|keyline(?:[ -]?icons?)?|website|portfolio)\b/i,
   backend:
     /\b(backend|back.end|api|database|server|endpoint|migration|better[ -]?auth)\b/i,
   security:

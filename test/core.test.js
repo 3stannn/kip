@@ -24,6 +24,11 @@ test("routing selects relevant skills without loading all specialties", () => {
   assert.ok(route("Configure Better Auth sessions").includes("security"));
   assert.ok(route("Use Keyline Icons").includes("frontend"));
   assert.ok(route("Use Keyline Icons").includes("frontend-design"));
+  assert.ok(route("Build a non-portfolio website").includes("frontend-design"));
+  assert.ok(route("Build a non-portfolio website").includes("frontend"));
+  assert.ok(
+    route("Build a non-portfolio website").includes("responsive-design"),
+  );
   assert.ok(!route("Explain sorting").includes("frontend"));
   assert.throws(() => route("task", ["unknown"]));
 });
