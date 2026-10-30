@@ -85,7 +85,7 @@ test("legacy runner modules still handle a real subprocess boundary", async (t) 
     "export const broken = true;",
   );
   const plan = await prepare(dir, "Fix bug", { files: ["sample.js"] });
-  assert.ok(plan.skills.includes("testing"));
+  assert.deepEqual(plan.skills, ["kip"]);
   await checkCodex(invokeImpl);
   const result = await run(dir, plan, { invokeImpl });
   assert.equal(result.status, "completed");

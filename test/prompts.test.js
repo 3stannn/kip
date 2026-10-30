@@ -34,7 +34,11 @@ test("every profile generates a task override for each purpose", () => {
 });
 
 test("profile selections remain portable while role models match the host", () => {
-  const slugs = profiles.map(({ slug }) => slug);
+  const slugs = ["maximum", "balanced", "value", "budget", "minimum-cost"];
+  assert.deepEqual(
+    profiles.map(({ slug }) => slug),
+    slugs,
+  );
   for (const host of ["claude", "antigravity"]) {
     assert.deepEqual(
       getProfiles(host).map(({ slug }) => slug),
@@ -45,7 +49,56 @@ test("profile selections remain portable while role models match the host", () =
       assert.ok(roles.every((role) => !/Astra|Sol|Luna|gpt-/.test(role)));
     }
   }
-  assert.equal(getProfiles("claude")[0].roles[0], "Opus / max");
+  const expectedRoles = {
+    codex: [
+      ["Astra / ultra", "Astra / ultra", "Astra / high", "Astra / high"],
+      ["Sol / high", "Sol / high", "Sol / medium", "Sol / medium"],
+      ["Sol / high", "Sol / medium", "Luna / medium", "Luna / medium"],
+      ["Sol / medium", "Luna / high", "Luna / low", "Luna / low"],
+      ["Luna / medium", "Luna / medium", "Luna / low", "Luna / low"],
+    ],
+    claude: [
+      ["Opus / max", "Opus / max", "Opus / high", "Opus / high"],
+      ["Sonnet / high", "Sonnet / high", "Sonnet / medium", "Sonnet / medium"],
+      ["Sonnet / high", "Sonnet / medium", "Haiku / medium", "Haiku / medium"],
+      ["Sonnet / medium", "Haiku / high", "Haiku / low", "Haiku / low"],
+      ["Haiku / medium", "Haiku / medium", "Haiku / low", "Haiku / low"],
+    ],
+    antigravity: [
+      ["Pro / high", "Pro / inherited", "Pro / inherited", "Pro / inherited"],
+      [
+        "Pro / medium",
+        "Pro / inherited",
+        "Flash / inherited",
+        "Flash / inherited",
+      ],
+      [
+        "Pro / medium",
+        "Flash / inherited",
+        "Flash / inherited",
+        "Flash / inherited",
+      ],
+      [
+        "Flash / medium",
+        "Flash / inherited",
+        "Flash / inherited",
+        "Flash / inherited",
+      ],
+      [
+        "Flash / low",
+        "Flash / inherited",
+        "Flash / inherited",
+        "Flash / inherited",
+      ],
+    ],
+  };
+  for (const [host, roles] of Object.entries(expectedRoles)) {
+    assert.equal(getProfiles(host).length, 5);
+    assert.deepEqual(
+      getProfiles(host).map((profile) => profile.roles),
+      roles,
+    );
+  }
   for (const { roles } of getProfiles("antigravity")) {
     assert.match(roles[0], /^(Pro|Flash) \/ (low|medium|high)$/);
     assert.ok(
@@ -58,8 +111,8 @@ test("profile selections remain portable while role models match the host", () =
 
 test("natural language includes selected profile and blank tasks have a placeholder", () => {
   assert.equal(
-    buildPrompt({ ...task, implicit: true, profile: "strong-lead" }),
-    "Use Kip with the Strong lead profile to fix: Fix mobile overflow.",
+    buildPrompt({ ...task, implicit: true, profile: "balanced" }),
+    "Use Kip with the Balanced profile to fix: Fix mobile overflow.",
   );
   assert.equal(
     buildPrompt({ ...task, implicit: true }),

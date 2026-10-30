@@ -16,7 +16,7 @@ const demos = [
     command: "$kip plan Build an accessible React login",
     output: [
       "Example plan response",
-      "Relevant guidance: frontend, security, testing",
+      "Delegate analysis, then review the plan",
       "Inspect the existing auth flow",
       "Define states, boundaries, and checks",
       "Return the plan without editing files",

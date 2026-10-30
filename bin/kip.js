@@ -18,11 +18,11 @@ Restart your host after installation. In chat, use:
 Switch profiles in chat (use /kip outside Codex):
   $kip profiles
   $kip profile value
-  $kip build --profile premium <instructions>
+  $kip build --profile maximum <instructions>
   $kip profile reset
   $kip update
 Profiles remember project settings across chats in .kip/profile.json.
-The seven profile names use native models for Codex, Claude Code, or Antigravity.
+The five profile names use native models for Codex, Claude Code, or Antigravity.
 Actionable Kip tasks use subagents automatically; no extra delegation phrase is needed.
 An active profile assigns two workers and an independent reviewer.
 Without a profile, use host-inherited settings for a worker and reviewer.

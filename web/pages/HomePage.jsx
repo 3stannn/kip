@@ -1,6 +1,5 @@
 import React from "react";
 import { Hero } from "../components/Hero.jsx";
-import { Skills } from "../components/Skills.jsx";
 import { FAQ } from "../components/FAQ.jsx";
 import { Closing } from "../components/Closing.jsx";
 
@@ -10,8 +9,8 @@ const highlights = [
     text: "Kip uses the model, tools, and permissions already available there.",
   },
   {
-    label: "Relevant guidance",
-    text: "It loads the smallest useful set of skills for the task you described.",
+    label: "Workers and review",
+    text: "It delegates focused work and checks the result with an independent reviewer.",
   },
   {
     label: "The scope you asked for",
@@ -43,7 +42,6 @@ export function HomePage() {
           </div>
         ))}
       </section>
-      <Skills />
       <FAQ />
       <Closing />
     </div>

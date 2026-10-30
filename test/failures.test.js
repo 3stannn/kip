@@ -51,16 +51,13 @@ test("configuration errors give actionable messages before execution", async (t)
 
 test("reinstall repairs missing skills and run ignore rule while preserving edits", async (t) => {
   const dir = await project(t);
-  const skill = path.join(dir, ".kip/skills/token-efficiency/SKILL.md");
+  const skill = path.join(dir, ".kip/skills/kip/SKILL.md");
   const config = path.join(dir, ".kip/config.json");
   const custom = JSON.stringify({ ...defaults, timeoutMs: 12345 });
   await fs.writeFile(config, custom);
   await fs.writeFile(path.join(dir, ".kip/.gitignore"), "custom/");
   await fs.unlink(skill);
-  await assert.rejects(
-    prepare(dir, "Check"),
-    /Missing skill token-efficiency.*kip install/,
-  );
+  await assert.rejects(prepare(dir, "Check"), /Missing skill kip.*kip install/);
   await install(dir);
   assert.equal(await fs.readFile(config, "utf8"), custom);
   assert.equal(
@@ -122,7 +119,7 @@ test("oversized custom skills and absent CLI tasks fail before inference", async
   const dir = await project(t);
   await assert.rejects(prepare(dir, "--file"), /task is required/);
   await fs.writeFile(
-    path.join(dir, ".kip/skills/token-efficiency/SKILL.md"),
+    path.join(dir, ".kip/skills/kip/SKILL.md"),
     "a".repeat(33000),
   );
   await assert.rejects(prepare(dir, "Check"), /File exceeds context limit/);

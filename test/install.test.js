@@ -6,12 +6,7 @@ import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
-import {
-  installSkills,
-  inspectSkills,
-  destinations,
-  specialties,
-} from "../src/install.js";
+import { installSkills, inspectSkills, destinations } from "../src/install.js";
 const execute = promisify(execFile);
 const cli = fileURLToPath(new URL("../bin/kip.js", import.meta.url));
 async function fixture(t) {
@@ -74,15 +69,7 @@ test("installs self-contained skills for every host without external dependencie
         "utf8",
       ),
     );
-    for (const name of [
-      "portfolio-design",
-      "marwieang",
-      "frontend-system",
-      "website-art-direction",
-      "website-layouts",
-      "orchestration-claude",
-      "orchestration-antigravity",
-    ]) {
+    for (const name of ["orchestration-claude", "orchestration-antigravity"]) {
       assert.equal(
         await fs.readFile(
           path.join(target, "references", `${name}.md`),
@@ -94,13 +81,16 @@ test("installs self-contained skills for every host without external dependencie
         ),
       );
     }
-    for (const name of specialties) {
-      const guidance = await fs.readFile(
-        path.join(target, "references", `${name}.md`),
-        "utf8",
-      );
-      assert.match(guidance, new RegExp(`^name: kip-${name}$`, "m"));
-    }
+    assert.deepEqual(
+      (await fs.readdir(path.join(target, "references"))).sort(),
+      [
+        "orchestration-antigravity.md",
+        "orchestration-claude.md",
+        "orchestration.md",
+        "profiles.md",
+        "update.md",
+      ],
+    );
     await assertLocalMarkdownLinks(target);
     assert.ok((await fs.lstat(target)).isDirectory());
   }
@@ -132,33 +122,6 @@ test("doctor detects missing host orchestration adapters", async (t) => {
       }
     });
   }
-});
-
-test("doctor detects missing portfolio design guidance", async (t) => {
-  const options = await fixture(t);
-  const [target] = await installSkills("claude", options);
-  await fs.rm(path.join(target, "references/portfolio-design.md"));
-  const [inspection] = await inspectSkills("claude", options);
-  assert.equal(inspection.ready, false);
-  assert.deepEqual(inspection.missing, ["references/portfolio-design.md"]);
-});
-
-test("doctor detects missing shared frontend system guidance", async (t) => {
-  const options = await fixture(t);
-  const [target] = await installSkills("claude", options);
-  await fs.rm(path.join(target, "references/frontend-system.md"));
-  const [inspection] = await inspectSkills("claude", options);
-  assert.equal(inspection.ready, false);
-  assert.deepEqual(inspection.missing, ["references/frontend-system.md"]);
-});
-
-test("doctor detects missing website layout guidance", async (t) => {
-  const options = await fixture(t);
-  const [target] = await installSkills("claude", options);
-  await fs.rm(path.join(target, "references/website-layouts.md"));
-  const [inspection] = await inspectSkills("claude", options);
-  assert.equal(inspection.ready, false);
-  assert.deepEqual(inspection.missing, ["references/website-layouts.md"]);
 });
 
 test("isolates each host and respects CODEX_HOME", async (t) => {
@@ -242,7 +205,9 @@ test("CLI installs and diagnoses each host offline without host binaries or cred
           ),
         );
       }
-      await fs.rm(path.join(inspections[0].path, "references/frontend.md"));
+      await fs.rm(
+        path.join(inspections[0].path, "references/orchestration.md"),
+      );
       await assert.rejects(
         execute(process.execPath, [cli, "doctor", ...args], { env }),
         (error) => error.code === 1 && error.stdout.includes('"ready": false'),

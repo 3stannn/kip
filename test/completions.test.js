@@ -22,8 +22,8 @@ test("suggests all profile names and reset only for saved selection", () => {
     [...profiles.map((profile) => profile.slug), "reset"],
   );
   assert.equal(
-    getCompletions("$kip profile str")[0].text,
-    "$kip profile strong-lead ",
+    getCompletions("$kip profile bal")[0].text,
+    "$kip profile balanced ",
   );
   assert.equal(
     getCompletions("$kip profile re")[0].text,
@@ -38,7 +38,7 @@ test("offers task override flags and profile values before freeform task text", 
       getCompletions(`$kip ${purpose} --`)[0].text,
       `$kip ${purpose} --profile `,
     );
-    assert.equal(getCompletions(`$kip ${purpose} --profile `).length, 7);
+    assert.equal(getCompletions(`$kip ${purpose} --profile `).length, 5);
     assert.equal(
       getCompletions(`$kip ${purpose} --profile val`)[0].text,
       `$kip ${purpose} --profile value `,
@@ -75,4 +75,18 @@ test("update suggests host options without completing arbitrary arguments", () =
   assert.equal(getCompletions("$kip update --host ").length, 4);
   assert.equal(getCompletions("$kip update --host codex ").length, 0);
   assert.equal(getCompletions("$kip update unexpected ").length, 0);
+});
+
+test("removed profiles are absent from saved and task completions", () => {
+  for (const prefix of ["$kip", "/kip"]) {
+    assert.equal(getCompletions(`${prefix} profile `).length, 6);
+    for (const removed of ["premium", "strong-lead"]) {
+      assert.deepEqual(getCompletions(`${prefix} profile ${removed}`), []);
+      for (const purpose of ["build", "fix", "plan", "review"])
+        assert.deepEqual(
+          getCompletions(`${prefix} ${purpose} --profile ${removed}`),
+          [],
+        );
+    }
+  }
 });

@@ -10,7 +10,7 @@ Profiles select role settings for Kip's delegated workflow. Actionable work unde
 - `profile reset`: save a null selection; return to host defaults. Do not delete other `.kip` files.
 - `<purpose> --profile <name|number> <task>`: use a task override without changing saved memory. Parse options outside quoted task text and code. Reject missing, unknown, or conflicting values before work.
 
-Names are case-insensitive; display names, slugs, and numbers 1–7 are accepted. A natural language request to select a profile saves it; “use this profile for this task” is an override. If the requested scope is genuinely ambiguous, keep it task-only and state that scope. Selecting a profile while work is active changes subsequent tasks, not agents already running. If the user explicitly asks to apply different settings to the active task, pause affected dispatch and inspect the host's supported reconfiguration tools. Do not claim existing agents changed settings. Apply the change only through supported controls within the task's agent limit; otherwise disclose the limitation, leave existing agents unchanged, and stop affected dispatch. Save a profile for subsequent tasks only when the user requested a persistent selection; never carry an unsupported task-only override into the next task.
+Names are case-insensitive; display names, slugs, and numbers 1–5 are accepted. A natural language request to select a profile saves it; “use this profile for this task” is an override. If the requested scope is genuinely ambiguous, keep it task-only and state that scope. Selecting a profile while work is active changes subsequent tasks, not agents already running. If the user explicitly asks to apply different settings to the active task, pause affected dispatch and inspect the host's supported reconfiguration tools. Do not claim existing agents changed settings. Apply the change only through supported controls within the task's agent limit; otherwise disclose the limitation, leave existing agents unchanged, and stop affected dispatch. Save a profile for subsequent tasks only when the user requested a persistent selection; never carry an unsupported task-only override into the next task.
 
 Use the target project's root, not the installed skill directory or an unrelated terminal directory. Read `.kip/profile.json` at the beginning of every Kip task. Precedence: explicit task override, saved project selection, chat-only fallback, host defaults. A saved null explicitly selects host defaults and suppresses stale chat fallback. Never borrow another project's or another chat's selection. A changed saved file takes precedence over stale chat history. Do not create state merely by reading or displaying profiles.
 
@@ -26,6 +26,8 @@ The file contains only `{"version":1,"profile":"value"}` (or null for defaults).
 
 When filesystem access, Node, or an unambiguous project root is unavailable, retain an explicit selection in chat and say it is chat-only. Do not claim persistence. With invalid or unreadable memory, disclose the failure, use a valid explicit override if present, otherwise use host defaults; do not silently resurrect stale chat state. Honor host approval rules for writes. Carry project root, saved selection, effective override, persistence status, and any model mismatch through compaction. At task completion, discard the override and resume the saved selection.
 
+Existing saved `premium` and `strong-lead` selections resolve to `maximum` for compatibility. Report this mapping when restoring a legacy selection. Reading memory leaves the stored file unchanged; the next explicit selection or reset writes a current value. These retired names are not available for new selections or task overrides. Numeric selections now follow the five-profile table below.
+
 ## Presets
 
 Choose the table for the host running this task. Names and numbers stay the same across hosts. The presets progress from deeper reasoning and larger models toward lower intended cost; actual usage depends on tokens, task complexity, and host billing. They are not price estimates or cross-provider equivalents. Effort is a requested thinking setting, not a fixed token budget. Recommend Value when asked for a default; do not select it silently.
@@ -35,12 +37,10 @@ Choose the table for the host running this task. Names and numbers stay the same
 | #   | Name (slug)                   | Root          | Reviewer      | Worker 1      | Worker 2      |
 | --- | ----------------------------- | ------------- | ------------- | ------------- | ------------- |
 | 1   | Maximum (`maximum`)           | Astra / ultra | Astra / ultra | Astra / high  | Astra / high  |
-| 2   | Premium (`premium`)           | Astra / xhigh | Astra / high  | Sol / high    | Sol / high    |
-| 3   | Strong lead (`strong-lead`)   | Astra / high  | Sol / high    | Sol / medium  | Sol / medium  |
-| 4   | Balanced (`balanced`)         | Sol / high    | Sol / high    | Sol / medium  | Sol / medium  |
-| 5   | Value (`value`)               | Sol / high    | Sol / medium  | Luna / medium | Luna / medium |
-| 6   | Budget (`budget`)             | Sol / medium  | Luna / high   | Luna / low    | Luna / low    |
-| 7   | Minimum cost (`minimum-cost`) | Luna / medium | Luna / medium | Luna / low    | Luna / low    |
+| 2   | Balanced (`balanced`)         | Sol / high    | Sol / high    | Sol / medium  | Sol / medium  |
+| 3   | Value (`value`)               | Sol / high    | Sol / medium  | Luna / medium | Luna / medium |
+| 4   | Budget (`budget`)             | Sol / medium  | Luna / high   | Luna / low    | Luna / low    |
+| 5   | Minimum cost (`minimum-cost`) | Luna / medium | Luna / medium | Luna / low    | Luna / low    |
 
 Exact model IDs: Astra = `gpt-6-astra`, Sol = `gpt-6.1-sol`, Luna = `gpt-6-luna`.
 
@@ -49,12 +49,10 @@ Exact model IDs: Astra = `gpt-6-astra`, Sol = `gpt-6.1-sol`, Luna = `gpt-6-luna`
 | # | Name (slug) | Root | Reviewer | Worker 1 | Worker 2 |
 | --- | --- | --- | --- | --- | --- |
 | 1 | Maximum (`maximum`) | Opus / max | Opus / max | Opus / high | Opus / high |
-| 2 | Premium (`premium`) | Opus / xhigh | Opus / high | Sonnet / high | Sonnet / high |
-| 3 | Strong lead (`strong-lead`) | Opus / high | Sonnet / high | Sonnet / medium | Sonnet / medium |
-| 4 | Balanced (`balanced`) | Sonnet / high | Sonnet / high | Sonnet / medium | Sonnet / medium |
-| 5 | Value (`value`) | Sonnet / high | Sonnet / medium | Haiku / medium | Haiku / medium |
-| 6 | Budget (`budget`) | Sonnet / medium | Haiku / high | Haiku / low | Haiku / low |
-| 7 | Minimum cost (`minimum-cost`) | Haiku / medium | Haiku / medium | Haiku / low | Haiku / low |
+| 2 | Balanced (`balanced`) | Sonnet / high | Sonnet / high | Sonnet / medium | Sonnet / medium |
+| 3 | Value (`value`) | Sonnet / high | Sonnet / medium | Haiku / medium | Haiku / medium |
+| 4 | Budget (`budget`) | Sonnet / medium | Haiku / high | Haiku / low | Haiku / low |
+| 5 | Minimum cost (`minimum-cost`) | Haiku / medium | Haiku / medium | Haiku / low | Haiku / low |
 
 Use the native model aliases `opus`, `sonnet`, and `haiku`, which resolve according to the user's provider and available models. Inspect the resolved model and its supported effort levels before dispatch: older models, host versions, organization caps, and environment settings may restrict or override the request. Pass model and effort only through controls the current host exposes; disclose any inherited setting or mismatch. Do not change the user's environment or persistent Claude settings to force a profile.
 
@@ -65,16 +63,14 @@ Native controls: [Claude Code model configuration](https://code.claude.com/docs/
 | # | Name (slug) | Root | Reviewer | Worker 1 | Worker 2 |
 | --- | --- | --- | --- | --- | --- |
 | 1 | Maximum (`maximum`) | Pro / high | pro / inherited | pro / inherited | pro / inherited |
-| 2 | Premium (`premium`) | Pro / high | pro / inherited | flash / inherited | flash / inherited |
-| 3 | Strong lead (`strong-lead`) | Pro / high | flash / inherited | flash / inherited | flash / inherited |
-| 4 | Balanced (`balanced`) | Pro / medium | pro / inherited | flash / inherited | flash / inherited |
-| 5 | Value (`value`) | Pro / medium | flash / inherited | flash / inherited | flash / inherited |
-| 6 | Budget (`budget`) | Flash / medium | flash / inherited | flash / inherited | flash / inherited |
-| 7 | Minimum cost (`minimum-cost`) | Flash / low | flash / inherited | flash / inherited | flash / inherited |
+| 2 | Balanced (`balanced`) | Pro / medium | pro / inherited | flash / inherited | flash / inherited |
+| 3 | Value (`value`) | Pro / medium | flash / inherited | flash / inherited | flash / inherited |
+| 4 | Budget (`budget`) | Flash / medium | flash / inherited | flash / inherited | flash / inherited |
+| 5 | Minimum cost (`minimum-cost`) | Flash / low | flash / inherited | flash / inherited | flash / inherited |
 
 For the root, Pro and Flash mean an available Gemini Pro-family or Flash-family model selected by the user, with the indicated reasoning level. For delegated roles, use Antigravity's native `pro` and `flash` tier values; resolve their actual model through the host. The host also supports `inherit` for a model that follows the parent. These are native host choices, not aliases for the Codex or Claude tables.
 
-`inherited` in the agent columns means that the profile does not request a separate agent effort override. Antigravity's documented subagent configuration exposes a model tier but no per-agent effort field. Report agent effort as host-controlled or unverified unless the current tools expose it; do not claim the root's requested effort applied to every agent. The smaller set of controls makes some role settings overlap, and Strong lead versus Balanced trades root reasoning against reviewer tier. Cost order is approximate.
+`inherited` in the agent columns means that the profile does not request a separate agent effort override. Antigravity's documented subagent configuration exposes a model tier but no per-agent effort field. Report agent effort as host-controlled or unverified unless the current tools expose it; do not claim the root's requested effort applied to every agent. The smaller set of controls makes some role settings overlap. Cost order is approximate.
 
 Native controls: [Antigravity model and reasoning selection](https://antigravity.google/docs/models/) and [subagent model tiers](https://antigravity.google/docs/subagents/). Available root models and controls can differ by surface, plan, and version; inspect the running host before applying a profile.
 

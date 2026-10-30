@@ -18,7 +18,7 @@ export function Profiles({ onSelect, host, onHostChange }) {
       <div className="docs-section-header">
         <h2 id="profiles-heading">Model profiles</h2>
         <p>
-          Preview seven presets for a root, two workers, and an independent
+          Preview five presets for a root, two workers, and an independent
           reviewer. Kip restores your saved project profile. A task override
           applies once. Kip tasks use subagents automatically; no extra
           delegation phrase is needed.
@@ -44,7 +44,7 @@ export function Profiles({ onSelect, host, onHostChange }) {
           <span>Lower intended cost</span>
         </div>
         <div
-          className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7"
+          className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-5"
           role="group"
           aria-label="Preview a model profile"
         >

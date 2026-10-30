@@ -5,19 +5,20 @@ import { pathToFileURL } from "node:url";
 
 export const profileNames = [
   "maximum",
-  "premium",
-  "strong-lead",
   "balanced",
   "value",
   "budget",
   "minimum-cost",
 ];
 
+// Retired presets remain readable in project memory, but are not selectable.
+const retiredProfiles = { premium: "maximum", "strong-lead": "maximum" };
+
 export function resolveProfile(value) {
   const name = String(value).trim().toLowerCase().replace(/\s+/g, "-");
-  const slug = /^[1-7]$/.test(name) ? profileNames[Number(name) - 1] : name;
+  const slug = /^[1-5]$/.test(name) ? profileNames[Number(name) - 1] : name;
   if (!profileNames.includes(slug))
-    throw Error(`Unknown profile. Choose ${profileNames.join(", ")} or 1–7.`);
+    throw Error(`Unknown profile. Choose ${profileNames.join(", ")} or 1–5.`);
   return slug;
 }
 
@@ -54,14 +55,30 @@ export async function profileMemory(root, action = "show", value) {
       !state ||
       state.version !== 1 ||
       !Object.hasOwn(state, "profile") ||
-      !(state.profile === null || profileNames.includes(state.profile)) ||
+      !(
+        state.profile === null ||
+        profileNames.includes(state.profile) ||
+        (typeof state.profile === "string" &&
+          Object.hasOwn(retiredProfiles, state.profile))
+      ) ||
       Object.keys(state).some((key) => !["version", "profile"].includes(key))
     )
       throw Error(
         `Invalid profile memory; preserve and repair explicitly: ${file}`,
       );
   }
-  if (action === "show") return { ...state, path: file, persisted };
+  if (action === "show") {
+    if (Object.hasOwn(retiredProfiles, state.profile)) {
+      return {
+        ...state,
+        profile: retiredProfiles[state.profile],
+        migratedFrom: state.profile,
+        path: file,
+        persisted,
+      };
+    }
+    return { ...state, path: file, persisted };
+  }
 
   await fs.mkdir(dir, { recursive: true });
   await checkEntry(dir, true);

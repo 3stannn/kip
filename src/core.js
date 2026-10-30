@@ -11,36 +11,12 @@ export const defaults = {
   maxContextBytes: 32000,
   timeoutMs: 90000,
 };
-const routes = {
-  "responsive-design":
-    /\b(responsive|responsiveness|viewport|viewports|mobile|tablet|desktop|ultrawide|breakpoint|breakpoints|reflow|overflow)\b/i,
-  "frontend-design":
-    /\b(design|landing|typography|visual|layout|brand|icon|icons|keyline|phosphor|shadcn|website|portfolio)\b/i,
-  frontend:
-    /\b(frontend|front.end|react|vue|css|tailwind|html|ui|component|accessibility|landing|keyline(?:[ -]?icons?)?|phosphor(?:[ -]?icons?)?|shadcn|website|portfolio)\b/i,
-  backend:
-    /\b(backend|back.end|api|database|server|endpoint|migration|better[ -]?auth)\b/i,
-  security:
-    /\b(security|auth|login|password|permission|payment|upload|injection|secret)\b/i,
-  testing:
-    /\b(test|tests|testing|bug|fix|regression|implement|build|create)\b/i,
-};
 export function route(task, explicit = []) {
-  const names = new Set(["token-efficiency", "anti-ai-slop"]);
-  for (const [name, regex] of Object.entries(routes))
-    if (regex.test(task)) names.add(name);
-  if (names.has("frontend") || names.has("frontend-design"))
-    names.add("responsive-design");
+  const names = new Set(["kip"]);
   for (const name of explicit) {
-    if (
-      !["token-efficiency", "anti-ai-slop", ...Object.keys(routes)].includes(
-        name,
-      )
-    )
+    if (!["kip", "kip-orchestrator"].includes(name))
       throw Error(`Unknown skill: ${name}`);
     names.add(name);
-    if (name === "frontend" || name === "frontend-design")
-      names.add("responsive-design");
   }
   return [...names].sort();
 }

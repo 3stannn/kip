@@ -17,8 +17,8 @@ export function Hero() {
           <span className="mt-2 block text-accent">Your buddy, Kip.</span>
         </h1>
         <p className="mt-7 max-w-xl text-base leading-8 text-muted">
-          Kip reads the task, loads only the guidance it needs, and works with
-          your project using the model and tools already available to you.
+          Kip coordinates focused workers and an independent reviewer for your
+          project using the model and tools already available to you.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-5">
           <a className="button-primary" href="/docs">

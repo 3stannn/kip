@@ -1,4 +1,0 @@
-interface:
-  display_name: "Kip Token Efficiency"
-  short_description: "Focused JavaScript workflow guidance for Kip"
-  default_prompt: "Use $kip-token-efficiency to apply Kip token-efficiency guidance to this task."

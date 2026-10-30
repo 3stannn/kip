@@ -12,29 +12,38 @@ async function project(t) {
 }
 test("install preserves custom settings and skill edits", async (t) => {
   const dir = await project(t);
-  const file = path.join(dir, ".kip/skills/frontend/SKILL.md");
+  const file = path.join(dir, ".kip/skills/kip/SKILL.md");
   await fs.writeFile(file, "custom");
   await install(dir);
   assert.equal(await fs.readFile(file, "utf8"), "custom");
 });
-test("routing selects relevant skills without loading all specialties", () => {
-  assert.ok(route("Build a React login").includes("security"));
-  assert.ok(route("Standardize our Tailwind theme").includes("frontend"));
-  assert.ok(route("Configure Better Auth sessions").includes("backend"));
-  assert.ok(route("Configure Better Auth sessions").includes("security"));
-  assert.ok(route("Use Keyline Icons").includes("frontend"));
-  assert.ok(route("Use Keyline Icons").includes("frontend-design"));
-  assert.ok(route("Use Phosphor").includes("frontend"));
-  assert.ok(route("Use Phosphor").includes("frontend-design"));
-  assert.ok(route("Use shadcn").includes("frontend"));
-  assert.ok(route("Use shadcn").includes("frontend-design"));
-  assert.ok(route("Build a non-portfolio website").includes("frontend-design"));
-  assert.ok(route("Build a non-portfolio website").includes("frontend"));
-  assert.ok(
-    route("Build a non-portfolio website").includes("responsive-design"),
-  );
-  assert.ok(!route("Explain sorting").includes("frontend"));
-  assert.throws(() => route("task", ["unknown"]));
+test("routing uses only orchestration skills for every task", () => {
+  for (const task of [
+    "Build a React login",
+    "Standardize our Tailwind theme",
+    "Configure Better Auth sessions",
+    "Use Phosphor and shadcn",
+    "Build a non-portfolio website",
+    "Explain sorting",
+  ]) {
+    assert.deepEqual(route(task), ["kip"]);
+  }
+  assert.deepEqual(route("Migrate", ["kip-orchestrator"]), [
+    "kip",
+    "kip-orchestrator",
+  ]);
+  for (const name of [
+    "frontend-design",
+    "responsive-design",
+    "frontend",
+    "backend",
+    "security",
+    "testing",
+    "token-efficiency",
+    "anti-ai-slop",
+    "unknown",
+  ])
+    assert.throws(() => route("task", [name]), /Unknown skill/);
 });
 test("context rejects escape, secrets, symlinks and budget excess", async (t) => {
   const dir = await project(t);
@@ -137,22 +146,14 @@ test("provider credentials are removed from child environment", async () => {
   assert.deepEqual(env, { PATH: "bin" });
 });
 
-test("responsive skill routes for viewport and frontend tasks without unrelated overhead", async (t) => {
-  for (const task of [
-    "Fix mobile overflow",
-    "Improve responsiveness for all viewports",
-    "Build React component",
-    "Design a landing page",
-  ]) {
-    assert.ok(route(task).includes("responsive-design"), task);
-  }
-  assert.ok(!route("Optimize database query").includes("responsive-design"));
-  assert.ok(route("Review this", ["frontend"]).includes("responsive-design"));
+test("prepared tasks contain orchestration without removed design guidance", async (t) => {
   const dir = await project(t);
   const plan = await prepare(dir, "Fix narrow viewport layout");
-  assert.ok(plan.skills.includes("responsive-design"));
-  assert.ok(plan.request.instructions.includes("# Responsive Design"));
-  assert.ok(
-    route("Review this", ["responsive-design"]).includes("responsive-design"),
-  );
+  assert.deepEqual(plan.skills, ["kip"]);
+  assert.ok(plan.request.instructions.includes("# Kip"));
+  assert.ok(!plan.request.instructions.includes("# Responsive Design"));
+  assert.deepEqual((await fs.readdir(path.join(dir, ".kip/skills"))).sort(), [
+    "kip",
+    "kip-orchestrator",
+  ]);
 });

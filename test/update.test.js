@@ -152,7 +152,7 @@ test("diverged branches and missing tracking branches leave installed skills alo
 test("a broken upstream bundle fails staging without replacing installed skills", async (t) => {
   const { options, targets, publisher, publish } = await fixture(t);
   const original = await fs.readFile(path.join(targets[0], "SKILL.md"), "utf8");
-  await fs.rm(path.join(publisher, "skills/kip-frontend/SKILL.md"));
+  await fs.rm(path.join(publisher, "skills/kip/references/orchestration.md"));
   await publish();
   await assert.rejects(updateSkills("codex", options), /ENOENT/);
   for (const target of targets) {
@@ -165,6 +165,41 @@ test("a broken upstream bundle fails staging without replacing installed skills"
         path.join(path.dirname(path.dirname(target)), ".kip-update.lock"),
       ),
       { code: "ENOENT" },
+    );
+  }
+});
+
+test("refresh removes obsolete specialist guidance and retains it in the backup", async (t) => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "kip-cleanup-"));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const options = { home: root, codexHome: path.join(root, ".codex") };
+  const targets = await installSkills("codex", options);
+  const obsolete = ["frontend.md", "anti-ai-slop.md", "marwieang.md"];
+  for (const target of targets) {
+    for (const name of obsolete) {
+      await fs.writeFile(
+        path.join(target, "references", name),
+        "Old specialist guidance",
+      );
+    }
+  }
+  const refreshed = await refreshSkills("codex", options);
+  for (const { target, backup } of refreshed) {
+    for (const name of obsolete) {
+      await assert.rejects(fs.stat(path.join(target, "references", name)), {
+        code: "ENOENT",
+      });
+      assert.equal(
+        await fs.readFile(path.join(backup, "references", name), "utf8"),
+        "Old specialist guidance",
+      );
+    }
+    assert.match(
+      await fs.readFile(
+        path.join(target, "references/orchestration.md"),
+        "utf8",
+      ),
+      /Kip orchestration contract/,
     );
   }
 });

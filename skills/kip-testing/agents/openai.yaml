@@ -1,4 +1,0 @@
-interface:
-  display_name: "Kip Testing"
-  short_description: "Focused JavaScript workflow guidance for Kip"
-  default_prompt: "Use $kip-testing to apply Kip testing guidance to this task."

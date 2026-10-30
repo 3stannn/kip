@@ -23,7 +23,7 @@ export const steps = [
   {
     title: "Keep working in your host.",
     label: "Work",
-    text: "Kip selects relevant guidance and follows the purpose you chose. Plans return a plan; builds continue through implementation and appropriate checks.",
+    text: "Kip delegates focused work and reviews the result for the purpose you chose. Plans return a plan; builds continue through implementation and appropriate checks.",
     command:
       "/kip fix Resolve dashboard overflow on mobile and check the layout.",
     note: "This example uses Claude Code or Antigravity. Kip reports what changed, what it verified, and any remaining limitation. Your host keeps its own model, access rules, and permissions.",

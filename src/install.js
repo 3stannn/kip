@@ -6,15 +6,15 @@ import { randomUUID } from "node:crypto";
 
 const bundle = fileURLToPath(new URL("../skills/", import.meta.url));
 const sourceRoot = fileURLToPath(new URL("../", import.meta.url));
-export const specialties = [
-  "frontend-design",
-  "responsive-design",
-  "anti-ai-slop",
-  "token-efficiency",
-  "security",
-  "testing",
-  "frontend",
-  "backend",
+const bundleFiles = [
+  "SKILL.md",
+  "agents/openai.yaml",
+  "references/profiles.md",
+  "references/orchestration.md",
+  "references/orchestration-claude.md",
+  "references/orchestration-antigravity.md",
+  "references/update.md",
+  "scripts/profile.mjs",
 ];
 
 export function destinations(
@@ -75,23 +75,11 @@ export async function installSkills(host = "all", options = {}) {
 }
 
 async function copyBundle(target) {
-  await fs.cp(path.join(bundle, "kip"), target, { recursive: true });
-  for (const name of specialties) {
-    await fs.mkdir(path.join(target, "references"), { recursive: true });
-    const guidance = await fs.readFile(
-      path.join(bundle, `kip-${name}`, "SKILL.md"),
-      "utf8",
-    );
-    // Specialty guidance moves beside these references in the installed bundle.
-    const installedGuidance = guidance.replace(
-      /(\]\()\.\.\/kip\/references\/(?=[^)\s]+\))/g,
-      "$1",
-    );
-    await fs.writeFile(
-      path.join(target, "references", `${name}.md`),
-      installedGuidance,
-    );
+  // Validate the complete orchestration bundle before staging a replacement.
+  for (const file of bundleFiles) {
+    await fs.readFile(path.join(bundle, "kip", file));
   }
+  await fs.cp(path.join(bundle, "kip"), target, { recursive: true });
   await fs.writeFile(
     path.join(target, "installation.json"),
     JSON.stringify({ sourceRoot: path.resolve(sourceRoot) }, null, 2) + "\n",
@@ -193,27 +181,7 @@ export async function refreshSkills(host = "all", options = {}) {
 export async function inspectSkills(host = "all", options = {}) {
   return Promise.all(
     destinations(host, options).map(async (target) => {
-      const files = [
-        "SKILL.md",
-        "agents/openai.yaml",
-        "references/profiles.md",
-        "references/orchestration.md",
-        "references/orchestration-claude.md",
-        "references/orchestration-antigravity.md",
-        "references/frontend-tailwind.md",
-        "references/frontend-icons.md",
-        "references/frontend-shadcn.md",
-        "references/website-art-direction.md",
-        "references/portfolio-design.md",
-        "references/marwieang.md",
-        "references/frontend-system.md",
-        "references/website-layouts.md",
-        "references/backend-auth.md",
-        "references/update.md",
-        "installation.json",
-        "scripts/profile.mjs",
-        ...specialties.map((name) => `references/${name}.md`),
-      ];
+      const files = [...bundleFiles, "installation.json"];
       const missing = [];
       for (const file of files) {
         try {

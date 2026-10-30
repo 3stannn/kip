@@ -5,16 +5,6 @@ export const profiles = [
     roles: ["Astra / ultra", "Astra / ultra", "Astra / high", "Astra / high"],
   },
   {
-    name: "Premium",
-    slug: "premium",
-    roles: ["Astra / xhigh", "Astra / high", "Sol / high", "Sol / high"],
-  },
-  {
-    name: "Strong lead",
-    slug: "strong-lead",
-    roles: ["Astra / high", "Sol / high", "Sol / medium", "Sol / medium"],
-  },
-  {
     name: "Balanced",
     slug: "balanced",
     roles: ["Sol / high", "Sol / high", "Sol / medium", "Sol / medium"],
@@ -38,8 +28,6 @@ export const profiles = [
 
 const claudeRoles = [
   ["Opus / max", "Opus / max", "Opus / high", "Opus / high"],
-  ["Opus / xhigh", "Opus / high", "Sonnet / high", "Sonnet / high"],
-  ["Opus / high", "Sonnet / high", "Sonnet / medium", "Sonnet / medium"],
   ["Sonnet / high", "Sonnet / high", "Sonnet / medium", "Sonnet / medium"],
   ["Sonnet / high", "Sonnet / medium", "Haiku / medium", "Haiku / medium"],
   ["Sonnet / medium", "Haiku / high", "Haiku / low", "Haiku / low"],
@@ -48,8 +36,6 @@ const claudeRoles = [
 
 const antigravityRoles = [
   ["Pro / high", "Pro / inherited", "Pro / inherited", "Pro / inherited"],
-  ["Pro / high", "Pro / inherited", "Flash / inherited", "Flash / inherited"],
-  ["Pro / high", "Flash / inherited", "Flash / inherited", "Flash / inherited"],
   ["Pro / medium", "Pro / inherited", "Flash / inherited", "Flash / inherited"],
   [
     "Pro / medium",
