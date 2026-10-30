@@ -49,7 +49,7 @@ try {
     } else if (command === "update") {
       const result = await updateSkills(host);
       console.log(
-        `${result.before === result.after ? "Repository already current." : `Pulled ${result.before.slice(0, 8)} → ${result.after.slice(0, 8)}.`}\nUpdated Kip:\n${result.updated.map(({ target, backup }) => `${target}\n  Backup: ${backup}`).join("\n")}\nRestart your host or open a new session to load the updated skill.`,
+        `${result.before === result.after ? "Repository already current." : `Pulled ${result.before.slice(0, 8)} → ${result.after.slice(0, 8)}.`}\nUpdated Kip:\n${result.updated.map(({ target, backup, retired }) => `${retired ? "Archived duplicate: " : ""}${target}\n  Backup: ${backup}`).join("\n")}\nRestart your host or open a new session to load the updated skill.`,
       );
     } else {
       const results = await inspectSkills(host);

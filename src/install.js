@@ -14,19 +14,35 @@ const bundleFiles = [
   "references/orchestration-claude.md",
   "references/orchestration-antigravity.md",
   "references/update.md",
+  "references/frontend-design.md",
+  "references/frontend-engineering.md",
+  "vendor/taste-skill/SKILL.md",
+  "vendor/taste-skill/SOURCE.md",
+  "vendor/taste-skill/LICENSE",
+  "vendor/taste-skill/scripts/draw.mjs",
+  "vendor/taste-skill/scripts/inspect.mjs",
+  "vendor/taste-skill/library/directions.json",
+  "vendor/build-awwwards-quality-sites/SKILL.md",
+  "vendor/build-awwwards-quality-sites/agents/openai.yaml",
+  "vendor/build-awwwards-quality-sites/SOURCE.md",
+  "vendor/build-awwwards-quality-sites/LICENSE",
+  "vendor/frontend-design/SKILL.md",
+  "vendor/frontend-design/SOURCE.md",
+  "vendor/frontend-design/LICENSE.txt",
+  "vendor/vercel-react-best-practices/SKILL.md",
+  "vendor/vercel-react-best-practices/SOURCE.md",
+  "vendor/vercel-react-best-practices/AGENTS.md",
+  "vendor/vercel-react-best-practices/rules/async-parallel.md",
+  "vendor/shadcn/SKILL.md",
+  "vendor/shadcn/SOURCE.md",
+  "vendor/shadcn/LICENSE.md",
+  "vendor/shadcn/rules/composition.md",
   "scripts/profile.mjs",
 ];
 
-export function destinations(
-  host = "all",
-  { home = os.homedir(), codexHome = process.env.CODEX_HOME } = {},
-) {
-  const codex = path.resolve(codexHome || path.join(home, ".codex"));
+export function destinations(host = "all", { home = os.homedir() } = {}) {
   const hosts = {
-    codex: [
-      path.join(codex, "skills", "kip"),
-      path.join(home, ".agents", "skills", "kip"),
-    ],
+    codex: [path.join(home, ".agents", "skills", "kip")],
     claude: [path.join(home, ".claude", "skills", "kip")],
     antigravity: [
       path.join(home, ".gemini", "config", "skills", "kip"),
@@ -42,14 +58,29 @@ export function destinations(
   ];
 }
 
+function legacyCodexTarget({
+  home = os.homedir(),
+  codexHome = process.env.CODEX_HOME,
+} = {}) {
+  return path.join(
+    path.resolve(codexHome || path.join(home, ".codex")),
+    "skills",
+    "kip",
+  );
+}
+
 export async function installSkills(host = "all", options = {}) {
   const targets = destinations(host, options);
   // Check every destination before writing. Never replace an existing skill.
-  for (const target of targets) {
+  const conflicts =
+    host === "codex" || host === "all"
+      ? [...new Set([...targets, legacyCodexTarget(options)])]
+      : targets;
+  for (const target of conflicts) {
     try {
       await fs.lstat(target);
       throw Error(
-        `Skill already exists: ${target}. Move it aside before reinstalling; existing skills are preserved.`,
+        `Skill already exists: ${target}. Use update to refresh existing installations; existing skills are preserved.`,
       );
     } catch (error) {
       if (error.code !== "ENOENT") throw error;
@@ -88,7 +119,10 @@ async function copyBundle(target) {
 
 export async function refreshSkills(host = "all", options = {}) {
   const targets = [];
-  for (const target of destinations(host, options)) {
+  const canonical = destinations(host, options);
+  const legacy =
+    host === "codex" || host === "all" ? legacyCodexTarget(options) : null;
+  for (const target of new Set([...canonical, ...(legacy ? [legacy] : [])])) {
     let stat;
     try {
       stat = await fs.lstat(target);
@@ -107,6 +141,15 @@ export async function refreshSkills(host = "all", options = {}) {
     throw Error(
       "No installed Kip skills found for the selected host. Run install first.",
     );
+
+  const codexTarget = path.join(
+    options.home || os.homedir(),
+    ".agents",
+    "skills",
+    "kip",
+  );
+  const retireLegacy =
+    legacy && legacy !== codexTarget && targets.includes(codexTarget);
 
   const locks = [];
   const entries = [];
@@ -140,18 +183,25 @@ export async function refreshSkills(host = "all", options = {}) {
         stage: path.join(backupRoot, "new"),
         moved: false,
         activated: false,
+        retired: Boolean(retireLegacy && target === legacy),
       };
       entries.push(entry);
       await fs.mkdir(entry.stage, { recursive: true });
-      await copyBundle(entry.stage);
+      if (!entry.retired) await copyBundle(entry.stage);
     }
     for (const entry of entries) {
       await fs.rename(entry.target, entry.backup);
       entry.moved = true;
-      await fs.rename(entry.stage, entry.target);
-      entry.activated = true;
+      if (!entry.retired) {
+        await fs.rename(entry.stage, entry.target);
+        entry.activated = true;
+      }
     }
-    return entries.map(({ target, backup }) => ({ target, backup }));
+    return entries.map(({ target, backup, retired }) => ({
+      target,
+      backup,
+      ...(retired ? { retired } : {}),
+    }));
   } catch (error) {
     const failures = [];
     for (const entry of entries.toReversed()) {

@@ -58,7 +58,7 @@ test("source skill Markdown links resolve within the skill bundle", async () => 
 test("installs self-contained skills for every host without external dependencies", async (t) => {
   const options = await fixture(t);
   const targets = await installSkills("all", options);
-  assert.equal(targets.length, 5);
+  assert.equal(targets.length, 4);
   const inspections = await inspectSkills("all", options);
   assert.ok(inspections.every((entry) => entry.ready));
   for (const target of targets) {
@@ -84,6 +84,8 @@ test("installs self-contained skills for every host without external dependencie
     assert.deepEqual(
       (await fs.readdir(path.join(target, "references"))).sort(),
       [
+        "frontend-design.md",
+        "frontend-engineering.md",
         "orchestration-antigravity.md",
         "orchestration-claude.md",
         "orchestration.md",
@@ -92,8 +94,67 @@ test("installs self-contained skills for every host without external dependencie
       ],
     );
     await assertLocalMarkdownLinks(target);
+    const { stdout } = await execute(
+      process.execPath,
+      [
+        path.join(target, "vendor/taste-skill/scripts/draw.mjs"),
+        "--list",
+        "directions",
+      ],
+      { cwd: options.home },
+    );
+    assert.ok(
+      stdout.trim(),
+      "Installed Taste can read its bundled library offline",
+    );
+    assert.match(
+      await fs.readFile(
+        path.join(target, "vendor/taste-skill/LICENSE"),
+        "utf8",
+      ),
+      /MIT License/,
+    );
     assert.ok((await fs.lstat(target)).isDirectory());
+    for (const file of [
+      "SKILL.md",
+      "agents/openai.yaml",
+      "SOURCE.md",
+      "LICENSE",
+    ]) {
+      const bundledPath = `vendor/build-awwwards-quality-sites/${file}`;
+      assert.deepEqual(
+        await fs.readFile(path.join(target, bundledPath)),
+        await fs.readFile(
+          new URL(`../skills/kip/${bundledPath}`, import.meta.url),
+        ),
+      );
+    }
+    for (const file of ["SKILL.md", "SOURCE.md", "LICENSE.txt"]) {
+      const bundledPath = `vendor/frontend-design/${file}`;
+      assert.deepEqual(
+        await fs.readFile(path.join(target, bundledPath)),
+        await fs.readFile(
+          new URL(`../skills/kip/${bundledPath}`, import.meta.url),
+        ),
+      );
+    }
   }
+});
+
+test("doctor detects missing bundled skills, rules, and licenses", async (t) => {
+  const options = await fixture(t);
+  const [target] = await installSkills("claude", options);
+  const files = [
+    "vendor/build-awwwards-quality-sites/SKILL.md",
+    "vendor/frontend-design/SKILL.md",
+    "vendor/frontend-design/LICENSE.txt",
+    "vendor/vercel-react-best-practices/rules/async-parallel.md",
+    "vendor/shadcn/LICENSE.md",
+  ];
+  for (const file of files) await fs.rm(path.join(target, file));
+  const [inspection] = await inspectSkills("claude", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual(inspection.missing, files);
 });
 
 test("doctor detects a missing profile catalog in an installed skill", async (t) => {
@@ -124,11 +185,16 @@ test("doctor detects missing host orchestration adapters", async (t) => {
   }
 });
 
-test("isolates each host and respects CODEX_HOME", async (t) => {
+test("isolates each host and installs Codex in one discovery location", async (t) => {
   const options = await fixture(t);
   options.codexHome = path.join(options.home, "custom-codex");
   const targets = await installSkills("codex", options);
-  assert.equal(targets[0], path.join(options.codexHome, "skills", "kip"));
+  assert.deepEqual(targets, [
+    path.join(options.home, ".agents", "skills", "kip"),
+  ]);
+  await assert.rejects(fs.stat(path.join(options.codexHome, "skills", "kip")), {
+    code: "ENOENT",
+  });
   assert.equal((await inspectSkills("claude", options))[0].ready, false);
   assert.deepEqual(destinations("antigravity", options), [
     path.join(options.home, ".gemini/config/skills/kip"),
@@ -175,10 +241,7 @@ test("CLI installs and diagnoses each host offline without host binaries or cred
       );
       const inspections = JSON.parse(stdout);
       const expectedTargets = {
-        codex: [
-          path.join(options.codexHome, "skills", "kip"),
-          path.join(options.home, ".agents", "skills", "kip"),
-        ],
+        codex: [path.join(options.home, ".agents", "skills", "kip")],
         claude: [path.join(options.home, ".claude", "skills", "kip")],
         antigravity: [
           path.join(options.home, ".gemini", "config", "skills", "kip"),

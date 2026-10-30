@@ -24,7 +24,7 @@ node bin/kip.js install --host antigravity
 
 | Host                  | Global installation                                                                                                    |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Codex                 | `~/.codex/skills/kip/` (uses `$CODEX_HOME/skills/kip/` if set) and `~/.agents/skills/kip/` for current Codex discovery |
+| Codex                 | `~/.agents/skills/kip/` — one copy in Codex's user skill location |
 | Claude Code           | `~/.claude/skills/kip/`                                                                                                |
 | Antigravity App / IDE | `~/.gemini/config/skills/kip/`                                                                                         |
 | Antigravity CLI       | `~/.gemini/antigravity-cli/skills/kip/`                                                                                |
@@ -75,6 +75,8 @@ Replace `codex` with `claude` or `antigravity` as needed. Backups are kept outsi
 
 Restart your coding host or open a new session after updating. Pulling the repository alone does not refresh installed skill copies.
 
+Older Kip installers wrote both `~/.agents/skills/kip/` and `~/.codex/skills/kip/`, which can show two Kip entries. Updates now keep the `.agents` copy and archive the extra `.codex` copy in its `kip-backups` folder, preserving custom edits. `$CODEX_HOME` is honored when finding that legacy copy. A legacy-only installation is refreshed in place; new installs use only `.agents`. Installing over an existing legacy copy stops and directs you to update, so it cannot create another duplicate.
+
 ### First update from an older installation
 
 Older installed skills do not yet know the update command. Bootstrap it once in a terminal from your existing clone:
@@ -108,7 +110,11 @@ Use Kip to fix mobile overflow in the dashboard.
 
 Kip supports both implicit activation for suitable multi-step coding work and explicit invocation through `$kip`, `/kip`, or a natural language Kip request. Both paths use the same worker-and-reviewer workflow for actionable tasks; neither requires an extra 'use subagents' instruction. The host decides whether to select the skill automatically; explicit invocation is the reliable choice. `/kip` is an invocation intent understood by the instructions when passed through to the model, but registering an arbitrary `/kip` command in Codex is controlled by Codex. Use `$kip` there if `/kip` is not offered.
 
-Kip interprets the purpose and instructions, restores the project profile, inspects the relevant project context, and coordinates work with the current host's tools and permissions. The bundle contains orchestration, host adapters, profiles, and installation/update support. Specialist skills and design defaults have been removed so new guidance can be added from a clean starting point. A request for a plan produces a plan; an implementation request continues through changes and appropriate verification.
+Kip interprets the purpose and instructions, restores the project profile, inspects the relevant project context, and coordinates work with the current host's tools and permissions. The bundle contains orchestration, host adapters, profiles, and installation/update support. It also includes a pinned, MIT-licensed copy of [Taste](https://github.com/Leonxlnx/taste-skill) for website and app-interface design, with its supporting scripts, reference library, and assets. Explicit design direction and existing brand systems take precedence; small edits preserve the surrounding design. No separate `npx skills add` command is needed. Taste's browser checks need Node.js 22+ and Chrome, Edge, or Chromium; image discovery needs network access. See the [frontend guidance](skills/kip/references/frontend-design.md) and [source attribution](skills/kip/vendor/taste-skill/SOURCE.md). A request for a plan produces a plan; an implementation request continues through changes and appropriate verification.
+
+Kip also bundles [Anthropic's frontend-design](https://github.com/anthropics/skills/tree/ca45fc496a3436251f191354091d557da31c15b5/skills/frontend-design) as shared design foundations, with its Apache 2.0 license and [pinned source attribution](skills/kip/vendor/frontend-design/SOURCE.md). For cinematic and motion-led websites, it includes [Meng To's build-awwwards-quality-sites](https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/web-design/build-awwwards-quality-sites), with its MIT license and [pinned source attribution](skills/kip/vendor/build-awwwards-quality-sites/SOURCE.md). They work alongside Taste under the same frontend guidance; the requested stack and existing design systems take precedence.
+
+For React and Next.js work, Kip bundles [Vercel's React best practices](skills/kip/vendor/vercel-react-best-practices/SOURCE.md), including its individual performance rules. For shadcn/ui component work, it bundles the [official shadcn skill](skills/kip/vendor/shadcn/SOURCE.md), rules, and supporting assets. The [frontend engineering guidance](skills/kip/references/frontend-engineering.md) routes these to relevant tasks while preserving existing framework versions and component systems. Both are pinned upstream copies with MIT licensing declarations retained.
 
 Kip adds no authentication step. The application you already use retains its own access requirements, model selection, usage limits, and approval rules. Actionable Kip tasks automatically use host-native subagents. Profiles set the role models; they do not change the current chat's model or require another subscription.
 

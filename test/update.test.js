@@ -74,7 +74,7 @@ test("pulls upstream, backs up custom edits, updates only the selected host", as
   await publish();
   const result = await updateSkills("codex", options);
   assert.notEqual(result.before, result.after);
-  assert.equal(result.updated.length, 2);
+  assert.equal(result.updated.length, 1);
   for (const { target, backup } of result.updated) {
     assert.match(
       await fs.readFile(path.join(target, "SKILL.md"), "utf8"),
@@ -101,7 +101,7 @@ test("pulls upstream, backs up custom edits, updates only the selected host", as
   );
   const unchanged = await updateSkills("all", options);
   assert.equal(unchanged.before, unchanged.after);
-  assert.equal(unchanged.updated.length, 3); // No new Antigravity installation.
+  assert.equal(unchanged.updated.length, 2); // No new Antigravity installation.
   assert.ok(
     (await installer.inspectSkills("codex", options)).every(
       (entry) => entry.ready,
@@ -204,11 +204,48 @@ test("refresh removes obsolete specialist guidance and retains it in the backup"
   }
 });
 
+test("refresh archives the legacy Codex duplicate and preserves its edits", async (t) => {
+  const home = await fs.mkdtemp(path.join(os.tmpdir(), "kip-duplicate-"));
+  t.after(() => fs.rm(home, { recursive: true, force: true }));
+  const options = { home, codexHome: path.join(home, "custom-codex") };
+  const [canonical] = await installSkills("codex", options);
+  const legacy = path.join(options.codexHome, "skills", "kip");
+  await fs.cp(canonical, legacy, { recursive: true });
+  await fs.appendFile(path.join(legacy, "SKILL.md"), "\nKeep legacy edit.\n");
+  const result = await refreshSkills("codex", options);
+  const archived = result.find((entry) => entry.retired);
+  assert.equal(archived.target, legacy);
+  await assert.rejects(fs.stat(legacy), { code: "ENOENT" });
+  assert.match(
+    await fs.readFile(path.join(archived.backup, "SKILL.md"), "utf8"),
+    /Keep legacy edit/,
+  );
+  assert.ok((await fs.stat(path.join(canonical, "SKILL.md"))).isFile());
+  assert.equal((await refreshSkills("codex", options)).length, 1);
+});
+
+test("legacy-only Codex installs are preserved and cannot be duplicated by install", async (t) => {
+  const home = await fs.mkdtemp(path.join(os.tmpdir(), "kip-legacy-"));
+  t.after(() => fs.rm(home, { recursive: true, force: true }));
+  const options = { home, codexHome: path.join(home, ".codex") };
+  const [canonical] = await installSkills("codex", options);
+  const legacy = path.join(options.codexHome, "skills", "kip");
+  await fs.mkdir(path.dirname(legacy), { recursive: true });
+  await fs.rename(canonical, legacy);
+  await assert.rejects(installSkills("codex", options), /already exists/);
+  await assert.rejects(fs.stat(canonical), { code: "ENOENT" });
+  const result = await refreshSkills("codex", options);
+  assert.equal(result.length, 1);
+  assert.equal(result[0].target, legacy);
+  assert.equal(result[0].retired, undefined);
+  assert.ok((await fs.stat(path.join(legacy, "SKILL.md"))).isFile());
+});
+
 test("replacement failure rolls back every installed copy", async (t) => {
   const home = await fs.mkdtemp(path.join(os.tmpdir(), "kip-rollback-"));
   t.after(() => fs.rm(home, { recursive: true, force: true }));
   const options = { home, codexHome: path.join(home, ".codex") };
-  const targets = await installSkills("codex", options);
+  const targets = await installSkills("all", options);
   await fs.appendFile(
     path.join(targets[0], "SKILL.md"),
     "\nKeep custom content.\n",
@@ -224,7 +261,7 @@ test("replacement failure rolls back every installed copy", async (t) => {
     return rename(from, to);
   });
   await assert.rejects(
-    refreshSkills("codex", options),
+    refreshSkills("all", options),
     /Simulated rename failure/,
   );
   for (const [index, target] of targets.entries()) {
@@ -237,12 +274,12 @@ test("replacement failure rolls back every installed copy", async (t) => {
 
 test("updater refuses unrelated directories and respects update locks", async (t) => {
   const { options, targets } = await fixture(t);
-  const lock = path.join(options.codexHome, ".kip-update.lock");
+  const lock = path.join(options.home, ".agents", ".kip-update.lock");
   await fs.writeFile(lock, "another updater");
   await assert.rejects(refreshSkills("codex", options), /Another update/);
   assert.equal(await fs.readFile(lock, "utf8"), "another updater");
   await fs.rm(lock);
-  await fs.writeFile(path.join(targets[1], "SKILL.md"), "name: another-skill");
+  await fs.writeFile(path.join(targets[0], "SKILL.md"), "name: another-skill");
   await assert.rejects(refreshSkills("codex", options), /Not an installed Kip/);
   await assert.rejects(updateSkills("unknown", options), /Unknown host/);
   await assert.rejects(refreshSkills("claude", options), /No installed Kip/);

@@ -9,3 +9,5 @@
 5. Report the actual updater result, revision change, and backup paths. Tell the user to restart the host or open a new session. Do not claim the running session reloaded the new instructions.
 
 Older installations need a one-time bootstrap: pull the Kip clone and run `node bin/kip.js update --host <host>` in a terminal. After restarting, the installed skill includes this update workflow and its clone location. If the clone was removed, ordinary skill use still works; updating requires locating or restoring a clone.
+
+Codex new installs use only `~/.agents/skills/kip`. If an older install has both this folder and `$CODEX_HOME/skills/kip` (default `~/.codex/skills/kip`), refresh archives the legacy duplicate outside skill discovery, retaining its files in the reported backup. A legacy-only installation is refreshed in place. Report archived duplicates separately from refreshed installations.
