@@ -6,26 +6,41 @@ export function Header({ isDocs = false }) {
   return (
     <header className="mx-auto grid min-h-24 max-w-330 grid-cols-2 items-center gap-x-5 gap-y-4 px-6 py-5 md:grid-cols-[1fr_auto_1fr] md:px-14">
       <a
-        className="inline-flex items-center gap-2.5 justify-self-start text-[26px] font-black tracking-[-1px]"
+        className="group inline-flex items-center gap-2 justify-self-start text-[26px] font-black tracking-[-1px] text-ink transition-opacity hover:opacity-85"
         href="/"
         aria-label="Kip home"
       >
-        kip<span className="-ml-1 self-start pt-1.5 text-[10px]">®</span>
+        <span>kip</span>
+        <span className="-ml-1 self-start pt-1.5 text-[10px] font-bold text-muted transition-colors group-hover:text-accent">
+          ®
+        </span>
       </a>
       <nav
-        className="col-span-2 row-start-2 flex justify-center gap-7 text-xs font-bold whitespace-nowrap text-muted md:col-span-1 md:col-start-2 md:row-start-1 lg:gap-8 lg:text-sm [&>a:hover]:text-ink [&>a[aria-current]]:text-charcoal"
+        className="col-span-2 row-start-2 flex justify-center gap-6 whitespace-nowrap md:col-span-1 md:col-start-2 md:row-start-1 lg:gap-8"
         aria-label="Main navigation"
       >
-        <a href="/" aria-current={!isDocs ? "page" : undefined}>
+        <a
+          href="/"
+          className="nav-link"
+          aria-current={!isDocs ? "page" : undefined}
+        >
           Home
         </a>
-        <a href="/docs" aria-current={isDocs ? "page" : undefined}>
+        <a
+          href="/docs"
+          className="nav-link"
+          aria-current={isDocs ? "page" : undefined}
+        >
           Docs
         </a>
         {isDocs ? (
-          <a href="/#questions">FAQs</a>
+          <a href="/#questions" className="nav-link">
+            FAQs
+          </a>
         ) : (
-          <ScrollLink href="#questions">FAQs</ScrollLink>
+          <ScrollLink href="#questions" className="nav-link">
+            FAQs
+          </ScrollLink>
         )}
       </nav>
       {isDocs ? (

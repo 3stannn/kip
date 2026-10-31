@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section className="hero-section relative flex min-w-0 flex-col items-center">
       <div className="hero-copy relative z-10 w-full min-w-0 text-center">
-        <h1 data-intro className="hero-title m-0 font-black text-white">
+        <h1 data-intro className="hero-title m-0 font-black text-ink">
           <span className="block">Big ideas,</span>
           <span className="hero-title-serif block">Little commands.</span>
         </h1>
@@ -26,7 +26,7 @@ export function Hero() {
         </div>
         <p data-intro className="mt-6 text-xs font-bold text-charcoal">
           For Codex, Claude Code, and Antigravity.
-          <span className="mt-1.5 block font-normal">
+          <span className="mt-1.5 block font-normal text-muted">
             No Kip account, API key, or separate runner.
           </span>
         </p>
