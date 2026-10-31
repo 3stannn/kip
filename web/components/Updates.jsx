@@ -43,7 +43,7 @@ export function Updates() {
               key={String(value)}
               aria-pressed={terminal === value}
               onClick={() => setTerminal(value)}
-              className={`rounded-lg px-3 py-2 text-xs font-bold ${terminal === value ? "bg-charcoal text-surface" : "bg-soft text-muted"}`}
+              className={`rounded-lg px-3 py-2 text-xs font-bold ${terminal === value ? "bg-charcoal text-white" : "bg-soft text-muted"}`}
             >
               {value ? "In terminal" : "In chat"}
             </button>

@@ -45,7 +45,7 @@ export function CommandBuilder({
               key={String(value)}
               aria-pressed={typing === value}
               onClick={() => setTyping(value)}
-              className={`rounded-lg px-3 py-2 text-xs font-bold ${typing === value ? "bg-charcoal text-surface" : "bg-soft text-muted"}`}
+              className={`rounded-lg px-3 py-2 text-xs font-bold ${typing === value ? "bg-charcoal text-white" : "bg-soft text-muted"}`}
             >
               {value ? "Type a command" : "Guided builder"}
             </button>
@@ -122,7 +122,7 @@ export function CommandBuilder({
                   key={String(value)}
                   aria-pressed={implicit === value}
                   onClick={() => setImplicit(value)}
-                  className={`rounded-lg px-3 py-2 text-xs font-bold ${implicit === value ? "bg-charcoal text-surface" : "bg-soft text-muted"}`}
+                  className={`rounded-lg px-3 py-2 text-xs font-bold ${implicit === value ? "bg-charcoal text-white" : "bg-soft text-muted"}`}
                 >
                   {value ? "Natural language" : "Explicit invocation"}
                 </button>

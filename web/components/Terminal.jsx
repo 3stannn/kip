@@ -3,7 +3,8 @@ import { WindowChrome } from "./WindowChrome.jsx";
 
 const demos = [
   {
-    command: "node bin/kip.js install",
+    command:
+      "git clone https://github.com/3stannn/kip.git && cd kip && node bin/kip.js install",
     output: [
       "Installer scope",
       "Codex · Claude Code · Antigravity",
@@ -40,20 +41,24 @@ export function Terminal({ active }) {
   return (
     <div className="terminal-card relative z-10 w-full max-w-117.5">
       <WindowChrome title={demo.label} />
-      <div className="min-h-71.25 px-4 py-5 font-mono text-[10px] leading-6 sm:px-5 sm:text-[11px]">
+      <div className="min-h-71.25 px-4 py-5 font-mono text-[11px] leading-6 sm:px-5 sm:text-xs">
         <p className="mb-3 text-terminal-muted">
           # example — nothing runs on this page
         </p>
-        <p className="wrap-break-word">
-          <span className="text-terminal-subtle">
+        <p className="terminal-command wrap-break-word" key={demo.command}>
+          <span className="text-accent">
             {active === 0 ? "terminal > " : "you > "}
           </span>
           {demo.command}
         </p>
         <div className="mt-4 min-h-36.25" aria-live="polite">
-          {demo.output.map((line, i) => (
-            <p key={i}>{line || "\u00a0"}</p>
-          ))}
+          <div className="terminal-output" key={active}>
+            {demo.output.map((line, i) => (
+              <p key={i} style={{ "--line-index": i }}>
+                {line || "\u00a0"}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
       <div className="flex justify-between gap-2 border-t border-white/10 bg-terminal-raised px-4 py-2 font-mono text-[9px] text-terminal-subtle">

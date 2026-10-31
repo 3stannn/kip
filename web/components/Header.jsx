@@ -13,7 +13,7 @@ export function Header({ isDocs = false }) {
         kip<span className="-ml-1 self-start pt-1.5 text-[10px]">®</span>
       </a>
       <nav
-        className="col-span-2 row-start-2 flex justify-center gap-7 text-xs font-bold whitespace-nowrap text-muted md:col-span-1 md:col-start-2 md:row-start-1 lg:gap-8 lg:text-sm [&>a:hover]:text-accent [&>a[aria-current]]:text-charcoal"
+        className="col-span-2 row-start-2 flex justify-center gap-7 text-xs font-bold whitespace-nowrap text-muted md:col-span-1 md:col-start-2 md:row-start-1 lg:gap-8 lg:text-sm [&>a:hover]:text-ink [&>a[aria-current]]:text-charcoal"
         aria-label="Main navigation"
       >
         <a href="/" aria-current={!isDocs ? "page" : undefined}>
@@ -30,14 +30,14 @@ export function Header({ isDocs = false }) {
       </nav>
       {isDocs ? (
         <ScrollLink
-          className="button-primary col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:col-start-3"
+          className="button-primary hidden col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:inline-flex md:col-start-3"
           href="#get-started"
         >
           Get started <ArrowDownIcon />
         </ScrollLink>
       ) : (
         <a
-          className="button-primary col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:col-start-3"
+          className="button-primary hidden col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:inline-flex md:col-start-3"
           href="/docs"
         >
           Get started <ArrowUpRightIcon />

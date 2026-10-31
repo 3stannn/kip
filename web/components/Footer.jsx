@@ -6,7 +6,7 @@ export function Footer({ isDocs = false }) {
   return (
     <footer className="mx-auto grid max-w-[1320px] grid-cols-[auto_1fr] items-center gap-5 px-6 pb-9 text-xs text-muted sm:grid-cols-[1fr_auto_1fr] md:px-14">
       <a
-        className="inline-flex items-center gap-2.5 justify-self-start text-[26px] font-black tracking-[-1px]"
+        className="inline-flex items-center gap-2.5 justify-self-start text-[26px] font-black tracking-[-1px] text-ink"
         href="/"
         aria-label="Kip home"
       >
