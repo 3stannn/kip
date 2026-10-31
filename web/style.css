@@ -368,8 +368,8 @@
   .hero-terminal-frame .terminal-card > div:nth-child(2) {
     min-height: 18rem;
     padding: 1.5rem 2rem;
-    font-size: 0.875rem;
-    line-height: 1.9;
+    font-size: 0.75rem;
+    line-height: 1.75;
   }
 }
 
