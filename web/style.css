@@ -161,7 +161,7 @@
     @apply block font-mono text-xs font-bold text-charcoal;
   }
   .suggestion-description {
-    @apply mt-1 block text-[11px] leading-5 text-muted;
+    @apply mt-1 block text-xs leading-5 text-muted;
   }
   .skills-carousel {
     @apply overflow-hidden py-5;
@@ -368,7 +368,7 @@
   .hero-terminal-frame .terminal-card > div:nth-child(2) {
     min-height: 18rem;
     padding: 1.5rem 2rem;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     line-height: 1.9;
   }
 }

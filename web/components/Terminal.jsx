@@ -41,7 +41,7 @@ export function Terminal({ active }) {
   return (
     <div className="terminal-card relative z-10 w-full max-w-117.5">
       <WindowChrome title={demo.label} />
-      <div className="min-h-71.25 px-4 py-5 font-mono text-[11px] leading-6 sm:px-5 sm:text-xs">
+      <div className="min-h-71.25 px-4 py-5 font-mono text-xs leading-6 sm:px-5">
         <p className="mb-3 text-terminal-muted">
           # example — nothing runs on this page
         </p>
@@ -61,7 +61,7 @@ export function Terminal({ active }) {
           </div>
         </div>
       </div>
-      <div className="flex justify-between gap-2 border-t border-white/10 bg-terminal-raised px-4 py-2 font-mono text-[9px] text-terminal-subtle">
+      <div className="flex justify-between gap-2 border-t border-white/10 bg-terminal-raised px-4 py-2 font-mono text-[10px] text-terminal-subtle">
         <span>
           {active === 0 ? "Local installer" : "Current model and tools"}
         </span>

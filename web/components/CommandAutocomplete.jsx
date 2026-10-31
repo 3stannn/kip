@@ -137,7 +137,7 @@ export function CommandAutocomplete({ host, onHostChange }) {
           ))}
         </ul>
       )}
-      <p id={`${id}-hint`} className="my-3 text-[11px] leading-6 text-muted">
+      <p id={`${id}-hint`} className="my-3 text-xs leading-6 text-muted">
         Suggestions update as you type commands, --profile, and profile names.
         Use the arrow keys to choose, Tab or Enter to complete, and Esc to
         dismiss. Then add your task in your own words.

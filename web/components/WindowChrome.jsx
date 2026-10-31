@@ -8,7 +8,7 @@ export function WindowChrome({ title = "your-project — zsh", children }) {
         <span className="size-3 rounded-full border border-black/10 bg-[#febc2e] shadow-[inset_0_1px_0_#ffffff20]" />
         <span className="size-3 rounded-full border border-black/10 bg-[#28c840] shadow-[inset_0_1px_0_#ffffff20]" />
       </div>
-      <span className="pointer-events-none absolute inset-x-20 truncate text-center font-sans text-[11px] font-semibold text-[#a1a1a6]">
+      <span className="pointer-events-none absolute inset-x-20 truncate text-center font-sans text-xs font-semibold text-[#a1a1a6]">
         {title}
       </span>
       {children}

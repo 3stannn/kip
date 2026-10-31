@@ -88,7 +88,7 @@ export function Updates() {
             title="Terminal — inside your Kip clone"
           />
         </details>
-        <p className="mb-0 mt-5 text-[11px] leading-6 text-muted">
+        <p className="mb-0 mt-5 text-xs leading-6 text-muted">
           Updates happen when you ask. Previous copies are saved under
           kip-backups beside each host’s skills directory; the updater prints
           their locations.

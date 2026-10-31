@@ -13,12 +13,6 @@ export function Hero() {
           <span className="block">Big ideas,</span>
           <span className="hero-title-serif block">Little commands.</span>
         </h1>
-        <p
-          data-intro
-          className="mx-auto mt-5 max-w-145 text-xs font-bold leading-6 text-charcoal"
-        >
-          Kip coordinates skilled workers, leveraging specialized skills to complete your project efficiently.
-        </p>
         <div
           data-intro
           className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"

@@ -110,7 +110,7 @@ export function CommandBuilder({
                   </option>
                 ))}
               </select>
-              <p className="mb-0 mt-2 text-[11px] leading-6 text-muted">
+              <p className="mb-0 mt-2 text-xs leading-6 text-muted">
                 {profile
                   ? `Adds a one-task override using ${profileHostDetails[host].name} settings. It does not change a profile saved for your project.`
                   : "Uses your current chat and host settings without requesting role overrides."}
@@ -131,7 +131,7 @@ export function CommandBuilder({
             <CodeBlock text={command} title="Your coding chat" />
           </>
         )}
-        <p className="mb-0 mt-3 text-[11px] leading-6 text-muted">
+        <p className="mb-0 mt-3 text-xs leading-6 text-muted">
           {host === "codex"
             ? "Codex uses $kip or its /skills picker. "
             : "Your host exposes the installed skill as /kip. "}
