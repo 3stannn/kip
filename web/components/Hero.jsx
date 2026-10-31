@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section className="hero-section relative flex min-w-0 flex-col items-center">
       <div className="hero-copy relative z-10 w-full min-w-0 text-center">
-        <h1 data-intro className="hero-title m-0 font-bold text-ink">
+        <h1 data-intro className="hero-title m-0 font-bold text-charcoal">
           <span className="block">Big ideas,</span>
           <span className="hero-title-serif block">Little commands.</span>
         </h1>

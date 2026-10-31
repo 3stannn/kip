@@ -382,7 +382,7 @@
 }
 
 .hero-title {
-  color: var(--color-ink);
+  color: var(--color-charcoal);
   font-family: var(--font-geist, "Geist", system-ui, sans-serif);
   font-size: clamp(2.75rem, 9.5vw, 6.75rem);
   line-height: 0.98;
