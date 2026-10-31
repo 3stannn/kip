@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { Hero } from "../components/Hero.jsx";
+import { Skills } from "../components/Skills.jsx";
 import { FAQ } from "../components/FAQ.jsx";
 import { Closing } from "../components/Closing.jsx";
 import { usePageMotion } from "../hooks/usePageMotion.js";
@@ -46,6 +47,7 @@ export function HomePage() {
           </div>
         ))}
       </section>
+      <Skills />
       <FAQ />
       <Closing />
     </div>
