@@ -3,6 +3,7 @@
 @theme {
   --font-sans: "Nunito", system-ui, -apple-system, sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
+  --font-geist: "Geist", system-ui, -apple-system, sans-serif;
   --color-page: #f6f7f9;
   --color-surface: #ffffff;
   --color-ink: #121215;
@@ -382,15 +383,17 @@
 
 .hero-title {
   color: var(--color-ink);
+  font-family: var(--font-geist, "Geist", system-ui, sans-serif);
   font-size: clamp(2.75rem, 9.5vw, 6.75rem);
   line-height: 0.98;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.065em;
 }
 
 @media (max-width: 39.99rem) {
   .hero-title {
     font-size: clamp(2.75rem, 11.5vw, 3.75rem);
     line-height: 1.02;
+    letter-spacing: -0.055em;
   }
 }
 
@@ -401,7 +404,7 @@
   font-weight: 400;
   font-size: 1.06em;
   line-height: 1;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.045em;
   color: var(--color-charcoal);
 }
 
