@@ -6,6 +6,7 @@ import {
   profileHostDetails,
 } from "../data/profiles.js";
 import { CommandAutocomplete } from "./CommandAutocomplete.jsx";
+import { purposes } from "../data/purposes.js";
 
 const sampleTaskPills = [
   "Create an accessible React login and verify it.",
@@ -13,13 +14,6 @@ const sampleTaskPills = [
   "Plan architecture for multi-agent profile switching.",
   "Review changes for security, auth rules, and edge cases.",
 ];
-
-const purposeDescriptions = {
-  build: "Implement a task and verify it",
-  fix: "Investigate and resolve an issue",
-  plan: "Outline work before implementation",
-  review: "Review code and report findings",
-};
 
 const hostOptions = [
   { key: "codex", label: "Codex", prefix: "$kip" },
@@ -142,7 +136,7 @@ export function CommandBuilder({
                   role="radiogroup"
                   aria-label="Select command purpose"
                 >
-                  {["build", "fix", "plan", "review"].map((item) => {
+                  {purposes.map(({ name: item, description }) => {
                     const isSelected = purpose === item;
                     return (
                       <button
@@ -151,7 +145,7 @@ export function CommandBuilder({
                         role="radio"
                         aria-checked={isSelected}
                         onClick={() => setPurpose(item)}
-                        className={`flex flex-col items-start rounded-xl border p-2.5 text-left transition-all duration-150 ${
+                        className={`flex min-w-0 flex-col items-start rounded-xl border p-2.5 text-left transition-all duration-150 ${
                           isSelected
                             ? "border-accent bg-accent/15 text-charcoal shadow-xs ring-1 ring-accent/30"
                             : "border-line bg-surface text-muted hover:border-subtle/50 hover:bg-page hover:text-charcoal"
@@ -160,8 +154,8 @@ export function CommandBuilder({
                         <span className="font-mono text-xs font-extrabold capitalize text-ink">
                           {item}
                         </span>
-                        <span className="truncate text-[10px] text-muted">
-                          {purposeDescriptions[item]}
+                        <span className="max-w-full truncate text-[10px] text-muted">
+                          {description}
                         </span>
                       </button>
                     );
@@ -175,13 +169,19 @@ export function CommandBuilder({
                     value={purpose}
                     onChange={(e) => setPurpose(e.target.value)}
                   >
-                    {["build", "fix", "plan", "review"].map((value) => (
+                    {purposes.map(({ name: value }) => (
                       <option key={value} value={value}>
                         {value}
                       </option>
                     ))}
                   </select>
                 </div>
+                <p
+                  className="mb-0 mt-3 text-xs leading-6 text-muted"
+                  aria-live="polite"
+                >
+                  {purposes.find(({ name }) => name === purpose)?.detail}
+                </p>
               </div>
 
               {/* Host platform selector */}

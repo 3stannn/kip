@@ -11,7 +11,21 @@ test("suggests invocations and filters command prefixes for either host", () => 
       ["plan", "profiles", "profile"],
     );
     assert.equal(getCompletions(`${prefix} bu`)[0].text, `${prefix} build `);
-    assert.equal(getCompletions(`${prefix} `).length, 7);
+    assert.deepEqual(
+      getCompletions(`${prefix} `).map(({ label }) => label),
+      [
+        "build",
+        "fix",
+        "plan",
+        "review",
+        "ask",
+        "deslop",
+        "audit",
+        "profiles",
+        "profile",
+        "update",
+      ],
+    );
     assert.equal(getCompletions(`${prefix} up`)[0].text, `${prefix} update `);
   }
 });
@@ -33,7 +47,15 @@ test("suggests all profile names and reset only for saved selection", () => {
 });
 
 test("offers task override flags and profile values before freeform task text", () => {
-  for (const purpose of ["build", "fix", "plan", "review"]) {
+  for (const purpose of [
+    "build",
+    "fix",
+    "plan",
+    "review",
+    "ask",
+    "deslop",
+    "audit",
+  ]) {
     assert.equal(
       getCompletions(`$kip ${purpose} --`)[0].text,
       `$kip ${purpose} --profile `,
@@ -66,6 +88,29 @@ test("completion replaces the word at the cursor without losing task text", () =
   assert.equal(result.caret, result.text.indexOf("Fix"));
 });
 
+test("new purposes complete for both invocations without losing following questions", () => {
+  for (const prefix of ["$kip", "/kip"]) {
+    for (const purpose of ["ask", "deslop", "audit"]) {
+      const partial = purpose.slice(0, 2);
+      const text = `${prefix} ${partial} Explain this project`;
+      const result = getCompletions(
+        text,
+        prefix.length + 1 + partial.length,
+      ).find(({ label }) => label === purpose);
+      assert.equal(result.text, `${prefix} ${purpose} Explain this project`);
+      assert.equal(result.caret, result.text.indexOf("Explain"));
+      assert.equal(
+        getCompletions(`${prefix} ${purpose} --profile val`)[0].text,
+        `${prefix} ${purpose} --profile value `,
+      );
+      assert.deepEqual(
+        getCompletions(`${prefix} ${purpose} Explain this project`),
+        [],
+      );
+    }
+  }
+});
+
 test("update suggests host options without completing arbitrary arguments", () => {
   assert.equal(getCompletions("$kip update --")[0].text, "$kip update --host ");
   assert.equal(
@@ -82,7 +127,15 @@ test("removed profiles are absent from saved and task completions", () => {
     assert.equal(getCompletions(`${prefix} profile `).length, 6);
     for (const removed of ["premium", "strong-lead"]) {
       assert.deepEqual(getCompletions(`${prefix} profile ${removed}`), []);
-      for (const purpose of ["build", "fix", "plan", "review"])
+      for (const purpose of [
+        "build",
+        "fix",
+        "plan",
+        "review",
+        "ask",
+        "deslop",
+        "audit",
+      ])
         assert.deepEqual(
           getCompletions(`${prefix} ${purpose} --profile ${removed}`),
           [],

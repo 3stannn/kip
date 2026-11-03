@@ -6,4 +6,6 @@ For component work in projects using shadcn/ui, projects with `components.json`,
 
 Use these engineering rules within the selected visual direction from [frontend-design.md](frontend-design.md). Existing component APIs, accessible fallbacks, and project icon configuration take precedence over generic stylistic suggestions from design skills. Give workers and reviewers only the relevant rules and actual project context; do not run every bundled skill's full workflow for a small change.
 
+For GSAP in React/Next.js, also load the official [GSAP React guidance](../vendor/gsap-skills/gsap-react/SKILL.md) plus the relevant core/plugin guidance selected through [frontend design](frontend-design.md). Scope selectors, handle callbacks and animation cleanup, and respect the project's SSR boundary. Use the existing package setup; examples do not require installing `@gsap/react` when a suitable scoped `gsap.context()` integration already exists. For Vue/Svelte work, use the [framework lifecycle guidance](../vendor/gsap-skills/gsap-frameworks/SKILL.md) instead of applying React hooks.
+
 Pinned upstream revisions and licensing are recorded for [Vercel](../vendor/vercel-react-best-practices/SOURCE.md) and [shadcn](../vendor/shadcn/SOURCE.md). Normal Kip installation and updates copy all supporting resources offline.

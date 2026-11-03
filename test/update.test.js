@@ -10,6 +10,32 @@ import { updateSkills } from "../src/update.js";
 import { installSkills, refreshSkills, destinations } from "../src/install.js";
 
 const execute = promisify(execFile);
+
+test("skill refresh preserves local project notes and installs their helper", async (t) => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "kip-notes-refresh-"));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const options = {
+    home: path.join(root, "home"),
+    codexHome: path.join(root, "home/.codex"),
+  };
+  const [target] = await installSkills("codex", options);
+  const project = path.join(root, "project");
+  await fs.mkdir(path.join(project, ".kip"), { recursive: true });
+  const notes = path.join(project, ".kip/notes.json");
+  const original = '{"version":1,"revision":7,"entries":[]}\n';
+  await fs.writeFile(notes, original);
+  await fs.rm(path.join(target, "scripts/notes.mjs"));
+  await refreshSkills("codex", options);
+  assert.equal(await fs.readFile(notes, "utf8"), original);
+  assert.ok((await fs.stat(path.join(target, "scripts/notes.mjs"))).isFile());
+  assert.ok(
+    (
+      await fs.stat(
+        path.join(target, "vendor/security-audit/report-schema.json"),
+      )
+    ).isFile(),
+  );
+});
 async function git(cwd, ...args) {
   const { stdout } = await execute("git", args, { cwd });
   return stdout.trim();

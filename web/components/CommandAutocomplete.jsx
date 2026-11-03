@@ -6,14 +6,12 @@ import React, {
   useState,
 } from "react";
 import { getCompletions } from "../data/completions.js";
+import { purposeNames } from "../data/purposes.js";
 import { CodeBlock } from "./CodeBlock.jsx";
 import { ArrowRightIcon } from "./Icons.jsx";
 
 const quickPillTags = [
-  { label: "build", insert: "build " },
-  { label: "fix", insert: "fix " },
-  { label: "plan", insert: "plan " },
-  { label: "review", insert: "review " },
+  ...purposeNames.map((name) => ({ label: name, insert: `${name} ` })),
   { label: "--profile value", insert: "--profile value " },
   { label: "--profile balanced", insert: "--profile balanced " },
 ];
@@ -22,7 +20,7 @@ function getSuggestionCategory(label) {
   if (label.startsWith("--")) {
     return { type: "flag", badge: "FLAG", color: "bg-soft text-charcoal" };
   }
-  if (["build", "fix", "plan", "review"].includes(label)) {
+  if (purposeNames.includes(label)) {
     return {
       type: "purpose",
       badge: "PURPOSE",

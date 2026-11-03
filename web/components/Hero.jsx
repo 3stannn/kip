@@ -18,7 +18,7 @@ export function Hero() {
           className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
         >
           <a className="button-primary" href="/docs">
-            Get started <ArrowUpRightIcon />
+            Find Your Flow <ArrowUpRightIcon />
           </a>
           <a className="text-link" href="/docs#playground">
             Build a prompt <ArrowUpRightIcon />

@@ -9,6 +9,37 @@ import { fileURLToPath } from "node:url";
 import { installSkills, inspectSkills, destinations } from "../src/install.js";
 const execute = promisify(execFile);
 const cli = fileURLToPath(new URL("../bin/kip.js", import.meta.url));
+const gsapBundle = fileURLToPath(
+  new URL("../skills/kip/vendor/gsap-skills/", import.meta.url),
+);
+const gsapSkills = [
+  "gsap-core",
+  "gsap-timeline",
+  "gsap-scrolltrigger",
+  "gsap-plugins",
+  "gsap-utils",
+  "gsap-react",
+  "gsap-performance",
+  "gsap-frameworks",
+];
+async function regularFiles(directory, prefix = "") {
+  const files = [];
+  for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
+    const relative = prefix + entry.name;
+    if (entry.isDirectory())
+      files.push(
+        ...(await regularFiles(
+          path.join(directory, entry.name),
+          `${relative}/`,
+        )),
+      );
+    else {
+      assert.ok(entry.isFile(), `Unexpected linked bundle entry: ${relative}`);
+      files.push(relative);
+    }
+  }
+  return files.sort();
+}
 async function fixture(t) {
   const home = await fs.mkdtemp(path.join(os.tmpdir(), "kip-skills-"));
   t.after(() => fs.rm(home, { recursive: true, force: true }));
@@ -57,11 +88,32 @@ test("source skill Markdown links resolve within the skill bundle", async () => 
 
 test("installs self-contained skills for every host without external dependencies", async (t) => {
   const options = await fixture(t);
+  const gsapFiles = await regularFiles(gsapBundle);
+  assert.deepEqual(
+    (await fs.readdir(gsapBundle, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort(),
+    [...gsapSkills].sort(),
+  );
+  for (const skill of gsapSkills)
+    assert.ok(gsapFiles.includes(`${skill}/SKILL.md`));
+  for (const resource of ["LICENSE", "SOURCE.md", "llms.txt"])
+    assert.ok(gsapFiles.includes(resource));
   const targets = await installSkills("all", options);
   assert.equal(targets.length, 4);
   const inspections = await inspectSkills("all", options);
   assert.ok(inspections.every((entry) => entry.ready));
   for (const target of targets) {
+    const installedGsap = path.join(target, "vendor/gsap-skills");
+    assert.deepEqual(await regularFiles(installedGsap), gsapFiles);
+    for (const file of gsapFiles) {
+      assert.deepEqual(
+        await fs.readFile(path.join(installedGsap, file)),
+        await fs.readFile(path.join(gsapBundle, file)),
+        `Offline GSAP resource differs: ${file}`,
+      );
+    }
     assert.equal(
       await fs.readFile(path.join(target, "references/profiles.md"), "utf8"),
       await fs.readFile(
@@ -84,12 +136,15 @@ test("installs self-contained skills for every host without external dependencie
     assert.deepEqual(
       (await fs.readdir(path.join(target, "references"))).sort(),
       [
+        "deslop.md",
         "frontend-design.md",
         "frontend-engineering.md",
+        "notes.md",
         "orchestration-antigravity.md",
         "orchestration-claude.md",
         "orchestration.md",
         "profiles.md",
+        "security-audit.md",
         "update.md",
       ],
     );
@@ -141,6 +196,18 @@ test("installs self-contained skills for every host without external dependencie
   }
 });
 
+test("doctor detects missing GSAP skill, supporting resource, and attribution", async (t) => {
+  const options = await fixture(t);
+  const [target] = await installSkills("claude", options);
+  const files = ["gsap-react/SKILL.md", "LICENSE", "SOURCE.md", "llms.txt"].map(
+    (file) => `vendor/gsap-skills/${file}`,
+  );
+  for (const file of files) await fs.rm(path.join(target, file));
+  const [inspection] = await inspectSkills("claude", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual([...inspection.missing].sort(), [...files].sort());
+});
+
 test("doctor detects missing bundled skills, rules, and licenses", async (t) => {
   const options = await fixture(t);
   const [target] = await installSkills("claude", options);
@@ -164,6 +231,114 @@ test("doctor detects a missing profile catalog in an installed skill", async (t)
   const [inspection] = await inspectSkills("claude", options);
   assert.equal(inspection.ready, false);
   assert.deepEqual(inspection.missing, ["references/profiles.md"]);
+});
+
+test("audit bundle is pinned, complete, and doctor detects drift", async (t) => {
+  const options = await fixture(t);
+  const [target] = await installSkills("claude", options);
+  const directory = path.join(target, "vendor/security-audit");
+  const manifest = JSON.parse(
+    await fs.readFile(path.join(directory, "manifest.json"), "utf8"),
+  );
+  assert.match(manifest.revision, /^[a-f0-9]{40}$/);
+  assert.equal(Object.keys(manifest.files).length, 21);
+  for (const name of Object.keys(manifest.files)) {
+    assert.deepEqual(
+      await fs.readFile(path.join(directory, name)),
+      await fs.readFile(
+        new URL(`../skills/kip/vendor/security-audit/${name}`, import.meta.url),
+      ),
+    );
+  }
+  await fs.appendFile(
+    path.join(directory, "validate-findings.cjs"),
+    "\n// drift\n",
+  );
+  let [inspection] = await inspectSkills("claude", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual(inspection.invalid, [
+    "vendor/security-audit/validate-findings.cjs",
+  ]);
+  await fs.rm(path.join(directory, "AI-AND-LLM.md"));
+  [inspection] = await inspectSkills("claude", options);
+  assert.ok(inspection.missing.includes("vendor/security-audit/AI-AND-LLM.md"));
+});
+
+test("installed notes helpers share only the same project's memory and reads never bootstrap state", async (t) => {
+  const options = await fixture(t);
+  const targets = await installSkills("all", options);
+  const project = path.join(options.home, "project");
+  const other = path.join(options.home, "other");
+  await fs.mkdir(project);
+  await fs.mkdir(other);
+  const run = async (target, ...args) => {
+    const { stdout } = await execute(process.execPath, [
+      path.join(target, "scripts/notes.mjs"),
+      ...args,
+    ]);
+    return JSON.parse(stdout);
+  };
+  for (const target of targets) {
+    assert.equal(
+      (await run(target, "index", "--root", project)).persisted,
+      false,
+    );
+  }
+  assert.deepEqual(await fs.readdir(project), []);
+  await fs.writeFile(
+    path.join(project, "source.js"),
+    "export const value = 1;\n",
+  );
+  const input = path.join(options.home, "notes-input.json");
+  await fs.writeFile(
+    input,
+    JSON.stringify({
+      expectedRevision: 0,
+      entries: [
+        {
+          id: "source",
+          title: "Source",
+          content: "Value is exported here.",
+          dependencies: ["source.js"],
+        },
+      ],
+    }),
+  );
+  await run(targets[0], "apply", "--root", project, "--input", input);
+  const before = await fs.readFile(path.join(project, ".kip/notes.json"));
+  const names = await fs.readdir(path.join(project, ".kip"));
+  for (const target of targets) {
+    const result = await run(
+      target,
+      "query",
+      "--root",
+      project,
+      "--query",
+      "source",
+    );
+    assert.equal(result.entries[0].id, "source");
+    assert.equal(result.entries[0].freshness, "unchanged-recorded-files");
+    assert.equal(
+      (await run(target, "index", "--root", other)).persisted,
+      false,
+    );
+  }
+  assert.deepEqual(
+    await fs.readFile(path.join(project, ".kip/notes.json")),
+    before,
+  );
+  assert.deepEqual(await fs.readdir(path.join(project, ".kip")), names);
+  assert.deepEqual(await fs.readdir(other), []);
+  await execute(process.execPath, [
+    path.join(targets[0], "scripts/profile.mjs"),
+    "reset",
+    "--root",
+    project,
+  ]);
+  assert.deepEqual(
+    await fs.readFile(path.join(project, ".kip/notes.json")),
+    before,
+  );
 });
 
 test("doctor detects missing host orchestration adapters", async (t) => {

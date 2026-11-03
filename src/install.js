@@ -2,7 +2,8 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { fileURLToPath } from "node:url";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
+import auditManifest from "../skills/kip/vendor/security-audit/manifest.json" with { type: "json" };
 
 const bundle = fileURLToPath(new URL("../skills/", import.meta.url));
 const sourceRoot = fileURLToPath(new URL("../", import.meta.url));
@@ -16,6 +17,9 @@ const bundleFiles = [
   "references/update.md",
   "references/frontend-design.md",
   "references/frontend-engineering.md",
+  "references/notes.md",
+  "references/deslop.md",
+  "references/security-audit.md",
   "vendor/taste-skill/SKILL.md",
   "vendor/taste-skill/SOURCE.md",
   "vendor/taste-skill/LICENSE",
@@ -37,8 +41,56 @@ const bundleFiles = [
   "vendor/shadcn/SOURCE.md",
   "vendor/shadcn/LICENSE.md",
   "vendor/shadcn/rules/composition.md",
+  "vendor/gsap-skills/LICENSE",
+  "vendor/gsap-skills/SOURCE.md",
+  "vendor/gsap-skills/llms.txt",
+  ...[
+    "gsap-core",
+    "gsap-timeline",
+    "gsap-scrolltrigger",
+    "gsap-plugins",
+    "gsap-utils",
+    "gsap-react",
+    "gsap-performance",
+    "gsap-frameworks",
+  ].map((skill) => `vendor/gsap-skills/${skill}/SKILL.md`),
   "scripts/profile.mjs",
+  "scripts/notes.mjs",
+  "vendor/security-audit/SOURCE.md",
+  "vendor/security-audit/manifest.json",
+  ...Object.keys(auditManifest.files).map(
+    (file) => `vendor/security-audit/${file}`,
+  ),
 ];
+
+async function auditIntegrity(root) {
+  const invalid = [];
+  const folder = "vendor/security-audit";
+  for (const [file, expected] of Object.entries(auditManifest.files)) {
+    const relative = `${folder}/${file}`;
+    try {
+      const content = await fs.readFile(path.join(root, relative));
+      if (createHash("sha256").update(content).digest("hex") !== expected)
+        invalid.push(relative);
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+  }
+  const relative = `${folder}/manifest.json`;
+  try {
+    const manifest = JSON.parse(
+      await fs.readFile(path.join(root, relative), "utf8"),
+    );
+    if (JSON.stringify(manifest) !== JSON.stringify(auditManifest))
+      invalid.push(relative);
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      if (error instanceof SyntaxError) invalid.push(relative);
+      else throw error;
+    }
+  }
+  return invalid;
+}
 
 export function destinations(host = "all", { home = os.homedir() } = {}) {
   const hosts = {
@@ -110,6 +162,11 @@ async function copyBundle(target) {
   for (const file of bundleFiles) {
     await fs.readFile(path.join(bundle, "kip", file));
   }
+  const invalid = await auditIntegrity(path.join(bundle, "kip"));
+  if (invalid.length)
+    throw Error(
+      `Bundled security-audit integrity check failed: ${invalid.join(", ")}`,
+    );
   await fs.cp(path.join(bundle, "kip"), target, { recursive: true });
   await fs.writeFile(
     path.join(target, "installation.json"),
@@ -241,7 +298,13 @@ export async function inspectSkills(host = "all", options = {}) {
           else throw error;
         }
       }
-      return { path: target, ready: missing.length === 0, missing };
+      const invalid = await auditIntegrity(target);
+      return {
+        path: target,
+        ready: missing.length === 0 && invalid.length === 0,
+        missing,
+        ...(invalid.length ? { invalid } : {}),
+      };
     }),
   );
 }

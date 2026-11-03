@@ -23,7 +23,15 @@ test("host defaults omit profile overrides and preserve host invocation", () => 
 test("every profile generates a task override for each purpose", () => {
   for (const host of ["codex", "claude", "antigravity"]) {
     for (const profile of getProfiles(host)) {
-      for (const purpose of ["build", "fix", "plan", "review"]) {
+      for (const purpose of [
+        "build",
+        "fix",
+        "plan",
+        "review",
+        "ask",
+        "deslop",
+        "audit",
+      ]) {
         assert.equal(
           buildPrompt({ ...task, host, purpose, profile: profile.slug }),
           `${host === "codex" ? "$kip" : "/kip"} ${purpose} --profile ${profile.slug} Fix mobile overflow.`,
@@ -122,4 +130,46 @@ test("natural language includes selected profile and blank tasks have a placehol
     buildPrompt({ ...task, task: "  " }),
     "$kip fix Describe your task",
   );
+});
+
+test("all purposes preserve task text across hosts and natural-language invocation", () => {
+  const instructions =
+    "Explain this module; preserve `quoted code` and --flags.";
+  for (const host of ["codex", "claude", "antigravity"]) {
+    for (const purpose of [
+      "build",
+      "fix",
+      "plan",
+      "review",
+      "ask",
+      "deslop",
+      "audit",
+    ]) {
+      assert.equal(
+        buildPrompt({ ...task, task: instructions, host, purpose }),
+        `${host === "codex" ? "$kip" : "/kip"} ${purpose} ${instructions}`,
+      );
+      assert.equal(
+        buildPrompt({
+          ...task,
+          task: instructions,
+          host,
+          purpose,
+          implicit: true,
+        }),
+        `Use Kip to ${purpose}: ${instructions}`,
+      );
+      assert.equal(
+        buildPrompt({
+          ...task,
+          task: instructions,
+          host,
+          purpose,
+          implicit: true,
+          profile: "value",
+        }),
+        `Use Kip with the Value profile to ${purpose}: ${instructions}`,
+      );
+    }
+  }
 });

@@ -1,10 +1,8 @@
 import { profiles } from "./profiles.js";
+import { purposes, purposeNames } from "./purposes.js";
 
 const commands = [
-  ["build", "Implement a task and verify it"],
-  ["fix", "Investigate and resolve an issue"],
-  ["plan", "Outline the work before implementation"],
-  ["review", "Review code and report findings"],
+  ...purposes.map(({ name, description }) => [name, description]),
   ["profiles", "List all model profiles"],
   ["profile", "Select, show, or reset your project profile"],
   ["update", "Pull updates and refresh installed Kip skills"],
@@ -37,7 +35,7 @@ export function getCompletions(text, caret = text.length, prefix = "$kip") {
         ];
     } else if (context[1] === "profile" && context.length === 2) {
       options = [...profileOptions, ["reset", "Return to host defaults"]];
-    } else if (["build", "fix", "plan", "review"].includes(context[1])) {
+    } else if (purposeNames.includes(context[1])) {
       if (context.length === 2)
         options = [["--profile", "Choose a profile for this task only"]];
       else if (context.length === 3 && context[2] === "--profile")

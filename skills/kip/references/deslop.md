@@ -1,0 +1,9 @@
+# Deslop existing websites
+
+`deslop` is implementation, scoped to an existing website. Read [frontend design](frontend-design.md) and its applicable bundled guidance before assigning work; load [frontend engineering](frontend-engineering.md) for React/Next.js or shadcn changes. Keep one shared design direction. Existing brand and explicit user direction override generic house rules and randomized style suggestions. Small improvements preserve the surrounding design; do not automatically redesign the site, replace its stack, add a motion framework, or publish it.
+
+Inspect relevant source and the running page first. Record baseline desktop and narrow-screen screenshots, current hierarchy, real content, navigation, and important interactions. Identify concrete problems: repetitive card sections, weak typography, decorative gradients or labels, generic copy, awkward spacing, misleading imagery, excessive motion, or inaccessible contrast. A pattern is not a defect just because models often use it; judge it against this site's purpose and established design.
+
+Make a focused set of improvements that adds substance as well as removing unnecessary decoration. Preserve meaningful content, data, URLs, responsive behavior, accessibility, and working interactions. Keep dependencies proportionate to the requested change. Workers receive the shared direction, source ownership, baseline evidence, and acceptance checks; reviewers receive the same constraints.
+
+Inspect the revised page in a real browser at desktop and narrow widths, compare before/after, exercise affected interactions, and check keyboard/focus behavior and reduced motion when relevant. Run appropriate project checks. Iterate on observed problems, then update verified project notes through the root. If the browser or baseline cannot be obtained, report the missing evidence and do not claim visual verification or that the bundled Taste gate passed.

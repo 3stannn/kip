@@ -4,6 +4,7 @@ import { Profiles } from "../components/Profiles.jsx";
 import { CommandBuilder } from "../components/CommandBuilder.jsx";
 import { Updates } from "../components/Updates.jsx";
 import { ScrollLink } from "../components/ScrollLink.jsx";
+import { purposes } from "../data/purposes.js";
 
 export function DocsPage() {
   const [profile, setProfile] = useState("");
@@ -29,6 +30,7 @@ export function DocsPage() {
             className="docs-nav flex flex-wrap gap-x-5 gap-y-3 text-xs font-bold text-muted lg:sticky lg:top-8 lg:flex-col lg:gap-4"
           >
             <ScrollLink href="#get-started">Get started</ScrollLink>
+            <ScrollLink href="#purposes">Choose a purpose</ScrollLink>
             <ScrollLink href="#profiles">Preview profiles</ScrollLink>
             <ScrollLink href="#playground">Build a prompt</ScrollLink>
             <ScrollLink href="#updates">Update Kip</ScrollLink>
@@ -36,6 +38,37 @@ export function DocsPage() {
         </aside>
         <div className="docs-content min-w-0">
           <GettingStarted />
+          <section
+            className="docs-section"
+            id="purposes"
+            aria-labelledby="purposes-heading"
+          >
+            <div className="docs-section-header">
+              <h2 id="purposes-heading">Choose a purpose</h2>
+              <p>Set the outcome and what Kip may change.</p>
+            </div>
+            <div className="docs-panel">
+              <dl className="m-0 grid gap-5">
+                {purposes.map(({ name, detail }) => (
+                  <div
+                    key={name}
+                    className="grid gap-1 sm:grid-cols-[80px_minmax(0,1fr)] sm:gap-4"
+                  >
+                    <dt className="font-mono text-sm font-bold">{name}</dt>
+                    <dd className="m-0 text-sm leading-6 text-muted">
+                      {detail}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mb-0 mt-6 text-sm leading-7 text-muted">
+                Kip can remember concise project notes across chats and hosts
+                using the same checkout. It reads relevant notes first and
+                checks current source before relying on them. Separate clones
+                and worktrees keep separate notes.
+              </p>
+            </div>
+          </section>
           <Profiles onSelect={setProfile} host={host} onHostChange={setHost} />
           <CommandBuilder
             profile={profile}

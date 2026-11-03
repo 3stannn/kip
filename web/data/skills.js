@@ -15,6 +15,11 @@ export const skills = [
       "Choreographed GSAP motion, smooth scroll, and standout hero sections.",
   },
   {
+    name: "gsap-skills",
+    description:
+      "Official GSAP guidance for core animation, timelines, ScrollTrigger, plugins, utilities, React, performance, and framework integration.",
+  },
+  {
     name: "shadcn",
     description:
       "Accessible component composition, token styling, and registry management.",

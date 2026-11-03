@@ -18,7 +18,7 @@ export function Skills() {
     <section className="section-shell grid items-center gap-10 overflow-hidden border-b border-line lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
       <div className="max-w-md" data-reveal>
         <p className="section-kicker">Selective by default</p>
-        <h2>Five skills. Only the useful ones enter the room.</h2>
+        <h2>Specialist skills. Loaded when the task needs them.</h2>
         <p className="text-sm leading-7 text-muted">
           Kip reads the task and loads the smallest relevant set of guidance.
           You can also name a specialty directly, such as{" "}
