@@ -18,28 +18,10 @@ export const purposes = [
       "Investigate and return a plan in chat. Leave source and project notes unchanged.",
   },
   {
-    name: "review",
-    description: "Review code and report findings",
-    detail:
-      "Inspect the code and report actionable findings in chat. Leave source and project notes unchanged.",
-  },
-  {
     name: "ask",
     description: "Answer questions without edits",
     detail:
       "Answer using relevant notes and source inspection. No edits, reports, note writes, profile saves, or commands that generate files.",
-  },
-  {
-    name: "deslop",
-    description: "Improve an existing website",
-    detail:
-      "Use Kip’s bundled design skills to improve an existing site while preserving its brand, features, and stack. Inspect before and after in the browser.",
-  },
-  {
-    name: "audit",
-    description: "Audit security and report evidence",
-    detail:
-      "Use the bundled Cloudflare security-audit workflow. Leave target source and project notes unchanged; write separate audit reports with evidence and coverage gaps.",
   },
 ];
 

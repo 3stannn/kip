@@ -13,18 +13,7 @@ test("suggests invocations and filters command prefixes for either host", () => 
     assert.equal(getCompletions(`${prefix} bu`)[0].text, `${prefix} build `);
     assert.deepEqual(
       getCompletions(`${prefix} `).map(({ label }) => label),
-      [
-        "build",
-        "fix",
-        "plan",
-        "review",
-        "ask",
-        "deslop",
-        "audit",
-        "profiles",
-        "profile",
-        "update",
-      ],
+      ["build", "fix", "plan", "ask", "profiles", "profile", "update"],
     );
     assert.equal(getCompletions(`${prefix} up`)[0].text, `${prefix} update `);
   }
@@ -47,15 +36,7 @@ test("suggests all profile names and reset only for saved selection", () => {
 });
 
 test("offers task override flags and profile values before freeform task text", () => {
-  for (const purpose of [
-    "build",
-    "fix",
-    "plan",
-    "review",
-    "ask",
-    "deslop",
-    "audit",
-  ]) {
+  for (const purpose of ["build", "fix", "plan", "ask"]) {
     assert.equal(
       getCompletions(`$kip ${purpose} --`)[0].text,
       `$kip ${purpose} --profile `,
@@ -88,9 +69,9 @@ test("completion replaces the word at the cursor without losing task text", () =
   assert.equal(result.caret, result.text.indexOf("Fix"));
 });
 
-test("new purposes complete for both invocations without losing following questions", () => {
+test("visible purposes complete for both invocations without losing following questions", () => {
   for (const prefix of ["$kip", "/kip"]) {
-    for (const purpose of ["ask", "deslop", "audit"]) {
+    for (const purpose of ["build", "fix", "plan", "ask"]) {
       const partial = purpose.slice(0, 2);
       const text = `${prefix} ${partial} Explain this project`;
       const result = getCompletions(
@@ -107,6 +88,14 @@ test("new purposes complete for both invocations without losing following questi
         getCompletions(`${prefix} ${purpose} Explain this project`),
         [],
       );
+    }
+  }
+});
+
+test("removed purpose choices are absent from command suggestions", () => {
+  for (const prefix of ["$kip", "/kip"]) {
+    for (const purpose of ["review", "deslop", "audit"]) {
+      assert.deepEqual(getCompletions(`${prefix} ${purpose.slice(0, 2)}`), []);
     }
   }
 });

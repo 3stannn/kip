@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { WindowChrome } from "./WindowChrome.jsx";
 
 const demos = [
@@ -38,8 +39,36 @@ const demos = [
 ];
 export function Terminal({ active }) {
   const demo = demos[active];
+  const terminal = useRef(null);
+
+  useEffect(() => {
+    const media = gsap.matchMedia();
+    media.add("(prefers-reduced-motion: no-preference)", () => {
+      const context = gsap.context(() => {
+        gsap.fromTo(
+          ".terminal-command, .terminal-output p",
+          { opacity: 0.45, y: 18 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            stagger: 0.075,
+            ease: "power3.out",
+            clearProps: "opacity,transform",
+          },
+        );
+      }, terminal);
+      return () => context.revert();
+    });
+    return () => media.revert();
+  }, [active]);
+
   return (
-    <div className="terminal-card relative z-10 w-full max-w-117.5">
+    <div
+      ref={terminal}
+      data-ui
+      className="terminal-card relative z-10 w-full max-w-117.5"
+    >
       <WindowChrome title={demo.label} />
       <div className="min-h-71.25 px-4 py-5 font-mono text-xs leading-6 sm:px-5">
         <p className="mb-3 text-terminal-muted">

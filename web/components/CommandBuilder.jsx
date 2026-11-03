@@ -12,7 +12,7 @@ const sampleTaskPills = [
   "Create an accessible React login and verify it.",
   "Resolve dashboard overflow on mobile and check layout.",
   "Plan architecture for multi-agent profile switching.",
-  "Review changes for security, auth rules, and edge cases.",
+  "Explain how authentication works in this project.",
 ];
 
 const hostOptions = [

@@ -4,8 +4,10 @@ import { Footer } from "./components/Footer.jsx";
 import { FloatingMascot } from "./components/FloatingMascot.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { DocsPage } from "./pages/DocsPage.jsx";
+import { useSmoothScroll } from "./hooks/useSmoothScroll.js";
 
 export default function App() {
+  useSmoothScroll();
   const isDocs = /^\/docs\/?$/.test(window.location.pathname);
 
   useEffect(() => {

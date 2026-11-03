@@ -9,7 +9,11 @@ export function FAQ() {
     >
       <div data-reveal>
         <p className="section-kicker">Before your next chat</p>
-        <h2>Questions worth answering directly.</h2>
+        <h2>
+          Good questions.
+          <br />
+          Direct answers.
+        </h2>
         <p>What Kip uses, changes, installs, and leaves alone.</p>
       </div>
       <div className="[&_details]:border-b [&_details]:border-line [&_details]:py-5 [&_summary]:flex [&_summary]:cursor-pointer [&_summary]:list-none [&_summary]:items-center [&_summary]:justify-between [&_summary]:gap-5 [&_summary]:text-sm [&_summary]:font-extrabold [&_summary_svg]:size-5 [&_summary_svg]:shrink-0 [&_summary_svg]:text-subtle [&_summary_svg]:transition [&_details[open]_summary_svg]:rotate-45 [&_p]:mr-6 [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-7 [&_p]:text-muted">

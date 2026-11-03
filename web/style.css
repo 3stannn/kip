@@ -147,23 +147,13 @@
     @apply min-w-0 rounded-2xl border border-line bg-surface p-5 sm:p-6 md:p-8 shadow-xs;
   }
   .docs-nav a {
-    @apply rounded-sm transition hover:text-ink focus-visible:text-ink hover:decoration-accent;
+    @apply rounded-sm no-underline transition hover:text-ink focus-visible:text-ink;
   }
   .nav-link {
-    @apply relative inline-flex items-center px-1.5 py-1 text-xs font-extrabold text-muted transition-colors duration-150 hover:text-ink md:text-sm;
-  }
-  .nav-link::after {
-    content: "";
-    @apply absolute -bottom-1 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-accent transition-transform duration-200 ease-out;
-  }
-  .nav-link:hover::after {
-    @apply scale-x-100;
+    @apply relative inline-flex items-center px-1.5 py-1 text-xs font-extrabold text-muted no-underline transition-colors duration-150 hover:text-ink md:text-sm;
   }
   .nav-link[aria-current="page"] {
     @apply text-ink;
-  }
-  .nav-link[aria-current="page"]::after {
-    @apply scale-x-100 bg-ink;
   }
   .section-kicker {
     @apply m-0 flex items-center gap-2 text-xs font-extrabold text-muted;
@@ -236,17 +226,16 @@
   .skills-carousel-track {
     display: flex;
     width: max-content;
-    animation: skills-carousel 36s linear infinite;
-    will-change: transform;
-  }
-  .skills-carousel:hover .skills-carousel-track {
-    animation-play-state: paused;
   }
   .skills-carousel-set {
     @apply m-0 flex shrink-0 list-none items-center gap-4 px-2;
   }
   .skill-card {
-    @apply relative flex w-72 shrink-0 flex-col justify-center rounded-2xl border border-line bg-surface p-4 text-xs shadow-xs transition-all duration-200 sm:w-80 sm:p-5;
+    @apply relative flex w-72 shrink-0 flex-col justify-center rounded-2xl border border-line bg-surface p-4 text-xs shadow-xs sm:w-80 sm:p-5;
+    transition:
+      transform 220ms ease,
+      border-color 220ms ease,
+      box-shadow 220ms ease;
   }
   .skill-card:hover {
     @apply -translate-y-0.5 border-accent/60 shadow-md shadow-black/5;
@@ -359,7 +348,52 @@
   animation: mascot-blink 5.4s steps(1, end) infinite;
 }
 
-/* A quiet motion language: the demo is the focal point, controls answer input. */
+/* A composed motion language: the terminal is the focal point. */
+.motion-word {
+  display: inline-block;
+}
+
+.hero-section {
+  perspective: 1200px;
+}
+
+.hero-terminal-frame {
+  transform-origin: center 65%;
+}
+
+.home-page .fact-item p,
+.home-page .section-shell > div > p:not(.section-kicker),
+.home-page #questions details p,
+.home-page .closing-section > p:not(.section-kicker) {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.home-page .fact-item h2,
+.home-page #questions summary {
+  font-size: 0.9375rem;
+}
+
+.home-page .skill-card p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.home-page .section-kicker,
+.home-page .skill-card h3 {
+  font-size: 0.8125rem;
+}
+
+.home-page #questions > div > p {
+  max-width: 60ch;
+}
+
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .home-page #questions {
+    grid-template-columns: 1fr;
+  }
+}
+
 .hero-section {
   isolation: isolate;
   margin-inline: 0.75rem;
@@ -501,15 +535,6 @@
   transform: scale(0.96);
 }
 
-.terminal-command {
-  animation: terminal-enter 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.terminal-output p {
-  animation: terminal-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  animation-delay: calc(var(--line-index) * 35ms);
-}
-
 .button-primary,
 .text-link,
 .button-primary svg,
@@ -585,15 +610,6 @@
   }
   45% {
     transform: scaleY(0.2);
-  }
-}
-
-@keyframes skills-carousel {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
   }
 }
 

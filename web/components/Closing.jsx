@@ -10,7 +10,7 @@ export function Closing() {
       <p className="section-kicker justify-center">
         Start with the task in front of you
       </p>
-      <h2>Prepare a Kip prompt for your coding chat.</h2>
+      <h2>Your next idea starts here.</h2>
       <a className="button-primary" href="/docs">
         Open the quick start <ArrowUpRightIcon />
       </a>
