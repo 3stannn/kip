@@ -312,7 +312,47 @@
 }
 
 .mascot {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mascot:disabled {
   pointer-events: none;
+}
+
+.mascot-body {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: center 85%;
+}
+
+.mascot-logo-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mascot-logo-particle {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 40px;
+  height: 40px;
+  padding: 7px;
+  border-radius: 12px;
+  background: #fff;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 6px 18px rgb(18 18 21 / 12%);
 }
 
 .floating-mascot {
@@ -331,6 +371,7 @@
 }
 
 .floating-mascot.is-visible {
+  pointer-events: auto;
   opacity: 1;
   transform: translateY(0) scale(1);
   visibility: visible;
@@ -345,7 +386,6 @@
 .mascot-blink {
   transform-box: fill-box;
   transform-origin: center;
-  animation: mascot-blink 5.4s steps(1, end) infinite;
 }
 
 /* A composed motion language: the terminal is the focal point. */
@@ -598,18 +638,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes mascot-blink {
-  0%,
-  43%,
-  47%,
-  100% {
-    transform: scaleY(1);
-  }
-  45% {
-    transform: scaleY(0.2);
   }
 }
 

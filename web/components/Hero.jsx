@@ -37,7 +37,7 @@ export function Hero() {
       >
         <div className="hero-terminal-frame relative z-10 w-full rounded-[1.75rem] p-2.5 sm:p-4">
           <div
-            className="hero-buddy pointer-events-none absolute -top-20 right-5 z-20 w-24 sm:-top-24 sm:right-10"
+            className="hero-buddy absolute -top-20 right-5 z-20 w-24 sm:-top-24 sm:right-10"
             data-hero-mascot
           >
             <Mascot />

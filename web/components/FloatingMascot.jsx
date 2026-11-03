@@ -28,9 +28,9 @@ export function FloatingMascot({ hasHeroMascot = false }) {
   return (
     <div
       className={`floating-mascot ${visible ? "is-visible" : ""}`}
-      aria-hidden="true"
+      inert={!visible}
     >
-      <Mascot small />
+      <Mascot small active={visible} />
     </div>
   );
 }
