@@ -10,7 +10,7 @@ import { purposeNames } from "../data/purposes.js";
 import { CodeBlock } from "./CodeBlock.jsx";
 import { ArrowRightIcon } from "./Icons.jsx";
 
-const quickPillTags = [
+const quickInsertOptions = [
   ...purposeNames.map((name) => ({ label: name, insert: `${name} ` })),
   { label: "--profile value", insert: "--profile value " },
   { label: "--profile balanced", insert: "--profile balanced " },
@@ -93,7 +93,7 @@ export function CommandAutocomplete({ host, onHostChange }) {
     input.current.focus();
   }
 
-  function handlePillClick(insertText) {
+  function insertOption(insertText) {
     let nextText = text;
     if (text.trim() === prefix) {
       nextText = `${prefix} ${insertText}`;
@@ -136,46 +136,11 @@ export function CommandAutocomplete({ host, onHostChange }) {
 
   return (
     <div>
-      {/* Host model selector */}
-      <div className="mb-5">
-        <label htmlFor={`${id}-host`}>Your coding host</label>
-        <div
-          className="grid grid-cols-3 gap-2"
-          role="radiogroup"
-          aria-label="Select host platform"
-        >
-          {[
-            { key: "codex", label: "Codex", prefix: "$kip" },
-            { key: "claude", label: "Claude Code", prefix: "/kip" },
-            { key: "antigravity", label: "Antigravity", prefix: "/kip" },
-          ].map((item) => {
-            const isCurrent = host === item.key;
-            return (
-              <button
-                key={item.key}
-                type="button"
-                role="radio"
-                aria-checked={isCurrent}
-                onClick={() => onHostChange(item.key)}
-                className={`flex items-center justify-between rounded-xl border p-2.5 text-left text-xs transition-all duration-150 ${
-                  isCurrent
-                    ? "border-accent bg-accent/15 text-charcoal shadow-xs ring-1 ring-accent/30 font-bold"
-                    : "border-line bg-surface text-muted hover:border-subtle/50 hover:bg-page hover:text-charcoal"
-                }`}
-              >
-                <span>{item.label}</span>
-                <span className="font-mono text-[10px] text-muted">
-                  {item.prefix}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Fallback accessible select */}
-        <div className="sr-only">
+      <div className="mb-5 grid gap-5 sm:grid-cols-2">
+        <div>
+          <label htmlFor={id + "-host"}>Your coding host</label>
           <select
-            id={`${id}-host`}
+            id={id + "-host"}
             value={host}
             onChange={(event) => onHostChange(event.target.value)}
           >
@@ -184,32 +149,25 @@ export function CommandAutocomplete({ host, onHostChange }) {
             <option value="antigravity">Antigravity</option>
           </select>
         </div>
-      </div>
-
-      {/* Input label and quick pill tags */}
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <label htmlFor={`${id}-input`} className="m-0">
-          Type a Kip command
-        </label>
-        <div
-          className="flex flex-wrap items-center gap-1.5"
-          aria-label="Quick syntax pills"
-        >
-          <span className="text-[11px] font-medium text-muted">
-            Quick insert:
-          </span>
-          {quickPillTags.map((pill) => (
-            <button
-              key={pill.label}
-              type="button"
-              onClick={() => handlePillClick(pill.insert)}
-              className="rounded-full border border-line bg-page px-2 py-0.5 font-mono text-[11px] font-semibold text-charcoal transition-all hover:border-subtle hover:bg-surface hover:text-ink focus-visible:ring-1 focus-visible:ring-accent"
-            >
-              +{pill.label}
-            </button>
-          ))}
+        <div>
+          <label htmlFor={id + "-insert"}>Insert command or option</label>
+          <select
+            id={id + "-insert"}
+            value=""
+            onChange={(event) => {
+              if (event.target.value) insertOption(event.target.value);
+            }}
+          >
+            <option value="">Choose what to insert…</option>
+            {quickInsertOptions.map((item) => (
+              <option key={item.label} value={item.insert}>
+                {item.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
+      <label htmlFor={id + "-input"}>Type a Kip command</label>
 
       {/* Search & command input with prompt icon */}
       <div className="relative">

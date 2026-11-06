@@ -41,6 +41,36 @@ const bundleFiles = [
   "vendor/shadcn/SOURCE.md",
   "vendor/shadcn/LICENSE.md",
   "vendor/shadcn/rules/composition.md",
+  ...Object.entries({
+    "heroui-react": [
+      "get_component_docs",
+      "get_docs",
+      "get_source",
+      "get_styles",
+      "get_theme",
+      "list_components",
+    ],
+    "heroui-native": [
+      "get_component_docs",
+      "get_docs",
+      "get_theme",
+      "list_components",
+    ],
+    "heroui-migration": [
+      "get_component_migration_guides",
+      "get_hooks_migration_guide",
+      "get_migration_guide",
+      "get_styling_migration_guide",
+      "list_migration_guides",
+    ],
+  }).flatMap(([skill, scripts]) =>
+    [
+      "SKILL.md",
+      "SOURCE.md",
+      "LICENSE.txt",
+      ...scripts.map((script) => `scripts/${script}.mjs`),
+    ].map((file) => `vendor/${skill}/${file}`),
+  ),
   "vendor/gsap-skills/LICENSE",
   "vendor/gsap-skills/SOURCE.md",
   "vendor/gsap-skills/llms.txt",

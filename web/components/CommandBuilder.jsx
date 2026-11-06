@@ -8,7 +8,7 @@ import {
 import { CommandAutocomplete } from "./CommandAutocomplete.jsx";
 import { purposes } from "../data/purposes.js";
 
-const sampleTaskPills = [
+const sampleTasks = [
   "Create an accessible React login and verify it.",
   "Resolve dashboard overflow on mobile and check layout.",
   "Plan architecture for multi-agent profile switching.",
@@ -105,203 +105,76 @@ export function CommandBuilder({
                 className="w-full rounded-xl border border-line bg-page px-3.5 py-3 text-sm text-charcoal shadow-xs transition-all placeholder:text-muted focus:border-accent focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent/25"
               />
 
-              {/* Sample task pill tags */}
-              <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
-                <span className="text-[11px] font-medium text-muted">
-                  Try sample:
-                </span>
-                {sampleTaskPills.map((pill) => (
-                  <button
-                    key={pill}
-                    type="button"
-                    onClick={() => setTask(pill)}
-                    className="truncate rounded-full border border-line bg-surface px-2.5 py-0.5 text-[11px] font-semibold text-charcoal transition-all hover:border-subtle hover:bg-page hover:text-ink max-w-[260px] sm:max-w-none"
-                    title={pill}
-                  >
-                    {pill
-                      .replace(" and verify it.", "")
-                      .replace(" and check layout.", "")}
-                  </button>
-                ))}
+              <div className="mt-3">
+                <label htmlFor="sample-task">
+                  Try an example <span>(optional)</span>
+                </label>
+                <select
+                  id="sample-task"
+                  value={sampleTasks.includes(task) ? task : ""}
+                  onChange={(event) => {
+                    if (event.target.value) setTask(event.target.value);
+                  }}
+                >
+                  <option value="">Choose an example…</option>
+                  {sampleTasks.map((sample) => (
+                    <option key={sample} value={sample}>
+                      {sample}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
             {/* Purpose & Host controls */}
             <div className="mb-6 grid gap-5 sm:grid-cols-2">
-              {/* Purpose selector with pill chips */}
               <div>
                 <label htmlFor="purpose">Purpose</label>
-                <div
-                  className="grid grid-cols-2 gap-2"
-                  role="radiogroup"
-                  aria-label="Select command purpose"
+                <select
+                  id="purpose"
+                  value={purpose}
+                  onChange={(event) => setPurpose(event.target.value)}
+                  aria-describedby="purpose-help"
                 >
-                  {purposes.map(({ name: item, description }) => {
-                    const isSelected = purpose === item;
-                    return (
-                      <button
-                        key={item}
-                        type="button"
-                        role="radio"
-                        aria-checked={isSelected}
-                        onClick={() => setPurpose(item)}
-                        className={`flex min-w-0 flex-col items-start rounded-xl border p-2.5 text-left transition-all duration-150 ${
-                          isSelected
-                            ? "border-accent bg-accent/15 text-charcoal shadow-xs ring-1 ring-accent/30"
-                            : "border-line bg-surface text-muted hover:border-subtle/50 hover:bg-page hover:text-charcoal"
-                        }`}
-                      >
-                        <span className="font-mono text-xs font-extrabold capitalize text-ink">
-                          {item}
-                        </span>
-                        <span className="max-w-full truncate text-[10px] text-muted">
-                          {description}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Accessible native select fallback */}
-                <div className="sr-only">
-                  <select
-                    id="purpose"
-                    value={purpose}
-                    onChange={(e) => setPurpose(e.target.value)}
-                  >
-                    {purposes.map(({ name: value }) => (
-                      <option key={value} value={value}>
-                        {value}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                  {purposes.map(({ name, description }) => (
+                    <option key={name} value={name}>
+                      {name} — {description}
+                    </option>
+                  ))}
+                </select>
                 <p
-                  className="mb-0 mt-3 text-xs leading-6 text-muted"
+                  id="purpose-help"
+                  className="mb-0 mt-2 text-xs leading-6 text-muted"
                   aria-live="polite"
                 >
                   {purposes.find(({ name }) => name === purpose)?.detail}
                 </p>
               </div>
-
-              {/* Host platform selector */}
               <div>
                 <label htmlFor="host">Your coding host</label>
-                <div
-                  className="grid grid-cols-1 gap-2 sm:grid-cols-3"
-                  role="radiogroup"
-                  aria-label="Select coding host"
+                <select
+                  id="host"
+                  value={host}
+                  onChange={(event) => onHostChange(event.target.value)}
                 >
-                  {hostOptions.map((opt) => {
-                    const isSelected = host === opt.key;
-                    return (
-                      <button
-                        key={opt.key}
-                        type="button"
-                        role="radio"
-                        aria-checked={isSelected}
-                        onClick={() => onHostChange(opt.key)}
-                        className={`flex flex-col items-start gap-0.5 rounded-xl border p-2.5 text-left transition-all duration-150 ${
-                          isSelected
-                            ? "border-accent bg-accent/15 text-charcoal shadow-xs ring-1 ring-accent/30 font-bold"
-                            : "border-line bg-surface text-muted hover:border-subtle/50 hover:bg-page hover:text-charcoal"
-                        }`}
-                      >
-                        <span className="text-xs font-bold text-ink">
-                          {opt.label}
-                        </span>
-                        <span className="font-mono text-[10px] text-muted">
-                          {opt.prefix}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Accessible select */}
-                <div className="sr-only">
-                  <select
-                    id="host"
-                    value={host}
-                    onChange={(e) => onHostChange(e.target.value)}
-                  >
-                    <option value="codex">Codex</option>
-                    <option value="claude">Claude Code</option>
-                    <option value="antigravity">Antigravity</option>
-                  </select>
-                </div>
+                  {hostOptions.map(({ key, label }) => (
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
-
-            {/* Model Profile selector */}
-            <div className="mb-6">
-              <div className="mb-2 flex items-center justify-between">
-                <label htmlFor="profile" className="m-0 font-extrabold text-xs">
+              <div className="sm:col-span-2">
+                <label htmlFor="profile">
                   Model profile <span>(optional)</span>
                 </label>
-                {profile && (
-                  <button
-                    type="button"
-                    onClick={() => onProfileChange("")}
-                    className="text-[11px] font-semibold text-muted hover:text-charcoal"
-                  >
-                    Reset to host defaults
-                  </button>
-                )}
-              </div>
-
-              {/* Profile pill buttons */}
-              <div
-                className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6"
-                role="radiogroup"
-                aria-label="Select optional profile override"
-              >
-                <button
-                  type="button"
-                  role="radio"
-                  aria-checked={profile === ""}
-                  onClick={() => onProfileChange("")}
-                  className={`rounded-xl border p-2 text-left text-xs transition-all duration-150 ${
-                    profile === ""
-                      ? "border-accent bg-accent/15 text-charcoal shadow-xs ring-1 ring-accent/30 font-bold"
-                      : "border-line bg-surface text-muted hover:border-subtle/50 hover:bg-page hover:text-charcoal"
-                  }`}
-                >
-                  <span className="block font-bold">Host defaults</span>
-                  <span className="text-[10px] text-muted">No override</span>
-                </button>
-                {profiles.map((item) => {
-                  const isSelected = profile === item.slug;
-                  return (
-                    <button
-                      key={item.slug}
-                      type="button"
-                      role="radio"
-                      aria-checked={isSelected}
-                      onClick={() => onProfileChange(item.slug)}
-                      className={`rounded-xl border p-2 text-left text-xs transition-all duration-150 ${
-                        isSelected
-                          ? "border-accent bg-accent/15 text-charcoal shadow-xs ring-1 ring-accent/30 font-bold"
-                          : "border-line bg-surface text-muted hover:border-subtle/50 hover:bg-page hover:text-charcoal"
-                      }`}
-                    >
-                      <span className="block font-bold">{item.name}</span>
-                      <span className="text-[10px] text-muted">
-                        {item.slug === "value" ? "Suggested" : "Preset"}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Native select fallback */}
-              <div className="sr-only">
                 <select
                   id="profile"
                   value={profile}
                   onChange={(event) => onProfileChange(event.target.value)}
+                  aria-describedby="profile-help"
                 >
-                  <option value="">Host defaults</option>
+                  <option value="">Host defaults — no override</option>
                   {profiles.map((item) => (
                     <option key={item.slug} value={item.slug}>
                       {item.name}
@@ -309,13 +182,17 @@ export function CommandBuilder({
                     </option>
                   ))}
                 </select>
+                <p
+                  id="profile-help"
+                  className="mb-0 mt-2 text-xs leading-6 text-muted"
+                >
+                  {profile
+                    ? "Adds a one-task override using " +
+                      profileHostDetails[host].name +
+                      " settings. It does not change a profile saved for your project."
+                    : "Uses your current chat and host settings without requesting role overrides."}
+                </p>
               </div>
-
-              <p className="mb-0 mt-2.5 text-xs leading-6 text-muted">
-                {profile
-                  ? `Adds a one-task override using ${profileHostDetails[host].name} settings. It does not change a profile saved for your project.`
-                  : "Uses your current chat and host settings without requesting role overrides."}
-              </p>
             </div>
 
             {/* Invocation style toggle */}

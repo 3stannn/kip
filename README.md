@@ -93,6 +93,8 @@ For older installations without the chat update command, run `git pull --ff-only
 
 ## Website development
 
+Kip bundles HeroUI's React, Native, and v2-to-v3 migration skills with their documentation helpers and Apache-2.0 licenses. HeroUI tasks load only the relevant guide and preserve the project's component system and installed version. The [pinned source](skills/kip/vendor/heroui-react/SOURCE.md) ships with every host installation; documentation helpers need network access, and runtime packages are installed only when the task calls for them.
+
 Kip bundles GreenSock's eight official GSAP skills for core animation, timelines, ScrollTrigger, plugins, utilities, React, performance, and other frameworks. Animation tasks load only relevant topics alongside Kip's design guidance. Existing animation libraries and project dependencies stay authoritative. The [pinned source and MIT license](skills/kip/vendor/gsap-skills/SOURCE.md) ship with every host installation; adding the skills does not install the GSAP runtime into your website.
 
 ```sh

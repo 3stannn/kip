@@ -30,30 +30,19 @@ export function Updates() {
         </p>
       </div>
       <div className="docs-panel">
-        <p id="update-host-label" className="mb-2 mt-0 text-xs font-extrabold">
-          Your coding host
-        </p>
-        <div
-          className="grid grid-cols-1 gap-2 sm:grid-cols-3"
-          role="group"
-          aria-labelledby="update-host-label"
-        >
-          {hosts.map(({ key, label, prefix }) => (
-            <button
-              key={key}
-              type="button"
-              aria-pressed={host === key}
-              onClick={() => setHost(key)}
-              className={`flex min-h-14 flex-col items-start gap-0.5 rounded-xl border p-2.5 text-left transition-colors duration-150 ${
-                host === key
-                  ? "border-accent bg-accent/15 text-charcoal shadow-xs ring-1 ring-accent/30"
-                  : "border-line bg-surface text-muted hover:border-subtle/50 hover:bg-page hover:text-charcoal"
-              }`}
-            >
-              <span className="text-xs font-bold text-ink">{label}</span>
-              <span className="font-mono text-[10px] text-muted">{prefix}</span>
-            </button>
-          ))}
+        <div className="max-w-sm">
+          <label htmlFor="update-host">Your coding host</label>
+          <select
+            id="update-host"
+            value={host}
+            onChange={(event) => setHost(event.target.value)}
+          >
+            {hosts.map(({ key, label }) => (
+              <option key={key} value={key}>
+                {label}
+              </option>
+            ))}
+          </select>
         </div>
         <div
           className="my-5 inline-flex rounded-xl border border-line bg-soft/60 p-1"

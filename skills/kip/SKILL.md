@@ -33,7 +33,7 @@ Purpose determines allowed actions even when the task text asks a question conta
 - For `update` or a request to refresh an installed skill, read [references/update.md](references/update.md). This is maintenance, not profile dispatch.
 - For `audit`, load only the security adapter and the upstream references it selects; do not start a second orchestrator. For a security question under `ask`, use upstream guidance mode and retain `ask`'s zero-write boundary.
 - For website or app-interface design, implementation, redesign, or visual review, load [references/frontend-design.md](references/frontend-design.md) before choosing a design or assigning frontend work. Small edits preserve the surrounding design.
-- For React/Next.js implementation, performance review, or refactoring, and for shadcn component work, load [references/frontend-engineering.md](references/frontend-engineering.md) and pass the applicable guidance to workers and reviewers.
+- For React/Next.js implementation, performance review, or refactoring, and for shadcn or HeroUI component work (including HeroUI Native and migrations), load [references/frontend-engineering.md](references/frontend-engineering.md) and pass the applicable guidance to workers and reviewers.
 - For GSAP animation tasks, route through [references/frontend-design.md](references/frontend-design.md) to the relevant official bundled GSAP skills. Load only needed topics and preserve the project's chosen motion system.
 
 ## Execution contract

@@ -208,6 +208,40 @@ test("doctor detects missing GSAP skill, supporting resource, and attribution", 
   assert.deepEqual([...inspection.missing].sort(), [...files].sort());
 });
 
+test("HeroUI skills ship complete to every host and doctor detects missing resources", async (t) => {
+  const options = await fixture(t);
+  const targets = await installSkills("all", options);
+  const resources = [];
+  for (const skill of ["heroui-react", "heroui-native", "heroui-migration"]) {
+    const source = fileURLToPath(
+      new URL(`../skills/kip/vendor/${skill}/`, import.meta.url),
+    );
+    const files = await regularFiles(source);
+    for (const required of ["SKILL.md", "SOURCE.md", "LICENSE.txt"])
+      assert.ok(files.includes(required));
+    assert.ok(
+      files.some(
+        (file) => file.startsWith("scripts/") && file.endsWith(".mjs"),
+      ),
+    );
+    for (const target of targets) {
+      const installed = path.join(target, "vendor", skill);
+      assert.deepEqual(await regularFiles(installed), files);
+      for (const file of files)
+        assert.deepEqual(
+          await fs.readFile(path.join(installed, file)),
+          await fs.readFile(path.join(source, file)),
+        );
+    }
+    resources.push(...files.map((file) => `vendor/${skill}/${file}`));
+  }
+  for (const resource of resources)
+    await fs.rm(path.join(targets[0], resource));
+  const [inspection] = await inspectSkills("codex", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual([...inspection.missing].sort(), resources.sort());
+});
+
 test("doctor detects missing bundled skills, rules, and licenses", async (t) => {
   const options = await fixture(t);
   const [target] = await installSkills("claude", options);
