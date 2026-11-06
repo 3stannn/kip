@@ -15,11 +15,15 @@ export function Mascot({ small = false, active = true }) {
     const sprite = body.current;
     const badges = particles.current;
     const eyes = sprite.querySelector(".mascot-blink");
+    const snooze = element.querySelector(".mascot-snooze");
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const coarse = window.matchMedia("(pointer: coarse)");
     let inView = false;
     let frame = 0;
     let burst;
+    let gesture;
+    let automatic;
+    let actionIndex = 0;
     let disposed = false;
     const idle = gsap.timeline({ paused: true, repeat: -1, repeatDelay: 2.2 });
     idle
@@ -52,6 +56,10 @@ export function Mascot({ small = false, active = true }) {
       element.style.setProperty("--look-y", "0px");
     };
     const reset = () => {
+      automatic?.kill();
+      automatic = undefined;
+      gesture?.kill();
+      gesture = undefined;
       burst?.kill();
       burst = undefined;
       idle.pause(0);
@@ -59,20 +67,104 @@ export function Mascot({ small = false, active = true }) {
       gsap.set(sprite, { x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1 });
       gsap.set(eyes, { scaleY: 1 });
       gsap.set(badges, { opacity: 0 });
+      gsap.set(snooze, { autoAlpha: 0, y: 0 });
+      element.dataset.action = "idle";
       resetEyes();
+    };
+    const schedule = () => {
+      if (automatic || !available() || motion.matches || disposed) return;
+      automatic = gsap.delayedCall(2.2, () => {
+        automatic = undefined;
+        if (!available() || motion.matches || disposed) return;
+        const actions = ["toss", "glance", "wiggle", "sleep", "spin", "toss"];
+        const action = actions[actionIndex++ % actions.length];
+        if (action === "toss") play.current();
+        else perform(action);
+      });
+    };
+    const finish = () => {
+      element.dataset.action = "idle";
+      if (!available() || motion.matches || disposed) return;
+      idle.restart();
+      blink.restart();
+      schedule();
+    };
+    const perform = (action) => {
+      reset();
+      element.dataset.action = action;
+      gesture = gsap.timeline({ onComplete: finish });
+      if (action === "glance") {
+        gesture
+          .to(element, { "--look-x": "1px", duration: 0.25 })
+          .to(sprite, { rotation: 5, duration: 0.3 }, 0)
+          .to(element, { "--look-x": "-1px", duration: 0.3 }, 0.75)
+          .to(sprite, { rotation: -5, duration: 0.3 }, 0.75)
+          .to(element, { "--look-x": "0px", duration: 0.25 }, 1.4)
+          .to(sprite, { rotation: 0, duration: 0.3 }, 1.4);
+      } else if (action === "wiggle") {
+        gesture
+          .to(sprite, { rotation: -9, y: -4, duration: 0.16 })
+          .to(sprite, {
+            rotation: 9,
+            y: -7,
+            duration: 0.22,
+            repeat: 3,
+            yoyo: true,
+          })
+          .to(sprite, { rotation: 0, y: 0, duration: 0.3 });
+      } else if (action === "sleep") {
+        gesture
+          .to(eyes, { scaleY: 0.15, duration: 0.5 })
+          .to(sprite, { rotation: -7, y: 3, duration: 0.5 }, 0)
+          .fromTo(
+            snooze,
+            { y: 0, autoAlpha: 0 },
+            { y: -12, autoAlpha: 1, duration: 0.8 },
+            0.3,
+          )
+          .to(snooze, { y: -24, autoAlpha: 0, duration: 0.5 }, 1.4)
+          .to(eyes, { scaleY: 1, duration: 0.12 }, 1.9)
+          .to(sprite, { rotation: 0, y: -15, duration: 0.2 }, 1.9)
+          .to(sprite, { y: 0, duration: 0.4, ease: "bounce.out" });
+      } else if (action === "spin") {
+        gesture
+          .to(sprite, { scaleX: 1.12, scaleY: 0.85, y: 4, duration: 0.18 })
+          .to(sprite, {
+            scaleX: 1,
+            scaleY: 1,
+            y: -28,
+            rotation: 180,
+            duration: 0.35,
+            ease: "power2.out",
+          })
+          .to(sprite, {
+            y: 0,
+            rotation: 360,
+            duration: 0.35,
+            ease: "power2.in",
+          })
+          .set(sprite, { rotation: 0 })
+          .to(sprite, { scaleX: 1.1, scaleY: 0.9, duration: 0.12 })
+          .to(sprite, { scaleX: 1, scaleY: 1, duration: 0.25 });
+      }
+      if (action !== "sleep") blink.resume();
     };
     const update = () => {
       if (!available() || motion.matches) {
         reset();
         return;
       }
-      if (!burst?.isActive()) idle.resume();
-      blink.resume();
+      if (!burst?.isActive() && !gesture?.isActive()) {
+        idle.resume();
+        blink.resume();
+        schedule();
+      }
     };
     const follow = (event) => {
       if (
         !available() ||
         motion.matches ||
+        gesture?.isActive() ||
         coarse.matches ||
         event.pointerType === "touch"
       )
@@ -101,6 +193,7 @@ export function Mascot({ small = false, active = true }) {
     play.current = () => {
       if (!active || document.hidden) return;
       reset();
+      element.dataset.action = "toss";
       const bounds = element.getBoundingClientRect();
       const width = window.innerWidth;
       const height = window.innerHeight;
@@ -116,11 +209,7 @@ export function Mascot({ small = false, active = true }) {
         : left
           ? [48, 106, 164]
           : [-104, 0, 104];
-      burst = gsap.timeline({
-        onComplete: () => {
-          if (available() && !motion.matches) idle.restart();
-        },
-      });
+      burst = gsap.timeline({ onComplete: finish });
       if (motion.matches) {
         const start = Math.max(12, Math.min(width - 3 * 44 - 12, originX - 48));
         badges.forEach((badge, index) => {
@@ -242,8 +331,8 @@ export function Mascot({ small = false, active = true }) {
       reset();
       idle.kill();
       blink.kill();
-      gsap.killTweensOf([sprite, eyes, ...badges]);
-      gsap.set([sprite, eyes, ...badges], {
+      gsap.killTweensOf([element, sprite, eyes, snooze, ...badges]);
+      gsap.set([sprite, eyes, snooze, ...badges], {
         clearProps: "transform,opacity,transformOrigin",
       });
       observer.disconnect();
@@ -265,7 +354,7 @@ export function Mascot({ small = false, active = true }) {
         type="button"
         className={`mascot ${small ? "size-14" : "size-24 sm:size-28"}`}
         aria-label="Make Kip toss logos"
-        title="Click to play"
+        title="Kip plays automatically. Click to toss logos."
         disabled={!active}
         onClick={() => play.current()}
       >
@@ -290,6 +379,9 @@ export function Mascot({ small = false, active = true }) {
               </g>
             </g>
           </svg>
+        </span>
+        <span className="mascot-snooze" aria-hidden="true">
+          z Z
         </span>
       </button>
       {createPortal(

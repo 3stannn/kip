@@ -312,6 +312,7 @@
 }
 
 .mascot {
+  position: relative;
   display: block;
   padding: 0;
   border: 0;
@@ -320,6 +321,19 @@
   pointer-events: auto;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+}
+
+.mascot-snooze {
+  position: absolute;
+  top: 5%;
+  right: -12%;
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .mascot:disabled {
