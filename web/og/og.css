@@ -1,0 +1,176 @@
+html,
+body {
+  margin: 0;
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+  background: #dce8f8;
+}
+
+.og-stage {
+  position: relative;
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, #dce8f8 0%, #edf3fb 70%, #f6f7f9 100%);
+  font-family: var(--font-sans);
+  color: var(--color-charcoal);
+}
+
+.og-ascii {
+  position: absolute;
+  inset: 0;
+  opacity: 0.62;
+}
+
+/* Keeps the headline legible while the field stays loud on the right. */
+.og-wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 620px 470px at 300px 330px,
+      rgb(237 243 251 / 92%) 0%,
+      rgb(237 243 251 / 70%) 55%,
+      transparent 100%
+    ),
+    linear-gradient(0deg, rgb(246 247 249 / 85%) 0%, transparent 28%);
+}
+
+.og-trails {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #1e3fd8;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 5;
+  opacity: 0.45;
+}
+
+.og-copy {
+  position: absolute;
+  top: 64px;
+  left: 72px;
+  width: 600px;
+}
+
+.og-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.og-title {
+  margin: 58px 0 0;
+  font-family: var(--font-geist);
+  font-size: 98px;
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.065em;
+  color: var(--color-charcoal);
+}
+
+.og-title > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.og-title-serif {
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.1em;
+  letter-spacing: -0.04em;
+}
+
+.og-sub {
+  margin: 30px 0 0;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--color-charcoal);
+}
+
+.og-sub span {
+  display: block;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.og-url {
+  display: inline-block;
+  margin: 26px 0 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--color-ink);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.og-logo {
+  position: absolute;
+  box-sizing: border-box;
+  max-width: none;
+  background: #fff;
+  object-fit: contain;
+  box-shadow:
+    0 2px 0 rgb(255 255 255 / 80%) inset,
+    0 18px 40px rgb(30 63 216 / 18%),
+    0 4px 10px rgb(18 18 21 / 10%);
+}
+
+.og-spark {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background:
+    linear-gradient(#fff, #fff) center / 100% 33% no-repeat,
+    linear-gradient(#fff, #fff) center / 33% 100% no-repeat;
+  filter: drop-shadow(0 0 6px rgb(56 189 248 / 70%));
+}
+
+.og-spark.is-small {
+  width: 12px;
+  height: 12px;
+}
+
+.og-mascot {
+  --look-x: -1px;
+  --look-y: -2px;
+  position: absolute;
+  left: 845px;
+  top: 334px;
+  width: 220px;
+  height: 220px;
+  transform: rotate(-7deg) scale(0.97, 1.05);
+  transform-origin: 50% 90%;
+  filter: drop-shadow(0 14px 18px rgb(30 63 216 / 22%));
+}
+
+.og-mascot-face {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.og-shadow {
+  position: absolute;
+  left: 890px;
+  top: 586px;
+  width: 140px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgb(30 63 216 / 18%);
+  filter: blur(4px);
+}

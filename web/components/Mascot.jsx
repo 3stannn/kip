@@ -2,7 +2,32 @@ import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { gsap } from "gsap";
 
-const logos = ["claude", "antigravity", "codex"];
+export const logos = ["claude", "antigravity", "codex"];
+
+export function MascotFace({ className = "mascot-head size-full" }) {
+  return (
+    <svg
+      viewBox="0 0 28 28"
+      fill="none"
+      shapeRendering="crispEdges"
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M8 3H20V4H23V6H25V9H26V21H24V24H21V25H7V24H4V21H2V9H3V6H5V4H8Z"
+        fill="var(--color-accent)"
+      />
+      <path d="M7 8H21V9H23V20H21V21H7V20H5V9H7Z" fill="#303030" />
+      <g className="mascot-eyes" fill="#ffffff">
+        <g className="mascot-blink">
+          <rect x="9" y="11" width="2" height="5" />
+          <rect x="17" y="11" width="2" height="5" />
+        </g>
+      </g>
+    </svg>
+  );
+}
 
 export function Mascot({ small = false, active = true }) {
   const mascot = useRef(null);
@@ -359,26 +384,7 @@ export function Mascot({ small = false, active = true }) {
         onClick={() => play.current()}
       >
         <span ref={body} className="mascot-body">
-          <svg
-            viewBox="0 0 28 28"
-            fill="none"
-            shapeRendering="crispEdges"
-            className="mascot-head size-full"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path
-              d="M8 3H20V4H23V6H25V9H26V21H24V24H21V25H7V24H4V21H2V9H3V6H5V4H8Z"
-              fill="var(--color-accent)"
-            />
-            <path d="M7 8H21V9H23V20H21V21H7V20H5V9H7Z" fill="#303030" />
-            <g className="mascot-eyes" fill="#ffffff">
-              <g className="mascot-blink">
-                <rect x="9" y="11" width="2" height="5" />
-                <rect x="17" y="11" width="2" height="5" />
-              </g>
-            </g>
-          </svg>
+          <MascotFace />
         </span>
         <span className="mascot-snooze" aria-hidden="true">
           z Z

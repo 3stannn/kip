@@ -12,6 +12,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
+    "og": "node scripts/render-og.mjs",
     "format": "prettier --write web src bin test vite.config.js package.json",
     "format:check": "prettier --check web src bin test vite.config.js package.json"
   },
