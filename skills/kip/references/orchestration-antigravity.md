@@ -1,20 +1,27 @@
 # Kip in Antigravity
 
-Apply the shared [orchestration contract](orchestration.md) and Antigravity's table in [profiles.md](profiles.md). Keep this chat as the root. Do not launch an Antigravity CLI process or start `/boost` or `/teamwork-preview` as another orchestrator. Do not write persistent `.agents/agents` or global agent definitions for an ordinary task.
+This chat is the root. Do not launch an Antigravity CLI, `/boost`, or `/teamwork-preview`, and do not write persistent `.agents/agents` or global agent definitions.
 
-## Define and invoke
+## Dispatch
 
-1. Inspect the running surface for native `define_subagent`, `invoke_subagent`, and result/status/message controls, including their exact schemas. Native subagent documentation covers App and CLI; do not assume an IDE-only or older surface exposes them. Missing required controls follow the shared blocker policy; documentation does not prove they are exposed in this session.
-2. When supported, create transient scoped worker definitions with `define_subagent`, plus a distinct reviewer definition. Use the native tool's returned identifier with `invoke_subagent`. A definition alone has not executed work. Use `pro` or `flash` for a profile and `inherit` without a profile, where the runtime accepts those model tiers. Omit any unsupported effort field: agent thinking is host-controlled, not a claimed per-agent override.
-3. Use exact tool names from the current runtime when specifying allowed tools. Give coding workers the required file and verification tools, and narrow the reviewer to inspection. Preserve inherited permission and execution policies; do not request stronger shell policies to bypass approvals. A misspelled tool allowlist can prevent useful execution.
-4. Pass the full scoped handoff required by the shared contract. Children start with fresh conversation context. Include project/workspace paths, ownership, acceptance conditions, and the explicit prohibition on invoking Kip orchestration or creating subagents. Do not use built-in `research` for implementation or assume built-in `browser` is a general worker. If a runtime offers only `self`, it inherits the root's instructions and tools: use it only when a scoped handoff and exposed controls can satisfy the same boundaries, and explicitly prevent recursive Kip dispatch.
+- Check that `define_subagent`, `invoke_subagent`, and result/status/message controls are exposed; documentation does not prove they exist in this session.
+- Define transient scoped workers and a distinct read-only reviewer, then invoke them by the returned ID. A definition alone has not run anything.
+- Use model tier `pro` or `flash` for a profile and `inherit` without one. Omit effort fields; agent thinking is host-controlled.
+- Use exact runtime tool names in allowlists: file and verification tools for workers, inspection only for the reviewer. Do not request stronger shell policies.
+- Do not use built-in `research` for implementation or `browser` as a general worker. Use `self` only if the handoff explicitly blocks recursive Kip dispatch.
 
-## Workspace, completion, and review
+## Workspace and completion
 
-Select a supported workspace mode deliberately. Shared or inherited workspaces need disjoint file ownership and serialized conflicting edits. An isolated branch/worktree requires the parent to inspect and integrate its changes before review; record its returned path/revision. Do not assume all workspace modes write into the parent's checkout.
+Shared workspaces need disjoint file ownership. Isolated worktrees must be integrated by the root before review; record their path and revision. Invocation is asynchronous: `running` is still executing; `idle` accepts follow-ups but does not prove the checks passed; `killed` cannot resume and its replacement counts against the limit. Send fixes to the existing worker and rechecks to the reviewer.
 
-Invocation is asynchronous. Retain each returned agent ID and collect its final response through available status/result controls or completion events. `running` is still executing; `idle` permits follow-up but does not alone prove acceptance conditions passed. Send a message through the supported control to wake the same idle agent. A `killed` agent cannot resume; replacements still count against the shared task limit.
+## Profiles
 
-Once worker changes are integrated, invoke the separate reviewer against that result with actual check evidence. Route fixes to the existing worker and affected rechecks to the reviewer. Do not count definitions, launch acknowledgments, or the worker's self-review as completed independent review.
+| # | Name (slug) | Root | Reviewer | Worker 1 | Worker 2 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Maximum (`maximum`) | Pro / high | pro / inherited | pro / inherited | pro / inherited |
+| 2 | Balanced (`balanced`) | Pro / medium | pro / inherited | flash / inherited | flash / inherited |
+| 3 | Value (`value`) | Pro / medium | flash / inherited | flash / inherited | flash / inherited |
+| 4 | Budget (`budget`) | Flash / medium | flash / inherited | flash / inherited | flash / inherited |
+| 5 | Minimum cost (`minimum-cost`) | Flash / low | flash / inherited | flash / inherited | flash / inherited |
 
-Native reference: [Antigravity subagents](https://antigravity.google/docs/subagents/). Verify the [shared smoke scenarios](orchestration.md#host-smoke-checks) on the actual surface before claiming live compatibility.
+The Root column is a user-selected Gemini Pro- or Flash-family model. "inherited" means no per-agent effort override. Docs: [subagents](https://antigravity.google/docs/subagents/), [models](https://antigravity.google/docs/models/).

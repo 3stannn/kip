@@ -11,8 +11,8 @@ const highlights = [
     text: "Kip uses the model, tools, and permissions already available there.",
   },
   {
-    label: "Workers and review",
-    text: "It delegates focused work and checks the result with an independent reviewer.",
+    label: "A team sized to the task",
+    text: "Small changes run solo. Bigger ones get a worker and an independent reviewer.",
   },
   {
     label: "The scope you asked for",

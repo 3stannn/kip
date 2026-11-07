@@ -1,55 +1,32 @@
 # Kip orchestration contract
 
-Kip is the root coordinator of a delegated workflow. For actionable work, dispatch subagents through the host's native tools whether Kip was selected implicitly by the host or explicitly invoked by the user. Both activation paths use the same worker/reviewer contract without requesting another delegation phrase or a Kip command. This includes build, fix, planning, and review requests, with or without a profile. Do not treat “the user did not explicitly say subagents” as a reason to work alone.
+Applies to Lean, Full, and Audit tiers (see `SKILL.md`). The root plans, coordinates, integrates, and answers. Children never orchestrate or create subagents.
 
-## Host preflight
+## Preflight
 
-Identify the running host from trusted session context and its exposed tools. In Claude Code, read [Claude orchestration](orchestration-claude.md); in Antigravity, read [Antigravity orchestration](orchestration-antigravity.md). Load only the current host's reference. In Codex, use the current session's native collaboration tools and their schemas. Never send Codex tool names or model IDs to another host.
+Use only the current host's adapter and its native delegation tools; the running tool schema decides valid arguments. Confirm you can start a worker, collect its result, continue it, and run a separate reviewer. Resolve the profile against the adapter's table and disclose unsupported model/effort controls in the one-line dispatch update (tier, profile, roles). Never launch a vendor CLI, write persistent agent files, or change host settings.
 
-Before dispatch, confirm a supported way to create a capable worker, collect its result, continue it when needed, and run a separate reviewer. Inspect model/effort controls, permissions, workspace behavior, and capacity. Documentation is guidance; the running tool schema determines valid arguments. Resolve [profiles.md](profiles.md) against this host. Disclose unavailable controls before affected delegation, following its inheritance and exact-match rules. Missing delegation is a blocker, not an invitation to launch a vendor CLI, create persistent agent files, or change host settings.
+## Handoffs
 
-## Team and task scope
+Children start cold, so the handoff is what keeps them cheap. Send each one:
 
-- With an effective profile (task override, saved project selection, or chat fallback), use its two worker roles and one independent reviewer. A profile in `$kip build --profile balanced <task>` applies to that task and requests the Balanced team immediately; it does not change saved profile memory.
-- Without a profile, use at least one worker and one independent reviewer with inherited host settings. Add a second worker only for a useful scope. Do not silently select a preset.
-- Profile list/show/select/reset alone, installation, doctor, and skill updater commands are administrative operations. Run them directly without a coding team. No task means no speculative work. Editing Kip's source skills or code is actionable development, not an administrative exception.
-- Plan requests delegate analysis without implementation or persistent writes. Review requests delegate inspection without edits unless fixing was also requested. Ask requests answer in chat with zero persistent writes from root or children, including notes, reports, profile state, lock files, caches, builds, tests, formatters, or target-code execution. Read-only source inspection and bounded note queries remain available. Tool access does not expand the requested purpose.
-- Deslop is scoped website implementation under [deslop guidance](deslop.md), with baseline/revised browser evidence and the existing brand, stack, behavior, and accessibility preserved.
-- Full security audits follow the [security adapter](security-audit.md), including its fresh-agent, invocation-budget, output-isolation, and execution controls. The audit team is staged rather than forced into an ordinary fixed team. Security questions under ask stay in guidance mode without artifacts.
-- An explicit user request for solo work or a smaller team overrides the default. Higher-priority limits and unavailable host capabilities also take precedence. Explain affected roles; do not invent delegation or ask for additional permission already covered by the Kip request. Host limitations alone do not authorize silently reducing the team or switching to root-only implementation.
+- Outcome, purpose and write boundary, project root, owned files (disjoint across workers), acceptance checks, stop condition.
+- The exact files and line ranges to start from, plus relevant note facts, so they do not re-explore the repo.
+- A digest of applicable guidance (10–20 lines) and paths to only the specific rules they must apply. Do not send whole skills or the conversation.
+- This line: "You are a scoped Kip worker/reviewer. Do not invoke Kip orchestration or create subagents. Complete only this assignment and report to the parent."
+- Required report: changed paths or findings, checks run with results, proposed note facts with evidence, blockers. Keep it brief; no restating the task.
 
-## Dispatch and ownership
+Use a read-only/research agent type for pure investigation. Workers never write notes. Reviewers do not edit.
 
-Resolve the effective profile and inspect available tools, model IDs, effort controls, and capacity before dispatch. Give one compact dispatch update with the profile, roles, and any unsupported settings. Use the exact supported profile settings as described in [profiles.md](profiles.md); do not change the root's host model or launch another CLI/API runner.
+## Flow
 
-1. Assign Worker 1 a bounded implementation or investigation outcome. Assign Worker 2 a complementary implementation, contract analysis, or verification outcome. Keep file ownership distinct; serialize dependencies and shared-file edits. On a small change, use a narrow verification assignment for Worker 2 rather than inventing extra features or skipping the profile role.
-2. Send each worker the outcome, purpose/write boundary, project root and workspace, necessary project instructions, relevant paths/evidence, constraints, ownership, acceptance checks, effective role settings, and a stop condition. Include only relevant [project notes](notes.md) and their observed dependency status; source and current instructions take precedence. Explicitly state: “You are a scoped Kip worker/reviewer. Do not invoke Kip orchestration or create subagents. Complete only this assignment and report to the parent.” Use focused context instead of copying the conversation or every skill. Require a result containing changed paths or findings, verification actually run and its results, proposed note deltas with supporting evidence, blockers, and the workspace/revision needed for integration. Workers never write shared notes. Reviewers report findings with file/line evidence and do not edit.
-3. The root owns planning, coordination, integration, and the final answer. It may resolve integration issues and targeted fixes, but must not perform the entire task alone and label that orchestration. Inspect returned diffs and execution evidence before relying on them.
-4. Once the result is integrated, give the independent reviewer the acceptance conditions, applicable instructions, current diff/artifacts, and actual verification evidence. Keep the reviewer out of implementation edits. For a plan, review the proposed plan; for a code review, cross-check the evidence and findings. Workers or root resolve actionable findings and repeat only affected checks.
+1. Dispatch workers; run independent ones in parallel, serialize shared-file or dependent edits.
+2. Inspect returned diffs and evidence before relying on them; the root may make small integration fixes but must not redo the whole task.
+3. Give the reviewer the integrated diff, acceptance checks, and verification already run. The reviewer assesses; it does not repeat the full test suite or re-audit untouched code.
+4. Route findings to the existing worker; recheck only what changed.
 
-Do not make workers and reviewer run duplicate full audits by default. Distinguish worker verification from the reviewer's independent assessment. Keep all roles useful and focused on the requested outcome.
+## Limits and continuity
 
-## Capacity, continuity, and failure
+Ordinary tasks use at most the tier's agents for the whole task, including replacements; only `audit` exceeds this, per its adapter. Reuse existing agents for follow-ups in scope. Wait for completion notifications rather than polling. If capacity blocks parallel roles, stage them. Keep a compact ledger (agents, settings, ownership, pending findings, checks) through compaction.
 
-Ordinary tasks use at most two workers and one reviewer across the entire task, including replacements, unless the user explicitly requests a different limit. Full `audit` requests are the explicit mode exception: use the adapter's budgeted reconnaissance/hunter/critic/fresh-verifier roles, within actual concurrent host capacity. This exception does not expand the team for build, fix, plan, review, ask, deslop, or tasks merely implementing audit support. No recursive delegation from children. Reuse ordinary task agents for follow-ups within their scope; do not start another team merely because a message arrived. Audit reuse must not break upstream fresh-verifier independence. A task continues while the same outcome remains unresolved; once its result has been delivered and accepted or the user clearly requests a separate outcome, start a new task ledger and discard the previous override. If an ordinary agent fails or requested settings change after this allowance is used, resume or reconfigure an existing agent through supported controls; otherwise disclose that the limit prevents replacement and stop affected work. Keep a compact ledger of agents used, role settings, ownership, pending findings, checks, and any audit invocation reserves through compaction.
-
-If capacity prevents simultaneous dispatch, stage the roles: complete workers first, release their slots through supported lifecycle tools if needed, then dispatch the independent reviewer. Confirm whether completed agents release capacity in this host; do not invent a close tool or assume that interrupting an agent frees its slot. If the host cannot release slots or support all distinct roles, report the capacity limit and which work or review remains blocked. Use a reduced team only if the user requested or already authorized that exception. Parallel execution is useful only for independent work. Do not equate unavailable parallelism with unavailable delegation.
-
-If delegation tools are absent, forbidden by higher-priority instructions, or fail after a focused supported recovery, disclose the concrete limitation and affected roles. Stop the affected delegated execution and explain what capability is needed; do not automatically replace the task with root-only implementation. Root-only fallback requires an explicit user solo/fallback instruction, including one already given for this task. Continue independent coordination or administrative work when useful and permitted. Never replace agents with role-play, describe sequential root passes as independent agents, or bypass host restrictions.
-
-Wait on meaningful status changes while continuing independent coordination work. Avoid unchanged polling, idle agents, and repeated identical failed dispatches. Reuse an existing agent when possible; failure does not grant unlimited replacements or model upgrades. Retain blockers and report material deviations at completion along with checks actually performed. Never save task authorization, agent transcripts, or tool instructions in profile memory.
-
-## Host smoke checks
-
-Use a disposable project when verifying host behavior. Record the host/version, supported controls, returned agent IDs, completion evidence, and observed result. A documentation walkthrough or bundle test is not a live host run; label each accordingly. Never claim Claude Code or Antigravity execution based on a Codex run.
-
-| Scenario | Required observation |
-| --- | --- |
-| Show/select/reset only | No agents start; only explicit selection/reset persists a slug or null. |
-| Task without a profile | A worker and separate reviewer inherit settings; review follows integration. |
-| Saved or task profile | Two workers and a separate reviewer use the current host's table; a task override leaves saved state intact. |
-| Worker continuation | A follow-up reuses the returned agent ID/context through a supported control. |
-| Plan/review task | Delegated work stays read-only; no recursive teams start. |
-| Limited capacity | Roles stage without exceeding capacity or silently reducing the team. |
-| Unsupported setting | The mismatch is disclosed; inherited fallback or exact-match blocking follows the profile contract. |
-| Missing delegation | A concrete blocker is reported without a second runner or invented successful agents. |
+If delegation is unavailable or fails after one focused recovery, name the missing capability and affected roles, and ask whether to continue solo; a Solo-sized task may proceed solo with disclosure. Never role-play agents or describe sequential root passes as independent review.

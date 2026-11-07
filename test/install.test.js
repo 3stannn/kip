@@ -136,15 +136,17 @@ test("installs self-contained skills for every host without external dependencie
     assert.deepEqual(
       (await fs.readdir(path.join(target, "references"))).sort(),
       [
-        "deslop.md",
         "frontend-design.md",
         "frontend-engineering.md",
         "notes.md",
         "orchestration-antigravity.md",
         "orchestration-claude.md",
+        "orchestration-codex.md",
         "orchestration.md",
         "profiles.md",
         "security-audit.md",
+        "token-efficiency.md",
+        "unslop.md",
         "update.md",
       ],
     );

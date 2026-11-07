@@ -13,15 +13,16 @@ Install defaults to all hosts, globally. Existing skills are preserved.
 Restart your host after installation. In chat, use:
   Codex: $kip <purpose> <instructions> (or select Kip in /skills)
   Claude Code / Antigravity: /kip <purpose> <instructions>
-  Any host: Use Kip to <task>, or let the host select it automatically.
+  Any host: Use Kip to <task>.
 
-Chat purposes: build, fix, plan, review, ask, deslop, audit.
+Chat purposes: build, fix, plan, review, ask, unslop, audit, trim.
   ask: answer questions with no edits, reports, or persistent state writes.
-  deslop: improve an existing website with bundled design guidance.
+  unslop: find and fix generic, broken, or untrue parts of an existing website (was deslop).
   audit: inspect security; write separate reports without changing target source.
+  trim: shrink agent instruction files and skills; report measured before/after estimates.
 These purposes run in chat, not as terminal commands.
 Project notes in .kip/notes.json remember verified context across chats in one checkout.
-Only verified build, fix, and deslop work updates notes; read-only purposes do not.
+Only verified build, fix, and unslop work updates notes; read-only purposes do not.
 
 Switch profiles in chat (use /kip outside Codex):
   $kip profiles
@@ -31,7 +32,7 @@ Switch profiles in chat (use /kip outside Codex):
   $kip update
 Profiles remember project settings across chats in .kip/profile.json.
 The five profile names use native models for Codex, Claude Code, or Antigravity.
-Actionable Kip tasks use subagents automatically; no extra delegation phrase is needed.
+Kip sizes each task: small ones run solo, typical ones use a worker and a reviewer.
 An active profile assigns two workers and an independent reviewer.
 Full security audits use staged fresh validators within host capacity.
 Without a profile, use host-inherited settings for a worker and reviewer.

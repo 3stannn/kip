@@ -44,8 +44,8 @@ export function Profiles({ onSelect, host, onHostChange }) {
         <p>
           Preview five presets for a root, two workers, and an independent
           reviewer. Kip restores your saved project profile. A task override
-          applies once. Kip tasks use subagents automatically; no extra
-          delegation phrase is needed.
+          applies once. Kip sizes the team to the task: small changes run
+          solo, typical ones use a worker and a reviewer.
         </p>
       </div>
 

@@ -18,7 +18,7 @@ export const steps = [
     label: "Invoke",
     text: "Open your project in your coding chat. Use $kip in Codex or /kip in Claude Code and Antigravity, followed by your purpose and instructions.",
     command: "$kip build Create an accessible React login and verify it.",
-    note: "You can also say ‘Use Kip to fix mobile overflow.’ The host can select Kip implicitly when its description matches your task.",
+    note: "You can also say ‘Use Kip to fix mobile overflow.’ Kip activates when you name it, and sizes the team to the task.",
   },
   {
     title: "Keep working in your host.",

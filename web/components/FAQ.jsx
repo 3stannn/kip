@@ -20,15 +20,23 @@ export function FAQ() {
         {[
           [
             "Do I need to sign in or supply an API key?",
-            "Kip adds no sign-in, API key, server, or separate runner. It runs inside the coding chat you already use. Profiles save project preferences. Actionable Kip tasks automatically use subagents through your host’s delegation tools and usage allowance. Your host application retains its own access requirements and usage limits.",
+            "Kip adds no sign-in, API key, server, or separate runner. It runs inside the coding chat you already use. Profiles save project preferences. When a task needs a team, Kip uses your host’s delegation tools and usage allowance. Your host application retains its own access requirements and usage limits.",
           ],
           [
             "Can I type /kip in Codex?",
             "Use $kip followed by your purpose and instructions, or select Kip in Codex’s /skills picker. Codex controls slash command registration. Claude Code and Antigravity expose the skill as /kip.",
           ],
           [
-            "Can it activate automatically?",
-            "Yes. Your host can select Kip automatically for suitable multi-step coding work, even when you do not name Kip. Automatic activation and explicit invocation both use workers and an independent reviewer for actionable tasks; no extra ‘use subagents’ instruction is needed. Your host decides when the skill matches. You can also invoke it explicitly or say ‘Use Kip to …’.",
+            "When does Kip activate, and how big is the team?",
+            "Kip activates when you name it: $kip, /kip, or ‘Use Kip to …’. It then sizes the team to the task. Small changes run solo in your chat, typical tasks use one worker plus an independent reviewer, and only large, separable work gets two workers. Say ‘solo’ or ‘full team’ to override.",
+          ],
+          [
+            "Can Kip clean up a site that looks AI-generated?",
+            "Use unslop. Kip checks the running page and the source for content that is untrue, controls that do not work, and patterns a template left behind rather than a decision: invented testimonials and stats, placeholder text, generic copy, dead links, identical card rows, and default gradients and motion. It fixes them in your site’s own brand and stack, compares before and after screenshots, and lists anything that needs real content from you instead of inventing it.",
+          ],
+          [
+            "Can Kip lower my token usage?",
+            "Use trim to shrink the instruction files and skills your agents load, such as AGENTS.md, CLAUDE.md, and .claude/skills. Files loaded in every session go first, every rule is kept, and Kip reports measured before and after estimates. Asking Kip to save tokens, or choosing the Budget or Minimum cost profile, also makes it run the task itself more leanly.",
           ],
           [
             "Does Kip change my project?",

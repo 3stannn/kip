@@ -29,7 +29,7 @@ test("every profile generates a task override for each purpose", () => {
         "plan",
         "review",
         "ask",
-        "deslop",
+        "unslop",
         "audit",
       ]) {
         assert.equal(
@@ -142,7 +142,7 @@ test("all purposes preserve task text across hosts and natural-language invocati
       "plan",
       "review",
       "ask",
-      "deslop",
+      "unslop",
       "audit",
     ]) {
       assert.equal(
