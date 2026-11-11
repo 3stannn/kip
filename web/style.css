@@ -34,8 +34,10 @@
 @layer base {
   html {
     @apply scroll-pt-24;
-    scrollbar-color: var(--color-accent) transparent;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
   }
   * {
     scrollbar-color: var(--color-accent) transparent;
