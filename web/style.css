@@ -1,4 +1,6 @@
-@import "tailwindcss";
+/* Scan only web/ for class names; the skill docs elsewhere in the repo are
+   full of example utilities that would otherwise be emitted. */
+@import "tailwindcss" source(".");
 
 @theme {
   --font-sans: "Nunito", system-ui, -apple-system, sans-serif;
@@ -206,21 +208,7 @@
     @apply m-0 font-mono text-xs leading-7 whitespace-pre-wrap wrap-anywhere;
   }
   .suggestion-menu {
-    @apply mt-2 max-h-72 space-y-1 overflow-y-auto rounded-2xl border border-line bg-surface p-1.5 shadow-lg shadow-ink/5;
-    scrollbar-color: var(--color-accent) transparent;
     scrollbar-width: thin;
-  }
-  .suggestion-option {
-    @apply flex cursor-pointer items-center gap-3 rounded-xl border border-transparent px-3 py-3 transition hover:bg-page;
-  }
-  .suggestion-option[aria-selected="true"] {
-    @apply border-accent/40 bg-accent/15;
-  }
-  .suggestion-keyword {
-    @apply block font-mono text-xs font-bold text-charcoal;
-  }
-  .suggestion-description {
-    @apply mt-1 block text-xs leading-5 text-muted;
   }
   .skills-carousel {
     @apply overflow-hidden py-6;
@@ -723,17 +711,12 @@
     transform: none !important;
   }
 
-  .floating-mascot {
-    transition: none;
-  }
-
   .skills-carousel {
     overflow: visible;
     mask-image: none;
   }
   .skills-carousel-track {
     width: auto;
-    animation: none;
     transform: none;
   }
   .skills-carousel-set {
@@ -741,12 +724,6 @@
   }
   .skills-carousel-set[aria-hidden="true"] {
     display: none;
-  }
-  .mascot-blink {
-    animation: none;
-  }
-  html {
-    scroll-behavior: auto;
   }
   *,
   *::before,

@@ -8,7 +8,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import "./VariableProximity.css";
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;

@@ -136,9 +136,7 @@ export function Terminal({ active }) {
         <div className="mt-4 min-h-36.25" aria-live="polite">
           <div className="terminal-output" key={active}>
             {demo.output.map((line, i) => (
-              <p key={i} style={{ "--line-index": i }}>
-                {line || "\u00a0"}
-              </p>
+              <p key={i}>{line || "\u00a0"}</p>
             ))}
           </div>
         </div>
