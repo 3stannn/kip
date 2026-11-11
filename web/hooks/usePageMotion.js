@@ -1,125 +1,249 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Split only plain text. Original DOM and accessible names are restored on cleanup.
-function splitWords(element, restore) {
-  if (!element || element.children.length) return [element].filter(Boolean);
-  const nodes = [...element.childNodes];
-  const accessibleText = document.createElement("span");
-  accessibleText.className = "sr-only";
-  accessibleText.textContent = element.textContent;
-  const words = element.textContent.split(/(\s+)/).map((text) => {
-    if (!text.trim()) return document.createTextNode(text);
-    const word = document.createElement("span");
-    word.className = "motion-word";
-    word.style.display = "inline-block";
-    word.setAttribute("aria-hidden", "true");
-    word.textContent = text;
-    return word;
+const RISE = { duration: 1.05, ease: "expo.out" };
+const FADE = { duration: 0.8, ease: "power3.out" };
+// Travel past the mask's lower edge, which sits just below the descenders.
+const BELOW_MASK = 120;
+const HEADLINE_FONTS = ['700 1em "Geist"', 'italic 400 1em "Instrument Serif"'];
+
+// Wrap each word of a plain-text heading in a clip mask so it can rise into
+// place. Returns null, leaving the heading untouched, when it holds anything
+// other than text and line breaks or when wrapping would move its layout.
+function splitWords(heading) {
+  const original = [...heading.childNodes];
+  const plain = original.every(
+    (node) => node.nodeType === Node.TEXT_NODE || node.nodeName === "BR",
+  );
+  if (!original.length || !plain) return null;
+  const before = heading.getBoundingClientRect();
+  const words = [];
+  const label = document.createElement("span");
+  label.className = "sr-only";
+  label.textContent = original
+    .map((node) => (node.nodeName === "BR" ? " " : node.textContent))
+    .join("");
+  const pieces = original.flatMap((node) => {
+    if (node.nodeName === "BR") return [node.cloneNode()];
+    return node.textContent
+      .split(/(\s+)/)
+      .filter(Boolean)
+      .map((text) => {
+        if (!text.trim()) return document.createTextNode(text);
+        const mask = document.createElement("span");
+        mask.className = "motion-mask";
+        mask.setAttribute("aria-hidden", "true");
+        const word = document.createElement("span");
+        word.className = "motion-word";
+        word.textContent = text;
+        mask.append(word);
+        words.push(word);
+        return mask;
+      });
   });
-  element.replaceChildren(accessibleText, ...words);
-  restore.push(() => {
-    element.replaceChildren(...nodes);
-  });
-  return words.filter((word) => word.nodeType === Node.ELEMENT_NODE);
+  heading.replaceChildren(label, ...pieces);
+  const restore = () => heading.replaceChildren(...original);
+  const after = heading.getBoundingClientRect();
+  if (
+    Math.abs(after.width - before.width) > 0.5 ||
+    Math.abs(after.height - before.height) > 0.5
+  ) {
+    restore();
+    return null;
+  }
+  return { words, restore };
 }
 
 export function usePageMotion(page) {
-  useEffect(() => {
+  // Layout effect: starting poses are in place before the first paint.
+  useLayoutEffect(() => {
     const root = page.current;
     if (!root) return undefined;
     const media = gsap.matchMedia();
     media.add(
       "(prefers-reduced-motion: no-preference)",
       () => {
-        const restore = [];
         const entrances = [];
-        const compact = window.innerWidth < 768;
-        const intro = gsap.timeline({
-          defaults: { ease: "power3.out", duration: 1.15 },
-        });
-        entrances.push(intro);
+        const cleanups = [];
+        const timers = new Set();
+        let disposed = false;
+
+        // Entrances normally run on GSAP's ticker. The timer finishes one
+        // that the ticker never advanced, so no text is left in a hidden pose.
+        const play = (timeline, delay = 0) => {
+          const seconds = delay + timeline.duration() + 0.5;
+          const timer = setTimeout(() => {
+            timers.delete(timer);
+            timeline.progress(1);
+          }, seconds * 1000);
+          timers.add(timer);
+          if (delay) gsap.delayedCall(delay, () => timeline.play());
+          else timeline.play();
+        };
+
+        // Hero: headline words rise out of their line, then the supporting
+        // copy and the terminal follow.
         const title = root.querySelector(".hero-title");
-        const words = title
-          ? [...title.children].flatMap((line) => splitWords(line, restore))
-          : [];
-        if (words.length)
+        const demo = root.querySelector(".hero-demo");
+        if (title) {
+          const lines = [...title.children];
+          const titleWords = [...title.querySelectorAll("[data-word]")];
+          const rising = titleWords.length ? titleWords : lines;
+          const intro = gsap.timeline({
+            paused: true,
+            onComplete: () =>
+              gsap.set([...lines, ...rising], {
+                clearProps: "clipPath,transform",
+              }),
+          });
+          entrances.push(intro);
+          if (titleWords.length)
+            gsap.set(lines, { clipPath: "inset(-0.2em -0.6em -0.14em)" });
           intro.fromTo(
-            words,
-            { y: compact ? 40 : 65, opacity: 0.45, rotation: compact ? 2 : 4 },
-            { y: 0, opacity: 1, rotation: 0, stagger: 0.1 },
+            rising,
+            { yPercent: titleWords.length ? BELOW_MASK + 5 : 30 },
+            { yPercent: 0, ...RISE, duration: 1.15, stagger: 0.09 },
             0,
           );
-        const introParts = [...root.querySelectorAll("[data-intro]")].filter(
-          (part) => part !== title,
-        );
-        intro.fromTo(
-          introParts,
-          { y: compact ? 40 : 65, opacity: 0.6 },
-          { y: 0, opacity: 1, stagger: 0.12, duration: 0.9 },
-          0.3,
-        );
-        const demo = root.querySelector(".hero-demo");
-        if (demo)
-          intro.fromTo(
-            demo,
-            { y: 75, opacity: 0.6, scale: 0.94, rotationX: 8 },
-            { y: 0, opacity: 1, scale: 1, rotationX: 0, duration: 1.25 },
-            0.35,
+          const introParts = [...root.querySelectorAll("[data-intro]")].filter(
+            (part) => part !== title,
           );
-        const mascot = root.querySelector("[data-hero-mascot]");
-        if (mascot)
-          intro.fromTo(
-            mascot,
-            { y: 18, scale: 0.78, rotation: -8 },
-            {
-              y: 0,
-              scale: 1,
-              rotation: 0,
-              duration: 0.85,
-              ease: "back.out(1.4)",
-            },
-            0.65,
-          );
-
-        root.querySelectorAll("[data-reveal]").forEach((element) => {
-          if (element === demo || demo?.contains(element)) return;
-          const heading = element.matches("h2")
-            ? element
-            : element.querySelector("h2");
-          const headingWords = splitWords(heading, restore);
-          const parts = [...element.children].filter(
-            (child) => child !== heading,
-          );
-          const supportingParts = parts.length ? parts : element;
-          const delay = Math.max(0, Number(element.dataset.reveal) || 0) / 1000;
-          // Establish readable starting poses before the trigger is reached,
-          // instead of jumping backwards when an untouched section enters.
-          if (headingWords.length)
-            gsap.set(headingWords, { y: 44, opacity: 0.5 });
-          gsap.set(supportingParts, { y: 48, opacity: 0.55 });
-          const timeline = gsap.timeline({
-            defaults: { ease: "power3.out", duration: 0.95 },
-            scrollTrigger: { trigger: element, start: "top 85%", once: true },
-          });
-          entrances.push(timeline);
-          if (headingWords.length)
-            timeline.to(
-              headingWords,
-              { y: 0, opacity: 1, stagger: 0.055 },
-              delay,
+          if (introParts.length)
+            intro.fromTo(
+              introParts,
+              { y: 18, opacity: 0 },
+              { y: 0, opacity: 1, ...FADE, stagger: 0.1 },
+              0.45,
             );
-          timeline.to(
-            supportingParts,
-            { y: 0, opacity: 1, stagger: 0.1 },
-            delay + (headingWords.length ? 0.22 : 0),
-          );
-        });
+          if (demo)
+            intro.fromTo(
+              demo,
+              { y: 56, opacity: 0, scale: 0.96, rotationX: 6 },
+              {
+                y: 0,
+                opacity: 1,
+                scale: 1,
+                rotationX: 0,
+                duration: 1.3,
+                ease: "power3.out",
+              },
+              0.4,
+            );
+          const mascot = root.querySelector("[data-hero-mascot]");
+          if (mascot)
+            intro.fromTo(
+              mascot,
+              { y: 18, scale: 0.78, rotation: -8 },
+              {
+                y: 0,
+                scale: 1,
+                rotation: 0,
+                duration: 0.85,
+                ease: "back.out(1.4)",
+              },
+              0.9,
+            );
+          // Start once the headline fonts are in, so the words do not reflow
+          // mid-rise. A short cap keeps a slow font from holding the page.
+          let started = false;
+          const start = () => {
+            if (started || disposed) return;
+            started = true;
+            play(intro);
+          };
+          const fontCap = setTimeout(start, 600);
+          timers.add(fontCap);
+          const fonts = document.fonts;
+          if (fonts?.load)
+            Promise.all(HEADLINE_FONTS.map((font) => fonts.load(font))).then(
+              start,
+              start,
+            );
+          else start();
+        }
+
+        // Sections: each reveal block cascades in document order when it
+        // scrolls into view. Blocks that enter together are staggered.
+        const pending = new Map();
+        if ("IntersectionObserver" in window) {
+          root.querySelectorAll("[data-reveal]").forEach((element) => {
+            if (element === demo || demo?.contains(element)) return;
+            const heading = element.matches("h1, h2")
+              ? element
+              : element.querySelector("h1, h2");
+            const split = heading ? splitWords(heading) : null;
+            const blocks =
+              heading && heading !== element ? [...element.children] : [];
+            const faded = blocks.length
+              ? blocks.filter((block) => !split || !block.contains(heading))
+              : split
+                ? []
+                : [element];
+            const kickers = faded.filter((block) =>
+              block.matches(".section-kicker"),
+            );
+            const settle = () => {
+              split?.restore();
+              gsap.set(faded, { clearProps: "opacity,transform,transition" });
+              gsap.set(kickers, { clearProps: "--kicker-rule" });
+            };
+            cleanups.push(() => split?.restore());
+            const timeline = gsap.timeline({
+              paused: true,
+              onComplete: settle,
+            });
+            entrances.push(timeline);
+            if (split) gsap.set(split.words, { yPercent: BELOW_MASK });
+            // Hover transitions on links and buttons would fight the tween.
+            gsap.set(faded, { opacity: 0, y: 20, transition: "none" });
+            gsap.set(kickers, { "--kicker-rule": 0 });
+            let at = 0;
+            (blocks.length ? blocks : [element]).forEach((block) => {
+              if (split && block.contains(heading)) {
+                timeline.to(
+                  split.words,
+                  { yPercent: 0, ...RISE, stagger: 0.06 },
+                  at,
+                );
+                at += 0.2;
+                return;
+              }
+              timeline.to(block, { opacity: 1, y: 0, ...FADE }, at);
+              if (kickers.includes(block))
+                timeline.to(block, { "--kicker-rule": 1, ...FADE }, at);
+              at += 0.09;
+            });
+            pending.set(element, timeline);
+          });
+        }
+        const observer = pending.size
+          ? new IntersectionObserver(
+              (entries) => {
+                let order = 0;
+                entries.forEach((entry) => {
+                  const timeline = pending.get(entry.target);
+                  if (!timeline) return;
+                  // Already scrolled past, as on a reload or deep link.
+                  const passed =
+                    !entry.isIntersecting &&
+                    entry.boundingClientRect.bottom < 0;
+                  if (!entry.isIntersecting && !passed) return;
+                  pending.delete(entry.target);
+                  observer.unobserve(entry.target);
+                  if (passed) timeline.progress(1);
+                  else play(timeline, Math.min(order++ * 0.08, 0.4));
+                });
+              },
+              { rootMargin: "0px 0px -12% 0px" },
+            )
+          : null;
+        pending.forEach((_, element) => observer.observe(element));
+
         const frame = root.querySelector(".hero-terminal-frame");
-        if (frame)
+        if (frame && demo)
           gsap.fromTo(
             frame,
             { y: 0, scale: 1, rotationX: 0 },
@@ -156,7 +280,7 @@ export function usePageMotion(page) {
 
         const carousel = root.querySelector(".skills-carousel");
         let carouselTween;
-        let observer;
+        let carouselObserver;
         let inView = false;
         let hovered = false;
         const updateCarousel = () => {
@@ -192,11 +316,11 @@ export function usePageMotion(page) {
                 paused: true,
               },
             );
-          observer = new IntersectionObserver(([entry]) => {
+          carouselObserver = new IntersectionObserver(([entry]) => {
             inView = entry.isIntersecting;
             updateCarousel();
           });
-          observer.observe(carousel);
+          carouselObserver.observe(carousel);
           carousel.addEventListener("pointerenter", onEnter);
           carousel.addEventListener("pointerleave", onLeave);
           carousel.addEventListener("focusin", updateCarousel);
@@ -205,6 +329,8 @@ export function usePageMotion(page) {
         const settle = () => {
           // A hidden tab never returns to half-finished text or controls.
           entrances.forEach((timeline) => timeline.progress(1));
+          pending.clear();
+          observer?.disconnect();
           updateCarousel();
         };
         const onVisibility = () => {
@@ -215,7 +341,6 @@ export function usePageMotion(page) {
         window.addEventListener("blur", settle);
         window.addEventListener("focus", updateCarousel);
         if (document.hidden || !document.hasFocus()) settle();
-        let disposed = false;
         const refresh = () => {
           if (!disposed) ScrollTrigger.refresh();
         };
@@ -223,7 +348,9 @@ export function usePageMotion(page) {
         window.addEventListener("load", refresh);
         return () => {
           disposed = true;
+          timers.forEach((timer) => clearTimeout(timer));
           observer?.disconnect();
+          carouselObserver?.disconnect();
           document.removeEventListener("visibilitychange", onVisibility);
           window.removeEventListener("blur", settle);
           window.removeEventListener("focus", updateCarousel);
@@ -232,7 +359,7 @@ export function usePageMotion(page) {
           carousel?.removeEventListener("pointerleave", onLeave);
           carousel?.removeEventListener("focusin", updateCarousel);
           carousel?.removeEventListener("focusout", onFocusOut);
-          restore.forEach((reset) => reset());
+          cleanups.forEach((cleanup) => cleanup());
         };
       },
       root,

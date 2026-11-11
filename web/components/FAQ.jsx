@@ -36,7 +36,7 @@ export function FAQ() {
           ],
           [
             "Can Kip lower my token usage?",
-            "Use trim to shrink the instruction files and skills your agents load, such as AGENTS.md, CLAUDE.md, and .claude/skills. Files loaded in every session go first, every rule is kept, and Kip reports measured before and after estimates. Asking Kip to save tokens, or choosing the Budget or Minimum cost profile, also makes it run the task itself more leanly.",
+            "Use trim to shrink the instruction files and skills your agents load, such as AGENTS.md, CLAUDE.md, and .claude/skills. Files loaded in every session go first, every rule is kept, and Kip reports measured before and after estimates. Every Kip task also runs lean by default: it searches before reading, points subagents at paths instead of pasting content, and keeps reports short.",
           ],
           [
             "Does Kip change my project?",

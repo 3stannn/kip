@@ -1,33 +1,46 @@
-import React, { Fragment, forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import './VariableProximity.css';
+import React, {
+  Fragment,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import "./VariableProximity.css";
 
-const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const GAUSSIAN_EDGE = Math.exp(-2);
 const WAVE_PERIOD = 3.2;
 const WAVE_PEAK = 0.7;
 
-const parseSettings = settings =>
+const parseSettings = (settings) =>
   new Map(
     settings
-      .split(',')
-      .map(part => part.trim())
+      .split(",")
+      .map((part) => part.trim())
       .filter(Boolean)
-      .map(part => {
+      .map((part) => {
         const [name, value] = part.split(/\s+/);
-        return [name.replace(/['"]/g, ''), parseFloat(value)];
-      })
+        return [name.replace(/['"]/g, ""), parseFloat(value)];
+      }),
   );
 
 const strengthAt = (distance, radius, falloff) => {
   if (distance >= radius) return 0;
   const norm = 1 - distance / radius;
   switch (falloff) {
-    case 'exponential':
+    case "exponential":
       return norm * norm;
-    case 'gaussian':
-      return (Math.exp(-2 * (distance / radius) ** 2) - GAUSSIAN_EDGE) / (1 - GAUSSIAN_EDGE);
-    case 'linear':
+    case "gaussian":
+      return (
+        (Math.exp(-2 * (distance / radius) ** 2) - GAUSSIAN_EDGE) /
+        (1 - GAUSSIAN_EDGE)
+      );
+    case "linear":
     default:
       return norm;
   }
@@ -35,20 +48,21 @@ const strengthAt = (distance, radius, falloff) => {
 
 const VariableProximity = forwardRef((props, ref) => {
   const {
-    label = '',
+    label = "",
     fromFontVariationSettings = "'wght' 400, 'opsz' 9",
     toFontVariationSettings = "'wght' 1000, 'opsz' 40",
     containerRef,
     radius = 50,
-    falloff = 'linear',
+    falloff = "linear",
     smoothing = 0.2,
     fromColor,
     toColor,
     scale = 1,
     lift = 0,
+    lockWidth = false,
     idleWave = false,
     fontSize,
-    className = '',
+    className = "",
     onClick,
     style,
     ...restProps
@@ -56,16 +70,20 @@ const VariableProximity = forwardRef((props, ref) => {
 
   const rootRef = useRef(null);
   const letterRefs = useRef([]);
-  const stateRef = useRef({ pointer: { x: 0, y: 0, active: false }, levels: [], targets: [] });
+  const stateRef = useRef({
+    pointer: { x: 0, y: 0, active: false },
+    levels: [],
+    targets: [],
+  });
   const [lineStarts, setLineStarts] = useState(null);
 
   const setRoot = useCallback(
-    node => {
+    (node) => {
       rootRef.current = node;
-      if (typeof ref === 'function') ref(node);
+      if (typeof ref === "function") ref(node);
       else if (ref) ref.current = node;
     },
-    [ref]
+    [ref],
   );
 
   const axes = useMemo(() => {
@@ -74,7 +92,7 @@ const VariableProximity = forwardRef((props, ref) => {
     return Array.from(fromSettings.entries()).map(([axis, fromValue]) => ({
       axis,
       fromValue,
-      toValue: toSettings.get(axis) ?? fromValue
+      toValue: toSettings.get(axis) ?? fromValue,
     }));
   }, [fromFontVariationSettings, toFontVariationSettings]);
 
@@ -88,14 +106,17 @@ const VariableProximity = forwardRef((props, ref) => {
     const measure = () => {
       frame = 0;
       if (!live) return;
-      const words = Array.from(root.querySelectorAll('[data-word]'));
-      const breaks = Array.from(root.querySelectorAll('br'));
+      const words = Array.from(root.querySelectorAll("[data-word]"));
+      const breaks = Array.from(root.querySelectorAll("br"));
       const letters = letterRefs.current.filter(Boolean);
-      const saved = letters.map(letter => letter.style.fontVariationSettings);
+      const saved = letters.map((letter) => letter.style.fontVariationSettings);
       const wrap = root.style.whiteSpace;
-      root.style.whiteSpace = 'normal';
-      breaks.forEach(node => (node.style.display = 'none'));
-      letters.forEach(letter => (letter.style.fontVariationSettings = fromFontVariationSettings));
+      root.style.whiteSpace = "normal";
+      breaks.forEach((node) => (node.style.display = "none"));
+      letters.forEach(
+        (letter) =>
+          (letter.style.fontVariationSettings = fromFontVariationSettings),
+      );
       const starts = [];
       let lastTop = null;
       words.forEach((word, index) => {
@@ -103,14 +124,16 @@ const VariableProximity = forwardRef((props, ref) => {
         if (lastTop !== null && top > lastTop + 2) starts.push(index);
         lastTop = top;
       });
-      letters.forEach((letter, index) => (letter.style.fontVariationSettings = saved[index]));
-      breaks.forEach(node => (node.style.display = ''));
+      letters.forEach(
+        (letter, index) => (letter.style.fontVariationSettings = saved[index]),
+      );
+      breaks.forEach((node) => (node.style.display = ""));
       root.style.whiteSpace = wrap;
-      const key = starts.join(',');
-      setLineStarts(previous => (previous === key ? previous : key));
+      const key = starts.join(",");
+      setLineStarts((previous) => (previous === key ? previous : key));
     };
 
-    const queue = entries => {
+    const queue = (entries) => {
       const width = entries?.[0]?.contentRect.width;
       if (width !== undefined) {
         if (Math.abs(width - lastWidth) < 1) return;
@@ -121,7 +144,10 @@ const VariableProximity = forwardRef((props, ref) => {
 
     measure();
     const parent = root.parentElement;
-    const observer = parent && typeof ResizeObserver !== 'undefined' ? new ResizeObserver(queue) : null;
+    const observer =
+      parent && typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(queue)
+        : null;
     if (parent) observer?.observe(parent);
     document.fonts?.ready.then(() => queue());
 
@@ -137,33 +163,58 @@ const VariableProximity = forwardRef((props, ref) => {
     const written = [];
     const painted = [];
     const moved = [];
+    const pulled = [];
+    const spreads = [];
     const anchors = [];
     const tinted = Boolean(fromColor || toColor);
-    const restColor = fromColor || 'currentColor';
-    const nearColor = toColor || 'currentColor';
+    const restColor = fromColor || "currentColor";
+    const nearColor = toColor || "currentColor";
     const growth = (Number(scale) || 1) - 1;
     const rise = Number(lift) || 0;
     const transformed = growth !== 0 || rise !== 0;
-    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const reduced = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     const waving = idleWave && !reduced;
+    const locked = Boolean(lockWidth);
     let frame = 0;
     let lastTime = 0;
     let dirty = true;
     let layoutDirty = true;
+    let spreadDirty = locked;
     let nearAny = false;
     let lastNear = -Infinity;
     let waveMix = 0;
     let span = 1;
     let visible = true;
 
-    letterRefs.current.forEach(letter => {
+    letterRefs.current.forEach((letter) => {
       if (!letter) return;
-      if (!tinted) letter.style.color = '';
-      if (!transformed) letter.style.transform = '';
+      if (!tinted) letter.style.color = "";
+      if (!transformed) letter.style.transform = "";
+      if (!locked) letter.style.marginInline = "";
     });
 
-    const settingsAt = level =>
-      axes.map(({ axis, fromValue, toValue }) => `'${axis}' ${fromValue + (toValue - fromValue) * level}`).join(', ');
+    // Reduced motion: the text stays at rest and nothing listens or animates.
+    if (reduced) {
+      letterRefs.current.forEach((letter, index) => {
+        if (!letter) return;
+        levels[index] = 0;
+        letter.style.fontVariationSettings = fromFontVariationSettings;
+        letter.style.color = fromColor || "";
+        letter.style.transform = "";
+        letter.style.marginInline = "";
+      });
+      return undefined;
+    }
+
+    const settingsAt = (level) =>
+      axes
+        .map(
+          ({ axis, fromValue, toValue }) =>
+            `'${axis}' ${fromValue + (toValue - fromValue) * level}`,
+        )
+        .join(", ");
 
     const measureAnchors = () => {
       const letters = letterRefs.current;
@@ -173,16 +224,56 @@ const VariableProximity = forwardRef((props, ref) => {
       letters.forEach((letter, index) => {
         if (!letter) return;
         const rect = letter.getBoundingClientRect();
-        anchors[index] = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+        anchors[index] = {
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+        };
         left = Math.min(left, rect.left);
         top = Math.min(top, rect.top);
         right = Math.max(right, rect.right);
       });
-      anchors.forEach(anchor => {
+      anchors.forEach((anchor) => {
         anchor.x -= left;
         anchor.y -= top;
       });
       span = Math.max(220, (right - left) * 0.85);
+    };
+
+    // How much wider each letter gets at full strength, in em. The tick pulls
+    // that growth back in with negative margins, so a heavier letter swells
+    // in place instead of pushing the rest of the line sideways.
+    const measureSpreads = () => {
+      const letters = letterRefs.current;
+      const size = parseFloat(getComputedStyle(rootRef.current).fontSize) || 16;
+      const saved = letters.map(
+        (letter) =>
+          letter && [
+            letter.style.fontVariationSettings,
+            letter.style.marginInline,
+          ],
+      );
+      letters.forEach((letter) => {
+        if (!letter) return;
+        letter.style.marginInline = "";
+        letter.style.fontVariationSettings = fromFontVariationSettings;
+      });
+      const rest = letters.map((letter) =>
+        letter ? letter.getBoundingClientRect().width : 0,
+      );
+      letters.forEach((letter) => {
+        if (letter)
+          letter.style.fontVariationSettings = toFontVariationSettings;
+      });
+      letters.forEach((letter, index) => {
+        spreads[index] = letter
+          ? (letter.getBoundingClientRect().width - rest[index]) / size
+          : 0;
+      });
+      letters.forEach((letter, index) => {
+        if (!letter) return;
+        letter.style.fontVariationSettings = saved[index][0];
+        letter.style.marginInline = saved[index][1];
+      });
     };
 
     const measure = () => {
@@ -202,7 +293,10 @@ const VariableProximity = forwardRef((props, ref) => {
       letters.forEach((letter, index) => {
         if (!letter) return;
         const rect = letter.getBoundingClientRect();
-        const distance = Math.hypot(pointer.x - (rect.left + rect.width / 2), pointer.y - (rect.top + rect.height / 2));
+        const distance = Math.hypot(
+          pointer.x - (rect.left + rect.width / 2),
+          pointer.y - (rect.top + rect.height / 2),
+        );
         targets[index] = strengthAt(distance, radius, falloff);
         if (targets[index] > 0) nearAny = true;
       });
@@ -211,11 +305,12 @@ const VariableProximity = forwardRef((props, ref) => {
     const waveAt = (index, time) => {
       const anchor = anchors[index];
       if (!anchor) return 0;
-      const phase = ((anchor.x + anchor.y * 0.6) / span - time / WAVE_PERIOD) * Math.PI * 2;
+      const phase =
+        ((anchor.x + anchor.y * 0.6) / span - time / WAVE_PERIOD) * Math.PI * 2;
       return WAVE_PEAK * ((1 + Math.cos(phase)) / 2) ** 2.2;
     };
 
-    const tick = now => {
+    const tick = (now) => {
       frame = 0;
       const delta = lastTime ? Math.min(now - lastTime, 64) : 16;
       lastTime = now;
@@ -227,6 +322,10 @@ const VariableProximity = forwardRef((props, ref) => {
       if (waving && layoutDirty) {
         measureAnchors();
         layoutDirty = false;
+      }
+      if (spreadDirty && rootRef.current) {
+        measureSpreads();
+        spreadDirty = false;
       }
 
       if (nearAny) lastNear = now;
@@ -242,7 +341,8 @@ const VariableProximity = forwardRef((props, ref) => {
       letterRefs.current.forEach((letter, index) => {
         if (!letter) return;
         let target = targets[index] ?? 0;
-        if (waveMix > 0) target = Math.max(target, waveMix * waveAt(index, time));
+        if (waveMix > 0)
+          target = Math.max(target, waveMix * waveAt(index, time));
         const current = levels[index] ?? 0;
         let next = current + (target - current) * ease;
         if (Math.abs(target - next) < 0.002) {
@@ -252,7 +352,8 @@ const VariableProximity = forwardRef((props, ref) => {
         }
         levels[index] = next;
 
-        const settings = next === 0 ? fromFontVariationSettings : settingsAt(next);
+        const settings =
+          next === 0 ? fromFontVariationSettings : settingsAt(next);
         if (written[index] !== settings) {
           written[index] = settings;
           letter.style.fontVariationSettings = settings;
@@ -261,7 +362,7 @@ const VariableProximity = forwardRef((props, ref) => {
         if (tinted) {
           const paint =
             next === 0
-              ? fromColor || ''
+              ? fromColor || ""
               : `color-mix(in oklab, ${restColor} ${((1 - next) * 100).toFixed(1)}%, ${nearColor})`;
           if (painted[index] !== paint) {
             painted[index] = paint;
@@ -271,10 +372,23 @@ const VariableProximity = forwardRef((props, ref) => {
 
         if (transformed) {
           const shift =
-            next === 0 ? '' : `translateY(${(-rise * next).toFixed(3)}em) scale(${(1 + growth * next).toFixed(3)})`;
+            next === 0
+              ? ""
+              : `translateY(${(-rise * next).toFixed(3)}em) scale(${(1 + growth * next).toFixed(3)})`;
           if (moved[index] !== shift) {
             moved[index] = shift;
             letter.style.transform = shift;
+          }
+        }
+
+        if (locked) {
+          const pull =
+            next === 0 || !spreads[index]
+              ? ""
+              : `${((-spreads[index] * next) / 2).toFixed(4)}em`;
+          if (pulled[index] !== pull) {
+            pulled[index] = pull;
+            letter.style.marginInline = pull;
           }
         }
       });
@@ -303,8 +417,8 @@ const VariableProximity = forwardRef((props, ref) => {
       schedule();
     };
 
-    const handleMouseMove = event => handleMove(event.clientX, event.clientY);
-    const handleTouchMove = event => {
+    const handleMouseMove = (event) => handleMove(event.clientX, event.clientY);
+    const handleTouchMove = (event) => {
       const touch = event.touches[0];
       if (touch) handleMove(touch.clientX, touch.clientY);
     };
@@ -314,40 +428,57 @@ const VariableProximity = forwardRef((props, ref) => {
     };
 
     const root = document.documentElement;
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchend', handleLeave);
-    window.addEventListener('touchcancel', handleLeave);
-    window.addEventListener('scroll', schedule, { capture: true, passive: true });
-    window.addEventListener('resize', relayout);
-    root.addEventListener('mouseleave', handleLeave);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("touchend", handleLeave);
+    window.addEventListener("touchcancel", handleLeave);
+    window.addEventListener("scroll", schedule, {
+      capture: true,
+      passive: true,
+    });
+    window.addEventListener("resize", relayout);
+    root.addEventListener("mouseleave", handleLeave);
 
     let observer = null;
-    if (waving && rootRef.current && 'IntersectionObserver' in window) {
-      observer = new IntersectionObserver(entries => {
-        visible = entries.some(entry => entry.isIntersecting);
+    if (waving && rootRef.current && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver((entries) => {
+        visible = entries.some((entry) => entry.isIntersecting);
         schedule();
       });
       observer.observe(rootRef.current);
     }
     if (waving) document.fonts?.ready.then(relayout);
+    // Letter widths are only final once the real font has replaced the fallback.
+    let live = true;
+    const remeasure = () => {
+      if (!live) return;
+      spreadDirty = true;
+      schedule();
+    };
+    if (locked) {
+      document.fonts?.ready.then(remeasure);
+      document.fonts?.addEventListener?.("loadingdone", remeasure);
+    }
 
     schedule();
 
     return () => {
+      live = false;
+      document.fonts?.removeEventListener?.("loadingdone", remeasure);
       cancelAnimationFrame(frame);
       observer?.disconnect();
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleLeave);
-      window.removeEventListener('touchcancel', handleLeave);
-      window.removeEventListener('scroll', schedule, { capture: true });
-      window.removeEventListener('resize', relayout);
-      root.removeEventListener('mouseleave', handleLeave);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleLeave);
+      window.removeEventListener("touchcancel", handleLeave);
+      window.removeEventListener("scroll", schedule, { capture: true });
+      window.removeEventListener("resize", relayout);
+      root.removeEventListener("mouseleave", handleLeave);
     };
   }, [
     axes,
     fromFontVariationSettings,
+    toFontVariationSettings,
     containerRef,
     radius,
     falloff,
@@ -356,14 +487,15 @@ const VariableProximity = forwardRef((props, ref) => {
     toColor,
     scale,
     lift,
+    lockWidth,
     idleWave,
     fontSize,
     label,
-    lineStarts
+    lineStarts,
   ]);
 
-  const words = label.split(' ');
-  const breakSet = new Set(lineStarts ? lineStarts.split(',').map(Number) : []);
+  const words = label.split(" ");
+  const breakSet = new Set(lineStarts ? lineStarts.split(",").map(Number) : []);
   let letterIndex = 0;
 
   return (
@@ -372,30 +504,38 @@ const VariableProximity = forwardRef((props, ref) => {
       className={`${className} variable-proximity`}
       onClick={onClick}
       style={{
-        display: 'inline',
-        ...(fontSize !== undefined ? { fontSize: typeof fontSize === 'number' ? `${fontSize}px` : fontSize } : {}),
-        ...(lineStarts !== null ? { whiteSpace: 'nowrap' } : {}),
-        ...style
+        display: "inline",
+        ...(fontSize !== undefined
+          ? {
+              fontSize:
+                typeof fontSize === "number" ? `${fontSize}px` : fontSize,
+            }
+          : {}),
+        ...(lineStarts !== null ? { whiteSpace: "nowrap" } : {}),
+        ...style,
       }}
       {...restProps}
     >
       {words.map((word, wordIndex) => (
         <Fragment key={wordIndex}>
           {breakSet.has(wordIndex) && <br />}
-          <span data-word="" style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-            {word.split('').map(letter => {
+          <span
+            data-word=""
+            style={{ display: "inline-block", whiteSpace: "nowrap" }}
+          >
+            {word.split("").map((letter) => {
               const currentLetterIndex = letterIndex++;
               return (
                 <span
                   key={currentLetterIndex}
-                  ref={el => {
+                  ref={(el) => {
                     letterRefs.current[currentLetterIndex] = el;
                   }}
                   style={{
-                    display: 'inline-block',
+                    display: "inline-block",
                     fontVariationSettings: fromFontVariationSettings,
                     color: fromColor || undefined,
-                    transformOrigin: '50% 80%'
+                    transformOrigin: "50% 80%",
                   }}
                   aria-hidden="true"
                 >
@@ -403,7 +543,9 @@ const VariableProximity = forwardRef((props, ref) => {
                 </span>
               );
             })}
-            {wordIndex < words.length - 1 && <span style={{ display: 'inline-block' }}>&nbsp;</span>}
+            {wordIndex < words.length - 1 && (
+              <span style={{ display: "inline-block" }}>&nbsp;</span>
+            )}
           </span>
         </Fragment>
       ))}
@@ -412,5 +554,5 @@ const VariableProximity = forwardRef((props, ref) => {
   );
 });
 
-VariableProximity.displayName = 'VariableProximity';
+VariableProximity.displayName = "VariableProximity";
 export default VariableProximity;

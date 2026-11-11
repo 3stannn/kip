@@ -36,7 +36,7 @@ export function HomePage() {
         className="facts-grid mx-6 grid border-y border-line sm:grid-cols-2 md:mx-14 xl:grid-cols-4"
       >
         {highlights.map(({ label, text }, index) => (
-          <div className="fact-item" key={label} data-reveal={index * 55}>
+          <div className="fact-item" key={label} data-reveal>
             <span className="mb-3 block font-mono text-xs text-subtle">
               0{index + 1}
             </span>

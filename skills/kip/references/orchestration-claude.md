@@ -4,12 +4,14 @@ The parent chat is the root. Use native session tools only: no `claude` processe
 
 ## Dispatch
 
-- Workers: `Agent` with `subagent_type: "general-purpose"`. Read-only investigation: `Explore`. Do not use fork subagents (they copy the whole conversation) or the `name` argument (it may create a teammate).
-- Reviewer: a separate `general-purpose` agent told it is read-only, given the diff and checks in the prompt.
-- Put the full handoff in `prompt`; children start with fresh context.
+- Worker: `Agent` with `subagent_type: "general-purpose"`, a `description` naming role and scope ("Kip worker: auth routes"), and the filled handoff as `prompt`; children start with fresh context.
+- Read-only roles: `subagent_type: "Explore"` for investigation and `plan` mapping. `review` workers stay `general-purpose`, told they are read-only, because Explore locates code and does not audit it.
+- Parallel workers: several `Agent` calls in one message.
+- Reviewer: a new `Agent` call (`general-purpose`, told it is read-only) made after integration, with the changed paths, the diff command, and the checks in its handoff. Never `SendMessage` a worker to review its own work.
+- Do not use `subagent_type: "fork"` (it copies the whole conversation) or the `name` argument (it may create a teammate).
 - Profile models: pass `model: "opus" | "sonnet" | "haiku"` and `effort` only where the schema accepts them. Without a profile, omit both. Report actual settings or mark them unverified.
-- Prefer foreground calls for work you must wait on; for background calls, wait for the completion notification and do not poll.
-- Continue an agent with `SendMessage` (older schemas: `Agent` with `resume`) instead of starting a new one. A worker's self-review is never the independent review.
+- Results: where the schema offers foreground calls, use them for work you must wait on. A background agent answers through its completion notification: do not poll, and do not answer the user as if it had finished.
+- Follow-ups, worker fixes and reviewer rechecks alike: `SendMessage` to the same agent (older schemas: `Agent` with `resume`), not a new agent. A worker's self-review is never the independent review.
 
 ## Profiles
 

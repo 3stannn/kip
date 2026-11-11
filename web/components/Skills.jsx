@@ -29,7 +29,7 @@ export function Skills() {
           Build a task prompt <ArrowUpRightIcon />
         </a>
       </div>
-      <div className="min-w-0 py-4" data-reveal="80">
+      <div className="min-w-0 py-4" data-reveal>
         <div className="skills-carousel" aria-label="Kip skills">
           <div className="skills-carousel-track">
             {[false, true].map((duplicate) => (

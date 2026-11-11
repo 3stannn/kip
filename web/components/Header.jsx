@@ -4,7 +4,7 @@ import { ArrowDownIcon, ArrowUpRightIcon } from "./Icons.jsx";
 
 export function Header({ isDocs = false }) {
   return (
-    <header className="mx-auto grid min-h-24 max-w-330 grid-cols-2 items-center gap-x-5 gap-y-4 px-6 py-5 md:grid-cols-[1fr_auto_1fr] md:px-14">
+    <header className="mx-auto grid min-h-20 max-w-330 grid-cols-[auto_1fr] items-center gap-x-5 px-6 py-4 md:min-h-24 md:grid-cols-[1fr_auto_1fr] md:px-14 md:py-5">
       <a
         className="group inline-flex items-center gap-2 justify-self-start text-[26px] font-black tracking-[-1px] text-ink transition-opacity hover:opacity-85"
         href="/"
@@ -16,7 +16,7 @@ export function Header({ isDocs = false }) {
         </span>
       </a>
       <nav
-        className="col-span-2 row-start-2 flex justify-center gap-6 whitespace-nowrap md:col-span-1 md:col-start-2 md:row-start-1 lg:gap-8"
+        className="col-start-2 row-start-1 flex gap-4 justify-self-end whitespace-nowrap md:gap-6 md:justify-self-auto lg:gap-8"
         aria-label="Main navigation"
       >
         <a
@@ -45,14 +45,14 @@ export function Header({ isDocs = false }) {
       </nav>
       {isDocs ? (
         <ScrollLink
-          className="button-primary hidden col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:inline-flex md:col-start-3"
+          className="button-primary hidden col-start-3 row-start-1 justify-self-end px-5 py-3 text-xs md:inline-flex"
           href="#get-started"
         >
           Get started <ArrowDownIcon />
         </ScrollLink>
       ) : (
         <a
-          className="button-primary hidden col-start-2 row-start-1 justify-self-end px-5 py-3 text-xs md:inline-flex md:col-start-3"
+          className="button-primary hidden col-start-3 row-start-1 justify-self-end px-5 py-3 text-xs md:inline-flex"
           href="/docs"
         >
           Get started <ArrowUpRightIcon />

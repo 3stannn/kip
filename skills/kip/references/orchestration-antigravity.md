@@ -5,7 +5,7 @@ This chat is the root. Do not launch an Antigravity CLI, `/boost`, or `/teamwork
 ## Dispatch
 
 - Check that `define_subagent`, `invoke_subagent`, and result/status/message controls are exposed; documentation does not prove they exist in this session.
-- Define transient scoped workers and a distinct read-only reviewer, then invoke them by the returned ID. A definition alone has not run anything.
+- Define transient scoped workers and a distinct read-only reviewer, then invoke them by the returned ID: workers first, the reviewer only after integration. A definition alone has not run anything.
 - Use model tier `pro` or `flash` for a profile and `inherit` without one. Omit effort fields; agent thinking is host-controlled.
 - Use exact runtime tool names in allowlists: file and verification tools for workers, inspection only for the reviewer. Do not request stronger shell policies.
 - Do not use built-in `research` for implementation or `browser` as a general worker. Use `self` only if the handoff explicitly blocks recursive Kip dispatch.

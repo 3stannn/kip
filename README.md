@@ -64,7 +64,7 @@ These are chat purposes, not terminal commands:
 node ~/.claude/skills/kip/scripts/tokens.mjs measure --root .
 ```
 
-Use the installed skill path for your host. Add `--json` to save a baseline, and run `compare --baseline <file>` after changes. Numbers are character-based estimates for comparing runs, not billed tokens. When you ask Kip to save tokens, or use the Budget or Minimum cost profile, it also applies the guide's lean-running rules to the task itself. See the [token efficiency guide](skills/kip/references/token-efficiency.md).
+Use the installed skill path for your host. Add `--json` to save a baseline, and run `compare --baseline <file>` after changes. Numbers are character-based estimates for comparing runs, not billed tokens. Every Kip task also runs lean by default: it searches before reading, points subagents at paths instead of pasting content, and keeps reports short. Asking Kip to save tokens makes it prefer the smaller team on a close call. See the [token efficiency guide](skills/kip/references/token-efficiency.md).
 
 ## Project notes
 

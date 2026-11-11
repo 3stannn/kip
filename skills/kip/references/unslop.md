@@ -1,6 +1,6 @@
 # Unslop existing websites
 
-`unslop` is implementation, scoped to an existing website: find what reads as generated, broken, or untrue, and replace it with something specific to this site. Read [frontend design](frontend-design.md) and its applicable bundled guidance before assigning work; load [frontend engineering](frontend-engineering.md) for React/Next.js, shadcn, or HeroUI changes. Keep one shared design direction. Existing brand and explicit user direction override generic house rules, randomized style suggestions, and bundled ban lists. Do not redesign the site, replace its stack, add a motion framework, or publish it unless asked.
+`unslop` is implementation, scoped to an existing website: find what reads as generated, broken, or untrue, and replace it with something specific to this site. Read [frontend design](frontend-design.md) and its applicable bundled guidance before assigning work: normally its visual-review entry, and the full new-interface guidance only when a section is rebuilt from scratch. Load [frontend engineering](frontend-engineering.md) for React/Next.js, shadcn, or HeroUI changes. Keep one shared design direction. Existing brand and explicit user direction override generic house rules, randomized style suggestions, and bundled ban lists. Do not redesign the site, replace its stack, add a motion framework, or publish it unless asked.
 
 ## What counts as slop
 

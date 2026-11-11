@@ -1,6 +1,6 @@
 # Token efficiency
 
-Two uses: the `trim` purpose, which shrinks a project's agent context, and lean running, which any Kip task applies when the user asks to save tokens.
+The `trim` purpose shrinks a project's agent context. Running a task leanly is not a mode: every Kip task follows the working-lean rules in `SKILL.md` and the handoff limits in the [orchestration contract](orchestration.md).
 
 ## `trim`: shrink agent context
 
@@ -26,14 +26,3 @@ Write boundary: only the agent context files in scope (instruction files, skills
    ```
    Check that local links still resolve and run the project's own checks for these files, if any. List each removed or merged rule with where it now lives, or why it was redundant. The reviewer gets the diff and that list and checks for lost constraints, not style.
 6. **Report** the before and after estimates (total, every-session, on-demand), what moved where, and anything left alone and why. The numbers are character-based estimates for comparison; never present them as billed tokens or claim runtime savings beyond them.
-
-## Lean running (any purpose)
-
-Apply these when the user asks Kip to save tokens, or a Budget or Minimum cost profile is active. They never override verification the purpose requires.
-
-- Pick the smallest tier; reuse existing agents rather than starting new ones; never fork the conversation into a child.
-- Search before reading: grep for symbols, then read line ranges. Do not read whole large files, lockfiles, generated output, or vendored code without a reason.
-- Do not re-read a file you just wrote or edited; the edit result is enough.
-- Keep command output small: quiet or summary reporters, `--silent`, and only the failing tests' output, filtered to the relevant lines. Re-run only the failing scope.
-- Handoffs follow the [orchestration contract](orchestration.md): paths and line ranges plus a short digest, never whole skills or the conversation. Ask for brief reports.
-- Keep chat replies to results, evidence, and limits; skip restating the task or narrating tool calls.

@@ -12,9 +12,9 @@ export function Hero() {
   const containerRef = useRef(null);
   const proximityProps = {
     containerRef,
-    radius: 100,
-    falloff: "linear",
-    smoothing: 0.2,
+    radius: 150,
+    falloff: "gaussian",
+    smoothing: 0.25,
     scale: 1,
     lift: 0,
     idleWave: false,
@@ -44,6 +44,7 @@ export function Hero() {
               label="Big ideas,"
               fromFontVariationSettings="'wght' 700, 'opsz' 9"
               toFontVariationSettings="'wght' 900, 'opsz' 40"
+              lockWidth
             />
           </span>
           <span className="hero-title-serif block">
@@ -68,9 +69,9 @@ export function Hero() {
             Build a prompt <ArrowUpRightIcon />
           </a>
         </div>
-        <p data-intro className="mt-6 text-xs font-bold text-charcoal">
+        <p data-intro className="mt-6 text-sm font-bold text-charcoal">
           For Codex, Claude Code, and Antigravity.
-          <span className="mt-1.5 block font-normal text-muted">
+          <span className="mt-1 block font-normal text-muted">
             No Kip account, API key, or separate runner.
           </span>
         </p>

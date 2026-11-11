@@ -2,9 +2,12 @@
 
 This chat is the root. Use only the session's native collaboration tools and their exposed schemas; never send Claude or Antigravity tool names or model IDs, and never launch another Codex process.
 
-- Spawn scoped workers and a distinct read-only reviewer through the native tool, passing the full handoff; children start with fresh context.
+- Workers: one native spawn call each (for example `spawn_agent`; the session's schema decides the name), with the filled handoff as the message. Start independent workers in the same turn. Children start with fresh context.
+- Read-only roles: use a read-only or explorer agent role where the schema offers one; otherwise state the read-only boundary in the handoff.
+- Reviewer: a separate spawn made after integration, never a message to an existing worker.
 - Pass model and reasoning effort only where the schema accepts them; without a profile, inherit. Report actual settings or mark them unverified.
-- Collect results through the native wait/result control and continue existing agents for follow-ups instead of spawning new ones.
+- Results: use the native wait control on every running worker before integrating, and on the reviewer before reporting.
+- Follow-ups, worker fixes and reviewer rechecks alike: the native send-input control to the same agent, not a new spawn. Close the agents when the task ends.
 
 ## Profiles
 

@@ -37,28 +37,77 @@ const demos = [
     label: "Claude Code / Antigravity · chat",
   },
 ];
+// The first command waits for the hero entrance to bring the terminal in.
+const FIRST_RUN_WAIT = 1;
+const SECONDS_PER_CHARACTER = 0.022;
+const LONGEST_TYPING = 1.1;
+
 export function Terminal({ active }) {
   const demo = demos[active];
   const terminal = useRef(null);
+  const firstRun = useRef(true);
 
+  // The command is typed out, then the response lines step in. Every
+  // character stays in the layout throughout, so nothing reflows.
   useEffect(() => {
+    const root = terminal.current;
+    const wait = firstRun.current ? FIRST_RUN_WAIT : 0.1;
+    firstRun.current = false;
+    if (!root) return undefined;
     const media = gsap.matchMedia();
     media.add("(prefers-reduced-motion: no-preference)", () => {
-      const context = gsap.context(() => {
-        gsap.fromTo(
-          ".terminal-command, .terminal-output p",
-          { opacity: 0.45, y: 18 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.65,
-            stagger: 0.075,
-            ease: "power3.out",
-            clearProps: "opacity,transform",
-          },
-        );
-      }, terminal);
-      return () => context.revert();
+      const prompt = root.querySelector(".terminal-prompt");
+      const characters = [...root.querySelectorAll(".terminal-character")];
+      const lines = [...root.querySelectorAll(".terminal-output p")];
+      const typed = { count: 0 };
+      let shown = 0;
+      let caret = null;
+      const moveCaret = (node) => {
+        caret?.removeAttribute("data-caret");
+        caret = node || null;
+        caret?.setAttribute("data-caret", "");
+      };
+      gsap.set(characters, { opacity: 0 });
+      gsap.set(lines, { opacity: 0, y: 8 });
+      moveCaret(prompt);
+      const timeline = gsap.timeline({ delay: wait });
+      timeline.to(typed, {
+        count: characters.length,
+        duration: Math.min(
+          LONGEST_TYPING,
+          characters.length * SECONDS_PER_CHARACTER,
+        ),
+        ease: "none",
+        onUpdate: () => {
+          const count = Math.round(typed.count);
+          while (shown < count) characters[shown++].style.opacity = "";
+          if (count) moveCaret(characters[count - 1]);
+        },
+        onComplete: () => moveCaret(null),
+      });
+      timeline.to(
+        lines,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.07,
+          ease: "power3.out",
+          clearProps: "opacity,transform",
+        },
+        ">0.12",
+      );
+      // Like the page entrances, skip straight to the end in a tab that is
+      // not being watched, and finish without the ticker if it never ran.
+      if (document.hidden || !document.hasFocus()) timeline.progress(1);
+      const fallback = setTimeout(
+        () => timeline.progress(1),
+        (wait + timeline.duration() + 0.5) * 1000,
+      );
+      return () => {
+        clearTimeout(fallback);
+        moveCaret(null);
+      };
     });
     return () => media.revert();
   }, [active]);
@@ -75,10 +124,14 @@ export function Terminal({ active }) {
           # example — nothing runs on this page
         </p>
         <p className="terminal-command wrap-break-word" key={demo.command}>
-          <span className="text-accent">
+          <span className="terminal-prompt text-accent">
             {active === 0 ? "terminal > " : "you > "}
           </span>
-          {demo.command}
+          {[...demo.command].map((character, index) => (
+            <span className="terminal-character" key={index}>
+              {character}
+            </span>
+          ))}
         </p>
         <div className="mt-4 min-h-36.25" aria-live="polite">
           <div className="terminal-output" key={active}>

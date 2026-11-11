@@ -80,6 +80,10 @@
   select {
     font: inherit;
   }
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
   h2 {
     @apply mt-4 mb-4 text-3xl leading-tight font-black tracking-tight md:text-4xl;
   }
@@ -150,7 +154,7 @@
     @apply rounded-sm no-underline transition hover:text-ink focus-visible:text-ink;
   }
   .nav-link {
-    @apply relative inline-flex items-center px-1.5 py-1 text-xs font-extrabold text-muted no-underline transition-colors duration-150 hover:text-ink md:text-sm;
+    @apply relative inline-flex min-h-11 items-center px-1.5 text-sm font-extrabold text-muted no-underline transition-colors duration-150 hover:text-ink;
   }
   .nav-link[aria-current="page"] {
     @apply text-ink;
@@ -161,6 +165,9 @@
   .section-kicker::before {
     content: "";
     @apply block h-px w-8 bg-subtle;
+    /* Drawn in by the section reveal; full width whenever it is not running. */
+    transform: scaleX(var(--kicker-rule, 1));
+    transform-origin: left center;
   }
   .button-primary {
     @apply inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-ink px-6 py-3 text-sm font-extrabold whitespace-nowrap text-white shadow-xs transition;
@@ -403,8 +410,44 @@
 }
 
 /* A composed motion language: the terminal is the focal point. */
+
+/* Headings rise word by word from behind a mask (see usePageMotion). The
+   mask clips with clip-path, which leaves the line layout untouched. */
+.motion-mask {
+  display: inline-block;
+  clip-path: inset(-0.3em -0.3em -0.1em);
+}
+
 .motion-word {
   display: inline-block;
+  will-change: transform;
+}
+
+/* The caret sits outside the flow, so typing never moves the command. */
+.terminal-command [data-caret] {
+  position: relative;
+}
+
+.terminal-command [data-caret]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 0.55em;
+  height: 1.2em;
+  border-radius: 1px;
+  background: var(--color-accent);
+  transform: translateY(-50%);
+}
+
+.terminal-command .terminal-prompt[data-caret]::after {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .hero-section {
@@ -520,7 +563,8 @@
 
 .hero-demo {
   max-width: 48rem;
-  margin-top: clamp(4.5rem, 8vw, 6.5rem);
+  /* Room for the mascot perched on the terminal, clear of the copy above. */
+  margin-top: 5.75rem;
 }
 
 @media (min-width: 40rem) {
