@@ -2,9 +2,12 @@ import React, { useEffect } from "react";
 import { Header } from "./components/Header.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { FloatingMascot } from "./components/FloatingMascot.jsx";
+import GradientASCII from "./components/GradientASCII.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { DocsPage } from "./pages/DocsPage.jsx";
 import { useSmoothScroll } from "./hooks/useSmoothScroll.js";
+
+const HERO_COLORS = ["#1e3fd8", "#f6f8ff", "#a5d8ff", "#38bdf8"];
 
 export default function App() {
   useSmoothScroll();
@@ -25,10 +28,17 @@ export default function App() {
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
-      <Header isDocs={isDocs} />
-      <main id="main-content" tabIndex={-1}>
-        {isDocs ? <DocsPage /> : <HomePage />}
-      </main>
+      <div className={isDocs ? undefined : "home-layout"}>
+        {!isDocs && (
+          <div className="home-backdrop" aria-hidden="true">
+            <GradientASCII className="home-ascii" colors={HERO_COLORS} />
+          </div>
+        )}
+        <Header isDocs={isDocs} />
+        <main id="main-content" tabIndex={-1}>
+          {isDocs ? <DocsPage /> : <HomePage />}
+        </main>
+      </div>
       <Footer isDocs={isDocs} />
       <FloatingMascot hasHeroMascot={!isDocs} />
     </>

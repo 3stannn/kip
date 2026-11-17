@@ -2,10 +2,7 @@ import React, { useRef, useState } from "react";
 import { Mascot } from "./Mascot.jsx";
 import { Terminal } from "./Terminal.jsx";
 import { ArrowUpRightIcon } from "./Icons.jsx";
-import GradientASCII from "./GradientASCII.jsx";
 import VariableProximity from "./VariableProximity.jsx";
-
-const HERO_COLORS = ["#1e3fd8", "#f6f8ff", "#a5d8ff", "#38bdf8"];
 
 export function Hero() {
   const [demo, setDemo] = useState(1);
@@ -24,15 +21,6 @@ export function Hero() {
 
   return (
     <section className="hero-section relative flex min-w-0 flex-col items-center">
-      <div className="hero-ascii-background" aria-hidden="true">
-        <GradientASCII
-          colors={HERO_COLORS}
-          shape="horizon"
-          characters=" =+xX0S8#@"
-          cellSize={18}
-          density={0.8}
-        />
-      </div>
       <div
         ref={containerRef}
         className="hero-copy relative z-10 w-full min-w-0 text-center"
