@@ -171,6 +171,9 @@ const VariableProximity = forwardRef((props, ref) => {
     const growth = (Number(scale) || 1) - 1;
     const rise = Number(lift) || 0;
     const transformed = growth !== 0 || rise !== 0;
+    const variable = axes.some(
+      ({ fromValue, toValue }) => fromValue !== toValue,
+    );
     const reduced = window.matchMedia?.(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -194,8 +197,8 @@ const VariableProximity = forwardRef((props, ref) => {
       if (!locked) letter.style.marginInline = "";
     });
 
-    // Reduced motion: the text stays at rest and nothing listens or animates.
-    if (reduced) {
+    // Static text needs no pointer listeners or animation frames.
+    if (reduced || (!variable && !tinted && !transformed)) {
       letterRefs.current.forEach((letter, index) => {
         if (!letter) return;
         levels[index] = 0;

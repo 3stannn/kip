@@ -440,14 +440,6 @@
   }
 }
 
-.hero-section {
-  perspective: 1200px;
-}
-
-.hero-terminal-frame {
-  transform-origin: center 65%;
-}
-
 .home-page .fact-item p,
 .home-page .section-shell > div > p:not(.section-kicker),
 .home-page #questions details p,
@@ -484,37 +476,60 @@
 .home-layout {
   position: relative;
   isolation: isolate;
+  background: #000;
 }
 
-.home-backdrop {
+.hero-backdrop {
   position: absolute;
   inset: 0 0 auto;
   z-index: -1;
-  height: 56rem;
+  height: clamp(37rem, 62vw, 58rem);
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    #dce8f8 0%,
-    #edf3fb 45%,
-    var(--color-page) 100%
-  );
+  background: linear-gradient(180deg, #7bc7ed 6rem, #142660 34%, #000 88%);
+  mask-image: linear-gradient(#000 55%, transparent 95%);
 }
 
-.home-ascii {
-  opacity: 0.55;
-  mask-image: linear-gradient(#000 65%, transparent);
+.home-layout > header {
+  --color-muted: var(--color-charcoal);
 }
 
 .hero-section {
   padding: clamp(2.5rem, 5.5vw, 4.5rem) 1.75rem 3.5rem;
+  perspective: 1200px;
+}
+
+.home-content {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(4rem, 9vw, 8rem);
+}
+
+/* Keep focused hero controls above the section boundary in normal flow. */
+.hero-section:has(:focus-visible) {
+  transform: none !important;
 }
 
 .hero-copy {
   max-width: 62rem;
+  color: var(--color-white);
+}
+
+.hero-copy .button-primary,
+.home-layout > header .button-primary {
+  background-color: var(--color-surface);
+  color: var(--color-charcoal);
+}
+
+.hero-copy .button-primary:hover,
+.home-layout > header .button-primary:hover {
+  background-color: var(--color-soft);
+}
+
+.hero-copy .text-link {
+  color: inherit;
 }
 
 .hero-title {
-  color: var(--color-charcoal);
   font-family: var(--font-geist, "Geist", system-ui, sans-serif);
   font-size: clamp(2.75rem, 9.5vw, 6.75rem);
   line-height: 0.98;
@@ -537,7 +552,6 @@
   font-size: 1.06em;
   line-height: 1;
   letter-spacing: -0.045em;
-  color: var(--color-charcoal);
 }
 
 .hero-title > span:first-child {
@@ -552,8 +566,13 @@
 
 .hero-demo {
   max-width: 48rem;
-  /* Room for the mascot perched on the terminal, clear of the copy above. */
-  margin-top: 5.75rem;
+  margin-top: 1.5rem;
+}
+
+.hero-buddy .mascot {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
 }
 
 @media (min-width: 40rem) {
@@ -563,22 +582,20 @@
   }
 
   .hero-demo {
-    margin-top: clamp(5.5rem, 8vw, 7.5rem);
+    margin-top: clamp(2rem, 3vw, 3rem);
   }
 }
 
 .hero-terminal-frame {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(215, 230, 250, 0.45) 100%
+  transform-origin: center 65%;
+  background: color-mix(
+    in srgb,
+    var(--color-terminal-raised),
+    var(--color-accent) 12%
   );
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 24px 50px -12px rgba(20, 32, 60, 0.12),
-    0 0 0 1px rgba(109, 147, 219, 0.18);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid
+    color-mix(in srgb, var(--color-terminal), var(--color-accent) 45%);
+  box-shadow: 0 24px 50px -12px rgb(0 0 0 / 55%);
 }
 
 .hero-terminal-frame .terminal-card {
@@ -600,7 +617,7 @@
 .demo-switcher {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 16rem;
+  width: min(16rem, calc(100% - 5.25rem));
   gap: 0;
   isolation: isolate;
   border-color: var(--color-line);
@@ -705,10 +722,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-title-serif .variable-proximity [data-word] > span {
-    transform: none !important;
-  }
-
   .skills-carousel {
     overflow: visible;
     mask-image: none;

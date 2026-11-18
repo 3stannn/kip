@@ -51,9 +51,11 @@
         Focused work in your coding chat. For Codex, Claude Code, and
         Antigravity.
       </p>
-      <p>Install Kip with Git and Node.js 22+, then restart your host:</p>
+      <p>Install Kip with Git 2.35+ and Node.js 22+, then restart your host:</p>
       <pre style="white-space: pre-wrap; overflow-wrap: anywhere">
-git clone https://github.com/3stannn/kip.git
+git clone --filter=blob:none --no-checkout https://github.com/3stannn/kip.git kip
+git -C kip show HEAD:bin/kip-install.paths | git -C kip sparse-checkout set --no-cone --stdin
+git -C kip checkout
 cd kip
 node bin/kip.js install</pre>
       <p>

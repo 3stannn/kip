@@ -31,26 +31,28 @@ export function HomePage() {
   return (
     <div className="home-page" ref={page}>
       <Hero />
-      <div className="site-shell">
-        <section
-          aria-label="How Kip works"
-          className="facts-grid mx-6 grid border-y border-line sm:grid-cols-2 md:mx-14 xl:grid-cols-4"
-        >
-          {highlights.map(({ label, text }, index) => (
-            <div className="fact-item" key={label} data-reveal>
-              <span className="mb-3 block font-mono text-xs text-subtle">
-                0{index + 1}
-              </span>
-              <h2 className="m-0 text-sm font-extrabold tracking-normal">
-                {label}
-              </h2>
-              <p className="mt-2 text-xs leading-6 text-muted">{text}</p>
-            </div>
-          ))}
-        </section>
-        <Skills />
-        <FAQ />
-        <Closing />
+      <div className="home-content bg-page">
+        <div className="site-shell">
+          <section
+            aria-label="How Kip works"
+            className="facts-grid mx-6 grid border-y border-line sm:grid-cols-2 md:mx-14 xl:grid-cols-4"
+          >
+            {highlights.map(({ label, text }, index) => (
+              <div className="fact-item" key={label} data-reveal>
+                <span className="mb-3 block font-mono text-xs text-subtle">
+                  0{index + 1}
+                </span>
+                <h2 className="m-0 text-sm font-extrabold tracking-normal">
+                  {label}
+                </h2>
+                <p className="mt-2 text-xs leading-6 text-muted">{text}</p>
+              </div>
+            ))}
+          </section>
+          <Skills />
+          <FAQ />
+          <Closing />
+        </div>
       </div>
     </div>
   );

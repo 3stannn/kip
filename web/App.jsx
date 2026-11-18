@@ -7,8 +7,6 @@ import { HomePage } from "./pages/HomePage.jsx";
 import { DocsPage } from "./pages/DocsPage.jsx";
 import { useSmoothScroll } from "./hooks/useSmoothScroll.js";
 
-const HERO_COLORS = ["#1e3fd8", "#f6f8ff", "#a5d8ff", "#38bdf8"];
-
 export default function App() {
   useSmoothScroll();
   const isDocs = /^\/docs\/?$/.test(window.location.pathname);
@@ -30,8 +28,8 @@ export default function App() {
       </a>
       <div className={isDocs ? undefined : "home-layout"}>
         {!isDocs && (
-          <div className="home-backdrop" aria-hidden="true">
-            <GradientASCII className="home-ascii" colors={HERO_COLORS} />
+          <div className="hero-backdrop" aria-hidden="true">
+            <GradientASCII intro={false} />
           </div>
         )}
         <Header isDocs={isDocs} />

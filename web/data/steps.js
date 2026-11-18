@@ -1,10 +1,15 @@
 export const steps = [
   {
-    title: "Clone the source.",
+    title: "Download Kip.",
     label: "Clone",
-    text: "Clone Kip from GitHub. Git and Node.js 22+ are all the installer needs.",
-    command: "git clone https://github.com/3stannn/kip.git\ncd kip",
-    note: "No npm dependencies, Kip account, or API key needed.",
+    text: "Download the CLI and bundled skills from GitHub. The website files are skipped.",
+    command: [
+      "git clone --filter=blob:none --no-checkout https://github.com/3stannn/kip.git kip",
+      "git -C kip show HEAD:bin/kip-install.paths | git -C kip sparse-checkout set --no-cone --stdin",
+      "git -C kip checkout",
+      "cd kip",
+    ].join("\n"),
+    note: "Requires Git 2.35+ and Node.js 22+. No npm dependencies, Kip account, or API key needed.",
   },
   {
     title: "Install the skill.",

@@ -52,7 +52,7 @@ export function FAQ() {
           ],
           [
             "How do I install or update?",
-            "Clone https://github.com/3stannn/kip.git and run node bin/kip.js install. Git and Node.js 22+ are needed. To update, submit $kip update in Codex or /kip update in Claude Code or Antigravity, or run node bin/kip.js update from your clone. The updater pulls upstream changes and backs up existing skills before refreshing them. Older installs need a one-time git pull --ff-only and terminal update. Restart your host afterward.",
+            "Follow the install guide to download Kip’s CLI and skills, then run node bin/kip.js install. Git 2.35+ and Node.js 22+ are needed. To update, submit $kip update in Codex or /kip update in Claude Code or Antigravity, or run node bin/kip.js update from your clone. The updater pulls upstream changes and backs up existing skills before refreshing them. Older installs need a one-time git pull --ff-only and terminal update. Restart your host afterward.",
           ],
         ].map(([q, a]) => (
           <details key={q} data-reveal>

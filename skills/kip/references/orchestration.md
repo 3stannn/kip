@@ -14,6 +14,8 @@ Naming Kip on a task of these tiers is the user's explicit request for subagents
 
 The reviewer is always a new agent that did none of the work: never a continued worker, never the root. Reviewers do not edit. Workers never write notes. Read-only roles use the host's read-only or research agent type where it fits the job. `audit` takes its roles, stages, and report formats from its adapter.
 
+Use [subagent role briefs](subagents.md) to choose a focus for each worker and for the independent reviewer. Specialist roles share the existing slots. The [squad workflow](squads.md) describes how build, review, QA, and requested release stages fit together.
+
 ## Preflight
 
 Use only the current host's adapter and its native delegation tools; the running tool schema decides valid arguments. Confirm from that schema, without test calls, that you can start a worker, collect its result, continue it, and run a separate reviewer. Resolve the profile against the adapter's table and disclose unsupported model/effort controls in the dispatch update. Never launch a vendor CLI, write persistent agent files, or change host settings.
@@ -24,7 +26,7 @@ Use only the current host's adapter and its native delegation tools; the running
 2. Start the workers: independent ones in parallel in one turn, shared-file or dependent edits one after another. While a worker owns files, the root does not edit them.
 3. Wait for every worker's result through the host's completion signal, not polling. Never write, predict, or summarize a result that has not arrived.
 4. Inspect returned work through the diff (summary first, then the hunks that matter) and the reported evidence; do not re-read whole changed files. Integrate, making only small integration fixes and never redoing the task, then run verification.
-5. Only now start the reviewer, on the integrated and verified result: never alongside the workers, never before there is something to review.
+5. Only now start the reviewer on the integrated and verified result. Give it the requirements, current change scope, relevant check evidence, and previous findings when rechecking. Keep builder conclusions out of the review handoff.
 6. The root fixes trivial findings itself and sends the rest to the worker that owns those files, as a follow-up to that same agent. Send the fixes back to the same reviewer; recheck only what changed, in one round unless a blocking finding remains.
 7. Report done only after the reviewer has answered and every blocking finding is fixed or listed as open. Name any role that did not run, and why.
 

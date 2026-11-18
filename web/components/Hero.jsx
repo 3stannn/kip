@@ -25,7 +25,7 @@ export function Hero() {
         ref={containerRef}
         className="hero-copy relative z-10 w-full min-w-0 text-center"
       >
-        <h1 data-intro className="hero-title m-0 font-bold text-charcoal">
+        <h1 data-intro className="hero-title m-0 font-bold">
           <span className="block">
             <VariableProximity
               {...proximityProps}
@@ -41,8 +41,6 @@ export function Hero() {
               label="Little commands."
               fromFontVariationSettings="'wght' 400, 'opsz' 9"
               toFontVariationSettings="'wght' 400, 'opsz' 9"
-              scale={1.08}
-              lift={0.045}
             />
           </span>
         </h1>
@@ -57,9 +55,9 @@ export function Hero() {
             Build a prompt <ArrowUpRightIcon />
           </a>
         </div>
-        <p data-intro className="mt-6 text-sm font-bold text-charcoal">
+        <p data-intro className="mt-6 text-sm font-bold">
           For Codex, Claude Code, and Antigravity.
-          <span className="mt-1 block font-normal text-muted">
+          <span className="mt-1 block font-normal text-line">
             No Kip account, API key, or separate runner.
           </span>
         </p>
@@ -68,17 +66,8 @@ export function Hero() {
         data-reveal
         className="hero-demo relative z-10 flex w-full min-w-0 flex-col items-center gap-6"
       >
-        <div className="hero-terminal-frame relative z-10 w-full rounded-[1.75rem] p-2.5 sm:p-4">
-          <div
-            className="hero-buddy absolute -top-20 right-5 z-20 w-24 sm:-top-24 sm:right-10"
-            data-hero-mascot
-          >
-            <Mascot />
-          </div>
-          <Terminal active={demo} />
-        </div>
         <div
-          className="segmented-control demo-switcher relative z-20"
+          className="segmented-control demo-switcher relative z-20 self-start sm:self-center"
           aria-label="Example Kip workflow"
           role="group"
           style={{ "--demo-index": demo }}
@@ -92,6 +81,15 @@ export function Hero() {
               {label}
             </button>
           ))}
+        </div>
+        <div className="hero-terminal-frame relative z-10 w-full rounded-3xl p-2 sm:rounded-[1.75rem] sm:p-3">
+          <div
+            className="hero-buddy absolute -top-15 right-2.5 z-20 w-16 sm:-top-24 sm:right-4 sm:w-28 lg:right-6"
+            data-hero-mascot
+          >
+            <Mascot />
+          </div>
+          <Terminal active={demo} />
         </div>
       </div>
     </section>

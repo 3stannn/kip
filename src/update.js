@@ -45,7 +45,8 @@ export async function updateSkills(host = "all", options = {}) {
     "@{upstream}",
   ]);
   const before = await git(["rev-parse", "HEAD"]);
-  await git(["pull", "--ff-only"]);
+  // A diff summary would fetch changed blobs outside the sparse checkout.
+  await git(["pull", "--ff-only", "--no-stat"]);
   const after = await git(["rev-parse", "HEAD"]);
 
   // Load the newly pulled installer rather than a pre-update cached module.

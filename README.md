@@ -6,10 +6,12 @@ A coding workflow for Codex, Claude Code, and Antigravity. Kip sizes a team to e
 
 ## Install
 
-Requires Git and Node.js 22+. No npm dependencies are needed for the skill.
+Requires Git 2.35+ and Node.js 22+. The partial clone downloads the CLI and bundled skills and skips the website source and assets. No npm dependencies are needed for the skill.
 
 ```sh
-git clone https://github.com/3stannn/kip.git
+git clone --filter=blob:none --no-checkout https://github.com/3stannn/kip.git kip
+git -C kip show HEAD:bin/kip-install.paths | git -C kip sparse-checkout set --no-cone --stdin
+git -C kip checkout
 cd kip
 node bin/kip.js install
 ```
@@ -51,6 +53,30 @@ These are chat purposes, not terminal commands:
 | `trim` | Shrink the agent context your chats load (instruction files, skills, agent and command definitions) without dropping rules. Edits only those files and reports measured before/after token estimates. |
 
 `audit` does not apply fixes or probe live services. Runtime checks require the upstream workflow's execution isolation; unavailable checks are disclosed as validation gaps. Its staged delegation supports fresh independent validators within host capacity. Audit scope and available capabilities determine coverage, so a report is not a guarantee that a project is secure. See [Kip's security-audit adapter](skills/kip/references/security-audit.md).
+
+### Engineering workflows
+
+Kip can develop a change test-first, build a reusable test environment, or run a small experiment to resolve a technical question. Ask for the workflow directly within a `build` or `fix` task.
+
+```text
+$kip fix Use TDD to prevent duplicate submissions
+$kip build Create an isolated test recipe for local browser smoke tests
+$kip build Spike whether the installed parser accepts our sample file and report the evidence
+```
+
+Kip uses your project's test tools and can save a verified recipe in `.kip/test-environment.md` when the task calls for a reusable recipe. A `plan` can specify the experiment and what would prove it. The guides ship with Kip across all supported hosts. See [test-driven development](skills/kip/references/engineering/tdd.md), [test environments](skills/kip/references/engineering/test-environment.md), [feasibility spikes](skills/kip/references/engineering/spike.md), and [sources and license](skills/kip/references/engineering/SOURCE.md).
+
+### Squads and subagents
+
+Kip can assign specialist work inside its existing team sizes. Workers can investigate, plan, implement, or verify a change. The independent reviewer checks correctness, edge cases, complexity, and verification evidence. When you request a QA or release step, the coordinating chat handles the handoff and any authorized PR or merge action.
+
+```text
+Use Kip to build the fix and prepare a manual QA handoff.
+Use Kip to open a draft PR for the reviewed branch.
+Use Kip to merge PR #123 once its required checks pass.
+```
+
+The [squad workflow](skills/kip/references/squads.md) and [subagent role briefs](skills/kip/references/subagents.md) ship with Kip and run through the current host's collaboration tools. [Source attribution](skills/kip/references/squad-sources.md).
 
 ### Unslop a website
 
@@ -121,21 +147,6 @@ Use a disposable project. Record the host/version, supported controls, returned 
 | Plan/review/ask | Stays read-only; no recursive teams. |
 | Unsupported setting | Mismatch is disclosed; inherited settings are used. |
 | Missing delegation | A concrete blocker is reported, with no second runner or invented agents. |
-
-## Website development
-
-Kip bundles HeroUI's React, Native, and v2-to-v3 migration skills with their documentation helpers and Apache-2.0 licenses. HeroUI tasks load only the relevant guide and preserve the project's component system and installed version. The [pinned source](skills/kip/vendor/heroui-react/SOURCE.md) ships with every host installation; documentation helpers need network access, and runtime packages are installed only when the task calls for them.
-
-Kip bundles GreenSock's eight official GSAP skills for core animation, timelines, ScrollTrigger, plugins, utilities, React, performance, and other frameworks. Animation tasks load only relevant topics alongside Kip's design guidance. Existing animation libraries and project dependencies stay authoritative. The [pinned source and MIT license](skills/kip/vendor/gsap-skills/SOURCE.md) ship with every host installation; adding the skills does not install the GSAP runtime into your website.
-
-```sh
-npm install
-npm run dev
-```
-
-Use `npm run build` for a production build and `npm run preview` to preview it. Website dependencies are separate from the skill installation.
-
-Run `npm test` for Kip's tests. `npm run test:audit` separately runs the unchanged upstream security-audit validator suite. Its CLI requires OS file-open protections unavailable in Windows Node; those upstream CLI tests fail there. Kip preserves that fail-closed behavior: full audits on an unsupported host report incomplete validation rather than bypassing the protections. Source inspection and in-memory schema checks do not establish full audit validation.
 
 ## References and license
 

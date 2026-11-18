@@ -242,6 +242,25 @@ export function usePageMotion(page) {
           : null;
         pending.forEach((_, element) => observer.observe(element));
 
+        const hero = root.querySelector(".hero-section");
+        const content = root.querySelector(".home-content");
+        if (hero && content)
+          gsap.fromTo(
+            hero,
+            { y: 0 },
+            {
+              y: () => Math.min(window.innerHeight * 0.45, 360),
+              ease: "none",
+              scrollTrigger: {
+                trigger: content,
+                start: "clamp(top bottom)",
+                end: "top top",
+                scrub: true,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
+
         const frame = root.querySelector(".hero-terminal-frame");
         if (frame && demo)
           gsap.fromTo(

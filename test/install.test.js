@@ -6,11 +6,27 @@ import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
-import { installSkills, inspectSkills, destinations } from "../src/install.js";
+import {
+  destinations,
+  inspectSkills,
+  installSkills,
+  refreshSkills,
+} from "../src/install.js";
 const execute = promisify(execFile);
 const cli = fileURLToPath(new URL("../bin/kip.js", import.meta.url));
 const gsapBundle = fileURLToPath(
   new URL("../skills/kip/vendor/gsap-skills/", import.meta.url),
+);
+const engineeringFiles = [
+  "LICENSE",
+  "SOURCE.md",
+  "spike.md",
+  "tdd.md",
+  "test-environment.md",
+  "writing-good-tests.md",
+].map((file) => `references/engineering/${file}`);
+const squadFiles = ["squad-sources.md", "squads.md", "subagents.md"].map(
+  (file) => `references/${file}`,
 );
 const gsapSkills = [
   "gsap-core",
@@ -136,6 +152,7 @@ test("installs self-contained skills for every host without external dependencie
     assert.deepEqual(
       (await fs.readdir(path.join(target, "references"))).sort(),
       [
+        "engineering",
         "frontend-design.md",
         "frontend-engineering.md",
         "notes.md",
@@ -145,11 +162,20 @@ test("installs self-contained skills for every host without external dependencie
         "orchestration.md",
         "profiles.md",
         "security-audit.md",
+        "squad-sources.md",
+        "squads.md",
+        "subagents.md",
         "token-efficiency.md",
         "unslop.md",
         "update.md",
       ],
     );
+    for (const file of [...engineeringFiles, ...squadFiles]) {
+      assert.deepEqual(
+        await fs.readFile(path.join(target, file)),
+        await fs.readFile(new URL(`../skills/kip/${file}`, import.meta.url)),
+      );
+    }
     await assertLocalMarkdownLinks(target);
     const { stdout } = await execute(
       process.execPath,
@@ -267,6 +293,22 @@ test("doctor detects a missing profile catalog in an installed skill", async (t)
   const [inspection] = await inspectSkills("claude", options);
   assert.equal(inspection.ready, false);
   assert.deepEqual(inspection.missing, ["references/profiles.md"]);
+});
+
+test("doctor detects missing engineering and squad guides and refresh restores them", async (t) => {
+  const options = await fixture(t);
+  const [target] = await installSkills("claude", options);
+  const guideFiles = [...engineeringFiles, ...squadFiles];
+  for (const file of guideFiles) {
+    await fs.rm(path.join(target, file), { force: true });
+  }
+  const [inspection] = await inspectSkills("claude", options);
+  assert.equal(inspection.ready, false);
+  assert.deepEqual([...inspection.missing].sort(), guideFiles.sort());
+
+  await refreshSkills("claude", options);
+  const [refreshed] = await inspectSkills("claude", options);
+  assert.equal(refreshed.ready, true);
 });
 
 test("audit bundle is pinned, complete, and doctor detects drift", async (t) => {
