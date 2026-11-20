@@ -6,12 +6,10 @@ A coding workflow for Codex, Claude Code, and Antigravity. Kip sizes a team to e
 
 ## Install
 
-Requires Git 2.35+ and Node.js 22+. The partial clone downloads the CLI and bundled skills and skips the website source and assets. No npm dependencies are needed for the skill.
+Requires Git and Node.js 22+. No npm dependencies are needed for the skill.
 
 ```sh
-git clone --filter=blob:none --no-checkout https://github.com/3stannn/kip.git kip
-git -C kip show HEAD:bin/kip-install.paths | git -C kip sparse-checkout set --no-cone --stdin
-git -C kip checkout
+git clone https://github.com/3stannn/kip.git
 cd kip
 node bin/kip.js install
 ```

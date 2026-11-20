@@ -50,13 +50,7 @@ async function fixture(t) {
   await fs.mkdir(sourceRoot);
   await git(root, "init", "--bare", remote);
   await git(sourceRoot, "init", "-b", "main");
-  for (const name of [
-    "bin",
-    "src",
-    "skills",
-    "package.json",
-    ".gitattributes",
-  ]) {
+  for (const name of ["bin", "src", "skills", "package.json"]) {
     await fs.cp(
       new URL(`../${name}`, import.meta.url),
       path.join(sourceRoot, name),
@@ -93,7 +87,7 @@ async function fixture(t) {
     await git(publisher, "commit", "-m", "Publish update");
     await git(publisher, "push");
   }
-  return { root, remote, options, targets, installer, publisher, publish };
+  return { root, options, targets, installer, publisher, publish };
 }
 
 test("pulls upstream, backs up custom edits, updates only the selected host", async (t) => {
@@ -317,89 +311,29 @@ test("updater refuses unrelated directories and respects update locks", async (t
   await assert.rejects(refreshSkills("claude", options), /No installed Kip/);
 });
 
-test("the sparse clone installs and updates Kip without downloading website files", async (t) => {
-  const { root, remote, publisher, publish } = await fixture(t);
-  const websiteFiles = [
-    ".claude/launch.json",
-    "index.html",
-    "og.html",
-    "package-lock.json",
-    "public/favicon.svg",
-    "scripts/render-og.mjs",
-    "vercel.json",
-    "vite.config.js",
-    "web/App.jsx",
-  ];
-  for (const file of websiteFiles) {
-    const target = path.join(publisher, file);
-    await fs.mkdir(path.dirname(target), { recursive: true });
-    await fs.writeFile(target, `Website fixture for ${file}\n`);
-  }
-  await publish("web/App.jsx", "Initial website\n");
-  await git(remote, "config", "uploadpack.allowFilter", "true");
-  const sourceRoot = path.join(root, "sparse clone with spaces");
-  await git(
-    root,
-    "clone",
-    "--filter=blob:none",
-    "--no-checkout",
-    "--branch",
-    "main",
-    pathToFileURL(remote).href,
-    sourceRoot,
-  );
-  const patterns = await git(sourceRoot, "show", "HEAD:bin/kip-install.paths");
-  const sparseCheckout = execute(
-    "git",
-    ["sparse-checkout", "set", "--no-cone", "--stdin"],
-    { cwd: sourceRoot },
-  );
-  sparseCheckout.child.stdin.end(`${patterns}\n`);
-  await sparseCheckout;
-  await git(sourceRoot, "checkout");
-
-  const home = path.join(root, "sparse-home");
-  const options = { home, codexHome: path.join(home, ".codex") };
-  await fs.mkdir(home);
-  const cli = (command) =>
-    execute(
-      process.execPath,
-      [path.join(sourceRoot, "bin/kip.js"), command, "--host", "codex"],
-      {
-        cwd: home,
-        env: {
-          ...process.env,
-          HOME: home,
-          USERPROFILE: home,
-          CODEX_HOME: options.codexHome,
-        },
-      },
-    );
-  await cli("install");
-  const [target] = destinations("codex", options);
-  const metadata = await fs.readFile(path.join(target, "installation.json"));
-  assert.equal(JSON.parse(metadata).sourceRoot, sourceRoot);
+test("CLI update runs from a clone with spaces and reports backups", async (t) => {
+  const { options, publish } = await fixture(t);
   await publish();
-  await publish("web/App.jsx", "Updated website\n");
-  const { stdout } = await cli("update");
+  const { stdout } = await execute(
+    process.execPath,
+    [path.join(options.sourceRoot, "bin/kip.js"), "update", "--host", "codex"],
+    {
+      cwd: options.home,
+      env: {
+        ...process.env,
+        HOME: options.home,
+        USERPROFILE: options.home,
+        CODEX_HOME: options.codexHome,
+      },
+    },
+  );
   assert.match(stdout, /Pulled/);
   assert.match(stdout, /Backup:/);
   assert.match(stdout, /Restart your host/);
-  await cli("doctor");
-  assert.match(
-    await fs.readFile(path.join(target, "SKILL.md"), "utf8"),
-    /Updated fixture/,
-  );
-  const missingObjects = new Set(
-    (
-      await git(sourceRoot, "rev-list", "--objects", "--all", "--missing=print")
-    ).split(/\r?\n/),
-  );
-  for (const file of websiteFiles) {
-    await assert.rejects(fs.stat(path.join(sourceRoot, file)), {
-      code: "ENOENT",
-    });
-    const blob = await git(sourceRoot, "rev-parse", `HEAD:${file}`);
-    assert.ok(missingObjects.has(`?${blob}`), `${file} blob was downloaded`);
+  for (const target of destinations("codex", options)) {
+    assert.match(
+      await fs.readFile(path.join(target, "SKILL.md"), "utf8"),
+      /Updated fixture/,
+    );
   }
 });

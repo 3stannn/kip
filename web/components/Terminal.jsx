@@ -4,14 +4,15 @@ import { WindowChrome } from "./WindowChrome.jsx";
 
 const demos = [
   {
-    command: "node bin/kip.js install",
+    command:
+      "git clone https://github.com/3stannn/kip.git && cd kip && node bin/kip.js install",
     output: [
       "Installer scope",
       "Codex · Claude Code · Antigravity",
       "",
       "Restart the host, then open your project.",
     ],
-    label: "Terminal · Kip checkout",
+    label: "Terminal · local installer",
   },
   {
     command: "$kip plan Build an accessible React login",
