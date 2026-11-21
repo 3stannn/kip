@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Header } from "./components/Header.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { FloatingMascot } from "./components/FloatingMascot.jsx";
-import GradientASCII from "./components/GradientASCII.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { DocsPage } from "./pages/DocsPage.jsx";
 import { useSmoothScroll } from "./hooks/useSmoothScroll.js";
@@ -27,11 +26,6 @@ export default function App() {
         Skip to content
       </a>
       <div className={isDocs ? undefined : "home-layout"}>
-        {!isDocs && (
-          <div className="hero-backdrop" aria-hidden="true">
-            <GradientASCII intro={false} />
-          </div>
-        )}
         <Header isDocs={isDocs} />
         <main id="main-content" tabIndex={-1}>
           {isDocs ? <DocsPage /> : <HomePage />}

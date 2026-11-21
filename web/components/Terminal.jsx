@@ -37,23 +37,19 @@ const demos = [
     label: "Claude Code / Antigravity · chat",
   },
 ];
-// The first command waits for the hero entrance to bring the terminal in.
-const FIRST_RUN_WAIT = 1;
 const SECONDS_PER_CHARACTER = 0.022;
 const LONGEST_TYPING = 1.1;
 
 export function Terminal({ active }) {
   const demo = demos[active];
-  const terminal = useRef(null);
-  const firstRun = useRef(true);
+  const terminalBody = useRef(null);
 
   // The command is typed out, then the response lines step in. Every
   // character stays in the layout throughout, so nothing reflows.
   useEffect(() => {
-    const root = terminal.current;
-    const wait = firstRun.current ? FIRST_RUN_WAIT : 0.1;
-    firstRun.current = false;
+    const root = terminalBody.current;
     if (!root) return undefined;
+    root.scrollTop = 0;
     const media = gsap.matchMedia();
     media.add("(prefers-reduced-motion: no-preference)", () => {
       const prompt = root.querySelector(".terminal-prompt");
@@ -70,7 +66,7 @@ export function Terminal({ active }) {
       gsap.set(characters, { opacity: 0 });
       gsap.set(lines, { opacity: 0, y: 8 });
       moveCaret(prompt);
-      const timeline = gsap.timeline({ delay: wait });
+      const timeline = gsap.timeline({ delay: 0.1 });
       timeline.to(typed, {
         count: characters.length,
         duration: Math.min(
@@ -102,7 +98,7 @@ export function Terminal({ active }) {
       if (document.hidden || !document.hasFocus()) timeline.progress(1);
       const fallback = setTimeout(
         () => timeline.progress(1),
-        (wait + timeline.duration() + 0.5) * 1000,
+        (timeline.totalDuration() + timeline.delay() + 0.5) * 1000,
       );
       return () => {
         clearTimeout(fallback);
@@ -113,14 +109,16 @@ export function Terminal({ active }) {
   }, [active]);
 
   return (
-    <div
-      ref={terminal}
-      data-ui
-      className="terminal-card relative z-10 w-full max-w-117.5"
-    >
-      <WindowChrome title={demo.label} />
-      <div className="min-h-71.25 px-4 py-5 font-mono text-xs leading-6 sm:px-5">
-        <p className="mb-3 text-terminal-muted">
+    <div data-ui className="terminal-card relative z-10 w-full text-xs">
+      <WindowChrome title={demo.label} compact />
+      <div
+        ref={terminalBody}
+        className="terminal-body min-h-[17.333em] px-[1.333em] py-[1em] font-mono leading-[1.5]"
+        role="region"
+        aria-label="Terminal example output"
+        tabIndex={0}
+      >
+        <p className="mb-[1em] text-terminal-muted">
           # example — nothing runs on this page
         </p>
         <p className="terminal-command wrap-break-word" key={demo.command}>
@@ -133,7 +131,7 @@ export function Terminal({ active }) {
             </span>
           ))}
         </p>
-        <div className="mt-4 min-h-36.25" aria-live="polite">
+        <div className="mt-[1.333em] min-h-[8.667em]" aria-live="polite">
           <div className="terminal-output" key={active}>
             {demo.output.map((line, i) => (
               <p key={i}>{line || "\u00a0"}</p>
@@ -141,11 +139,11 @@ export function Terminal({ active }) {
           </div>
         </div>
       </div>
-      <div className="flex justify-between gap-2 border-t border-white/10 bg-terminal-raised px-4 py-2 font-mono text-[10px] text-terminal-subtle">
-        <span>
+      <div className="flex justify-between gap-[0.8em] border-t border-white/10 bg-terminal-raised px-[1em] py-[0.2em] font-mono text-[0.833em] leading-[1.2] text-terminal-subtle">
+        <span className="truncate">
           {active === 0 ? "Local installer" : "Current model and tools"}
         </span>
-        <span>No Kip sign-in</span>
+        <span className="shrink-0">No Kip sign-in</span>
       </div>
     </div>
   );

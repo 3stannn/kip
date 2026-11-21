@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { Hero } from "../components/Hero.jsx";
+import { WorkflowDemo } from "../components/WorkflowDemo.jsx";
 import { Skills } from "../components/Skills.jsx";
 import { FAQ } from "../components/FAQ.jsx";
 import { Closing } from "../components/Closing.jsx";
@@ -31,8 +32,11 @@ export function HomePage() {
   return (
     <div className="home-page" ref={page}>
       <Hero />
-      <div className="home-content bg-page">
-        <div className="site-shell">
+      <div className="bg-page">
+        <div className="md:px-14">
+          <WorkflowDemo />
+        </div>
+        <div className="home-content site-shell">
           <section
             aria-label="How Kip works"
             className="facts-grid mx-6 grid border-y border-line sm:grid-cols-2 md:mx-14 xl:grid-cols-4"

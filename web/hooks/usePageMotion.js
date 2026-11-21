@@ -85,9 +85,8 @@ export function usePageMotion(page) {
         };
 
         // Hero: headline words rise out of their line, then the supporting
-        // copy and the terminal follow.
+        // copy and actions follow.
         const title = root.querySelector(".hero-title");
-        const demo = root.querySelector(".hero-demo");
         if (title) {
           const lines = [...title.children];
           const titleWords = [...title.querySelectorAll("[data-word]")];
@@ -108,29 +107,13 @@ export function usePageMotion(page) {
             { yPercent: 0, ...RISE, duration: 1.15, stagger: 0.09 },
             0,
           );
-          const introParts = [...root.querySelectorAll("[data-intro]")].filter(
-            (part) => part !== title,
-          );
+          const introParts = root.querySelectorAll("[data-intro]");
           if (introParts.length)
             intro.fromTo(
               introParts,
               { y: 18, opacity: 0 },
               { y: 0, opacity: 1, ...FADE, stagger: 0.1 },
               0.45,
-            );
-          if (demo)
-            intro.fromTo(
-              demo,
-              { y: 56, opacity: 0, scale: 0.96, rotationX: 6 },
-              {
-                y: 0,
-                opacity: 1,
-                scale: 1,
-                rotationX: 0,
-                duration: 1.3,
-                ease: "power3.out",
-              },
-              0.4,
             );
           const mascot = root.querySelector("[data-hero-mascot]");
           if (mascot)
@@ -170,7 +153,6 @@ export function usePageMotion(page) {
         const pending = new Map();
         if ("IntersectionObserver" in window) {
           root.querySelectorAll("[data-reveal]").forEach((element) => {
-            if (element === demo || demo?.contains(element)) return;
             const heading = element.matches("h1, h2")
               ? element
               : element.querySelector("h1, h2");
@@ -242,44 +224,6 @@ export function usePageMotion(page) {
           : null;
         pending.forEach((_, element) => observer.observe(element));
 
-        const hero = root.querySelector(".hero-section");
-        const content = root.querySelector(".home-content");
-        if (hero && content)
-          gsap.fromTo(
-            hero,
-            { y: 0 },
-            {
-              y: () => Math.min(window.innerHeight * 0.45, 360),
-              ease: "none",
-              scrollTrigger: {
-                trigger: content,
-                start: "clamp(top bottom)",
-                end: "top top",
-                scrub: true,
-                invalidateOnRefresh: true,
-              },
-            },
-          );
-
-        const frame = root.querySelector(".hero-terminal-frame");
-        if (frame && demo)
-          gsap.fromTo(
-            frame,
-            { y: 0, scale: 1, rotationX: 0 },
-            {
-              y: () => (window.innerWidth >= 768 ? -65 : -32),
-              scale: 0.975,
-              rotationX: 2,
-              ease: "none",
-              scrollTrigger: {
-                trigger: demo,
-                start: "top 25%",
-                end: "bottom top",
-                scrub: 0.8,
-                invalidateOnRefresh: true,
-              },
-            },
-          );
         const closing = root.querySelector(".closing-section");
         if (closing)
           gsap.fromTo(
@@ -380,6 +324,32 @@ export function usePageMotion(page) {
           carousel?.removeEventListener("focusout", onFocusOut);
           cleanups.forEach((cleanup) => cleanup());
         };
+      },
+      root,
+    );
+    media.add(
+      "(min-width: 48rem) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const demo = root.querySelector(".hero-demo");
+        const frame = demo?.querySelector(".hero-terminal-frame");
+        if (!frame) return;
+        gsap.fromTo(
+          frame,
+          { y: 0, scale: 1, rotationX: 0 },
+          {
+            y: -65,
+            scale: 0.975,
+            rotationX: 2,
+            ease: "none",
+            scrollTrigger: {
+              trigger: demo,
+              start: "top 25%",
+              end: "bottom top",
+              scrub: 0.8,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
       },
       root,
     );
