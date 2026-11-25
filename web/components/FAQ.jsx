@@ -7,7 +7,7 @@ export function FAQ() {
       className="section-shell grid gap-8 md:grid-cols-[0.85fr_1.35fr] md:gap-10 [&>div>p]:text-sm [&>div>p]:text-muted"
       id="questions"
     >
-      <div data-reveal>
+      <div>
         <p className="section-kicker">Before your next chat</p>
         <h2>
           Good questions.
@@ -55,7 +55,7 @@ export function FAQ() {
             "Clone https://github.com/3stannn/kip.git and run node bin/kip.js install. Git and Node.js 22+ are needed. To update, submit $kip update in Codex or /kip update in Claude Code or Antigravity, or run node bin/kip.js update from your clone. The updater pulls upstream changes and backs up existing skills before refreshing them. Older installs need a one-time git pull --ff-only and terminal update. Restart your host afterward.",
           ],
         ].map(([q, a]) => (
-          <details key={q} data-reveal>
+          <details key={q}>
             <summary>
               {q}
               <PlusIcon />

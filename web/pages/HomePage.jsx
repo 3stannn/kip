@@ -33,7 +33,7 @@ export function HomePage() {
     <div className="home-page" ref={page}>
       <Hero />
       <div className="bg-page">
-        <div className="md:px-14">
+        <div className="px-6 md:px-14">
           <WorkflowDemo />
         </div>
         <div className="home-content site-shell">
@@ -42,7 +42,7 @@ export function HomePage() {
             className="facts-grid mx-6 grid border-y border-line sm:grid-cols-2 md:mx-14 xl:grid-cols-4"
           >
             {highlights.map(({ label, text }, index) => (
-              <div className="fact-item" key={label} data-reveal>
+              <div className="fact-item" key={label}>
                 <span className="mb-3 block font-mono text-xs text-subtle">
                   0{index + 1}
                 </span>

@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "lenis/dist/lenis.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 // Lenis retains native document scrolling; no transformed page wrapper is needed.
 export function useSmoothScroll() {
@@ -28,7 +25,6 @@ export function useSmoothScroll() {
       const refresh = () => {
         if (disposed) return;
         lenis.resize();
-        ScrollTrigger.refresh();
       };
       const visibility = () => {
         const active = !document.hidden;
@@ -88,7 +84,6 @@ export function useSmoothScroll() {
         // Lenis includes the page's CSS scroll padding and target scroll margin.
         lenis.scrollTo(target || 0);
       };
-      lenis.on("scroll", ScrollTrigger.update);
       document.addEventListener("click", navigate);
       document.addEventListener("visibilitychange", visibility);
       window.addEventListener("blur", settle);
@@ -99,7 +94,6 @@ export function useSmoothScroll() {
       destroy = () => {
         disposed = true;
         gsap.ticker.remove(tick);
-        lenis.off("scroll", ScrollTrigger.update);
         lenis.destroy();
         document.removeEventListener("click", navigate);
         document.removeEventListener("visibilitychange", visibility);

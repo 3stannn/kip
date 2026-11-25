@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-import { usePageMotion } from "../hooks/usePageMotion.js";
+import React, { useState } from "react";
 import { GettingStarted } from "../components/GettingStarted.jsx";
 import { Profiles } from "../components/Profiles.jsx";
 import { CommandBuilder } from "../components/CommandBuilder.jsx";
@@ -10,18 +9,10 @@ import { purposes } from "../data/purposes.js";
 export function DocsPage() {
   const [profile, setProfile] = useState("");
   const [host, setHost] = useState("codex");
-  const page = useRef(null);
-  usePageMotion(page);
 
   return (
-    <div
-      className="docs-layout mx-auto max-w-[1320px] px-6 pb-16 md:px-14"
-      ref={page}
-    >
-      <div
-        className="docs-intro border-b border-line py-10 md:py-14"
-        data-reveal
-      >
+    <div className="docs-layout mx-auto max-w-[1320px] px-6 pb-16 md:px-14">
+      <div className="docs-intro border-b border-line py-10 md:py-14">
         <p className="section-kicker">Kip field guide</p>
         <h1 className="mt-4 text-4xl font-black tracking-tight md:text-5xl">
           Install it once. Give it one focused task.

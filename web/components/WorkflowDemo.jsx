@@ -8,7 +8,6 @@ export function WorkflowDemo() {
     <section
       aria-label="Example Kip workflow"
       className="hero-demo mx-auto flex w-full min-w-0 flex-col items-center gap-6"
-      data-reveal
     >
       <div
         className="segmented-control demo-switcher relative z-20"
@@ -26,14 +25,7 @@ export function WorkflowDemo() {
           </button>
         ))}
       </div>
-      <div className="hero-terminal-frame relative w-full">
-        <div className="laptop-display">
-          <div className="laptop-screen">
-            <Terminal active={demo} />
-          </div>
-        </div>
-        <div aria-hidden="true" className="laptop-base" />
-      </div>
+      <Terminal active={demo} />
     </section>
   );
 }

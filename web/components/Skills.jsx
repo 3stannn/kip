@@ -16,7 +16,7 @@ function SkillCard({ skill }) {
 export function Skills() {
   return (
     <section className="section-shell grid items-center gap-10 overflow-hidden border-b border-line lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
-      <div className="max-w-md" data-reveal>
+      <div className="max-w-md">
         <p className="section-kicker">Selective by default</p>
         <h2>Specialist skills, on demand.</h2>
         <p className="text-sm leading-7 text-muted">
@@ -29,7 +29,7 @@ export function Skills() {
           Build a task prompt <ArrowUpRightIcon />
         </a>
       </div>
-      <div className="min-w-0 py-4" data-reveal>
+      <div className="min-w-0 py-4">
         <div className="skills-carousel" aria-label="Kip skills">
           <div className="skills-carousel-track">
             {[false, true].map((duplicate) => (
